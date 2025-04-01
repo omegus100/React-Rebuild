@@ -15,7 +15,9 @@ router.get('/', async (req, res) => {
 // POST route for /api/tests
 router.post('/', async (req, res) => {
     const test = new Test({
-        title: req.body.title
+        title: req.body.title,
+        description: req.body.description,
+        publishDate: req.body.publishDate
     });
 
     try {

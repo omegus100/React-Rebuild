@@ -4,6 +4,12 @@ const testSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
+    },
+    description: {
+        type: String
+    },
+    publishDate: {
+        type: Date
     }
 })
 

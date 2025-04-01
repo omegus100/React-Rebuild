@@ -5,7 +5,7 @@ export default function NewBookForm() {
 
     return (
         <>  
-        <span>this is the book form </span>
+        <div>this is the book form </div>
         </>
     )
 }
