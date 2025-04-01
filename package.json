@@ -18,6 +18,7 @@
   "homepage": "https://github.com/omegus100/React-Rebuild#readme",
   "description": "",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^8.13.1"
   }
 }
