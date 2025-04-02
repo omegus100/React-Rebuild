@@ -1,94 +1,28 @@
-// Example React component to fetch books
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import NewBookForm from './BookForm';
-import GetBooks from "./components/books/BookList";
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout'
+import Home from './pages/Home'
+import Books from './pages/Books'
+import Authors from './pages/Authors'
+import Series from './pages/Series'
+import BookForm from './components/books/BookForm'
+import BookDetails from './components/books/BookDetails.jsx'
 
-const BooksList = () => {
-    const [books, setBooks] = useState([]);
-    const [formData, setFormData] = useState({
-        title: '',
-        description: '',
-        date: ''
-    }); // State to manage multiple inputs
-
-    useEffect(() => {
-        const fetchBooks = async () => {
-            try {
-                const response = await axios.get('/api/tests');
-                console.log(response)
-                setBooks(response.data);
-            } catch (error) {
-                console.error('Error fetching books:', error);
-            }
-        };
-
-        fetchBooks();
-    }, []);
-
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value
-        })); // Update the specific field in the formData state
-    };
-
-    async function getFormData(event) {
-        event.preventDefault(); // Prevent the default form submission behavior
-        console.log('Form data:', formData); // Log the form data
-
-        try {
-            const response = await axios.post('/api/tests', formData); // Post all form data to the backend
-            console.log('Test added:', response.data);
-
-            // Update the books list with the newly added book
-            setBooks((prevBooks) => [...prevBooks, response.data]);
-            setFormData({ title: '', description: '', date: '' }); // Clear the form fields
-        } catch (error) {
-            console.error('Error adding test:', error);
-        }
-    }
-
+export default function App() {
     return (
-        <>
-            <h1>Books</h1>
-            <NewBookForm />
-            <GetBooks />
-            <form onSubmit={getFormData}>
-                <label htmlFor="title">Title</label>
-                <input
-                    id="title"
-                    name="title" // Add a name attribute to identify the field
-                    value={formData.title} // Bind the input value to the state
-                    onChange={handleInputChange} // Update state on input change
-                />
-                <label htmlFor="description">Description</label>
-                <input
-                    id="description"
-                    name="description" // Add a name attribute to identify the field
-                    value={formData.description} // Bind the input value to the state
-                    onChange={handleInputChange} // Update state on input change
-                />
-                {/* <label htmlFor="date">Date</label>
-                <input
-                    id="date"
-                    name="publishDate" // Add a name attribute to identify the field
-                    type="date" // Use the date input type
-                    value={formData.date} // Bind the input value to the state
-                    onChange={handleInputChange} // Update state on input change
-                /> */}
-                <button type="submit">Add</button>
-            </form>
-            <ul>
-                {books.map((book) => (
-                    <li key={book._id}>
-                        {book.title} - {book.description} - {book.date}
-                    </li>
-                ))}
-            </ul>
-        </>
+        <Router>
+            <Routes>
+                {/* Wrap all routes with the Layout component */}
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<h1>Home Page</h1>} />
+                    <Route path="home" element={<Home />} />
+                    <Route path="books" element={<Books />} />
+                    <Route path="books/new" element={<BookForm />} /> 
+                    <Route path="authors" element={<Authors />} />
+                    <Route path="series" element={<Series />} />   
+                    <Route path="books/:id" element={<BookDetails />} /> 
+                </Route>
+            </Routes>
+        </Router>
     );
-};
-
-export default BooksList;
+}

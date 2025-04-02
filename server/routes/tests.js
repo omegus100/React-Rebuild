@@ -29,4 +29,18 @@ router.post('/', async (req, res) => {
     }
 });
 
-module.exports = router;
+// Get a single test by ID
+router.get('/:id', async (req, res) => {
+    try {
+        const test = await Test.findById(req.params.id);
+        if (!test) {
+            return res.status(404).json({ message: 'Test not found' });
+        }
+        res.json(test);
+    } catch (err) {
+        console.error('Error fetching test:', err);
+        res.status(500).json({ message: 'Failed to fetch test' });
+    }
+});
+
+module.exports = router
