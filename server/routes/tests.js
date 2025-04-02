@@ -43,4 +43,17 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// DELETE route for /api/tests/:id
+router.delete('/:id', async (req, res) => {
+    try {
+        const test = await Test.findByIdAndDelete(req.params.id);
+        if (!test) {
+            return res.status(404).json({ message: 'Test not found' });
+        }
+        res.status(200).json({ message: 'Test deleted successfully', id: req.params.id });
+    } catch (err) {
+        console.error('Error deleting test:', err);
+        res.status(500).json({ message: 'Failed to delete test' });
+    }
+});
 module.exports = router

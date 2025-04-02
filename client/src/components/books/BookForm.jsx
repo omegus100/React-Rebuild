@@ -31,6 +31,7 @@ export default function BookForm({ setBooks }) {
 
     return (
         <>
+        <h1>New Book</h1>
         <form onSubmit={handleSubmit}>
             <label htmlFor="title">Title:</label>
             <input
