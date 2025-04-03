@@ -17,7 +17,10 @@ router.post('/', async (req, res) => {
     const test = new Test({
         title: req.body.title,
         description: req.body.description,
-        publishDate: req.body.publishDate
+        publishDate: req.body.publishDate,
+        pageCount: req.body.pageCount,
+        format: req.body.format,
+        genres: req.body.genres
     });
 
     try {

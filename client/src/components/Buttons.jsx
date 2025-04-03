@@ -8,6 +8,10 @@ export function AddButton({  }) {
     return <button>Add New</button>;
 }
 
+export function EditButton({ onClick }) {
+    return <button onClick={onClick}>Edit</button>;
+}
+
 export function DeleteButton({ onClick }) {
     return <button onClick={onClick}>Delete</button>;
 }

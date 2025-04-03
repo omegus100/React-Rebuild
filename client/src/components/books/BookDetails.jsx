@@ -49,6 +49,9 @@ export default function BookDetails() {
                 <h1>{test.title}</h1>
                 <p>{test.description}</p>
                 <p>Publish Date: {new Date(test.publishDate).toLocaleDateString('en-US')}</p>
+                <p>Page Count: {test.pageCount}</p>
+                <p>Format: {test.format}</p>
+                <p>Genre: {test.genres}</p>
                 <DeleteButton onClick={handleDelete} />
             </div>
         </>

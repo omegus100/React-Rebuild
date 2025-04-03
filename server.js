@@ -25,6 +25,11 @@ app.use('/api/tests', testRouter)
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // create a GET route
-app.get('/express_backend', (req, res) => {
-  res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' })
-});
+// app.get('/express_backend', (req, res) => {
+//   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' })
+// });
+
+// Route to get book formats
+// router.get('/formats', (req, res) => {
+//   res.json(bookFormats); // Send bookFormats as JSON
+// });

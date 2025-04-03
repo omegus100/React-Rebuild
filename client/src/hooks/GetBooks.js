@@ -8,16 +8,17 @@ export default function GetBooks() {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await axios.get('/api/tests')
-                setBooks(response.data)
+                // Fetch books
+                const booksResponse = await axios.get('/api/tests')
+                setBooks(booksResponse.data);
             } catch (err) {
-                console.error('Error fetching books:', err)
+                console.error('Error fetching data:', err)
                 setError(err)
             }
-        }
+        };
 
         fetchBooks()
-    }, [])
+    }, []);
 
     return { books, setBooks, error }
 }
