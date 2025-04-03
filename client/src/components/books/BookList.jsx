@@ -7,7 +7,7 @@ export default function BookList({ books }) {
             <ul>
                 {books.map((book) => (
                     <li key={book._id}>
-                        <Link to={`/books/${book._id}`}>{book.title} - {book.description}</Link>
+                        <Link to={`/books/${book._id}`}>{book.title}</Link>
                     </li>
                 ))}
             </ul>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
-import { GoBackButton, DeleteButton } from '../Buttons'
+import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
 
 export default function BookDetails() {
     const { id } = useParams(); // Get the test ID from the URL
@@ -53,6 +53,7 @@ export default function BookDetails() {
                 <p>Format: {test.format}</p>
                 <p>Genre: {test.genres}</p>
                 <p>Author: {test.author.firstName} {test.author.lastName}</p>
+                <EditButton onClick={() => navigate(`/books/${test._id}/edit`)} />
                 <DeleteButton onClick={handleDelete} />
             </div>
         </>

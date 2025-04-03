@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const book = require('./book')
 
 const bookAuthorSchema = new mongoose.Schema({ 
     id: {

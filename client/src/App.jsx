@@ -23,6 +23,7 @@ export default function App() {
                     <Route path="authors/new" element={<AuthorForm />} /> 
                     <Route path="series" element={<Series />} />   
                     <Route path="books/:id" element={<BookDetails />} /> 
+                    <Route path="books/:id/edit" element={<BookForm />} /> 
                 </Route>
             </Routes>
         </Router>
