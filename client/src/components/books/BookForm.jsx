@@ -11,8 +11,12 @@ export default function BookForm({ setBooks }) {
         pageCount: '',
         format: '',
         genres: '',
-        author: ''
+        authorId: '',
+        authorFirstName: '',
+        authorLastName: ''
     });
+
+    const { authors, error } = GetAuthors()
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -22,9 +26,24 @@ export default function BookForm({ setBooks }) {
         }))
     }
 
+    const updateAuthorInfo = (authorId) => {
+        const selectedAuthor = authors.find((author) => author._id === authorId);
+        if (selectedAuthor) {
+            setFormData((prevData) => ({
+                ...prevData,
+                authorFirstName: selectedAuthor.firstName,
+                authorLastName: selectedAuthor.lastName
+            }));
+        }
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault()
+        if (formData.authorId) {
+            updateAuthorInfo(formData.authorId);
+        }
         try {
+            
             const response = await axios.post('/api/tests', formData)
             if (setBooks) {
                 setBooks((prevBooks) => [...prevBooks, response.data]); // Update the books list if setBooks is provided
@@ -33,9 +52,7 @@ export default function BookForm({ setBooks }) {
         } catch (error) {
             console.error('Error adding book:', error)
         }
-    };
-
-    const { authors, error } = GetAuthors()
+    }
 
     return (
         <>
@@ -102,11 +119,14 @@ export default function BookForm({ setBooks }) {
                 ))}
             </select>
             <br />
-            <label htmlFor="author">Author:</label>
+            <label htmlFor="authorId">Author:</label>
                 <select
-                    name="author"
+                    name="authorId"
                     value={formData.author}
-                    onChange={handleInputChange}
+                    onChange={(event) => {
+                        handleInputChange(event)
+                        updateAuthorInfo(event.target.value)
+                    }}
                 >
                     <option value="">Select Author</option>
                     {authors.map((author) => (
@@ -115,16 +135,8 @@ export default function BookForm({ setBooks }) {
                         </option>
                     ))}
                 </select>
-            <button type="submit">Add Book</button>
-          
+            <button type="submit">Add Book</button>  
         </form>
-      
-
-      {authors.map((author) => {
-        <li>
-               {author.firstName} {author.lastName} 
-        </li>
-      })}
         </>
     );
 }

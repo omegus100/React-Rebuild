@@ -52,7 +52,7 @@ export default function BookDetails() {
                 <p>Page Count: {test.pageCount}</p>
                 <p>Format: {test.format}</p>
                 <p>Genre: {test.genres}</p>
-              <p>{test.author}</p>
+                <p>Author: {test.author.firstName} {test.author.lastName}</p>
                 <DeleteButton onClick={handleDelete} />
             </div>
         </>
