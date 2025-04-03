@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { GoBackButton, DeleteButton } from '../Buttons'; // Import DeleteButton
+import React, { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { GoBackButton, DeleteButton } from '../Buttons'
 
 export default function BookDetails() {
     const { id } = useParams(); // Get the test ID from the URL
@@ -16,7 +16,7 @@ export default function BookDetails() {
                 setTest(response.data)
             } catch (err) {
                 console.error('Error fetching test details:', err)
-                setError(err);
+                setError(err)
             }
         };
 
@@ -35,11 +35,11 @@ export default function BookDetails() {
     };
 
     if (error) {
-        return <p>Error fetching test details: {error.message}</p>;
+        return <p>Error fetching test details: {error.message}</p>
     }
 
     if (!test) {
-        return <p>Loading...</p>;
+        return <p>Loading...</p>
     }
 
     return (
@@ -52,6 +52,7 @@ export default function BookDetails() {
                 <p>Page Count: {test.pageCount}</p>
                 <p>Format: {test.format}</p>
                 <p>Genre: {test.genres}</p>
+              <p>{test.author}</p>
                 <DeleteButton onClick={handleDelete} />
             </div>
         </>

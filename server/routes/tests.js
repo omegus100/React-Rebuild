@@ -20,7 +20,12 @@ router.post('/', async (req, res) => {
         publishDate: req.body.publishDate,
         pageCount: req.body.pageCount,
         format: req.body.format,
-        genres: req.body.genres
+        genres: req.body.genres,
+        author: {
+            id: req.body.authorId,
+            firstName: req.body.authorFirstName,
+            lastName: req.body.authorLastName
+        }
     });
 
     try {

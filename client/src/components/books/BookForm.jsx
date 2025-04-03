@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import * as bookObjects from './bookObjects'
+import GetAuthors from '../../hooks/GetAuthors'
 
 export default function BookForm({ setBooks }) {
     const [formData, setFormData] = useState({
@@ -9,7 +10,8 @@ export default function BookForm({ setBooks }) {
         publishDate: '',
         pageCount: '',
         format: '',
-        genres: ''
+        genres: '',
+        author: ''
     });
 
     const handleInputChange = (event) => {
@@ -32,6 +34,8 @@ export default function BookForm({ setBooks }) {
             console.error('Error adding book:', error)
         }
     };
+
+    const { authors, error } = GetAuthors()
 
     return (
         <>
@@ -76,8 +80,8 @@ export default function BookForm({ setBooks }) {
             <label htmlFor="format">Format:</label>
             <select
                 name="format"
-                value={formData.format} // Bind the value to formData.format
-                onChange={handleInputChange} // Update formData when a value is selected
+                value={formData.format} 
+                onChange={handleInputChange} 
             >
                 <option value="0"></option> 
                 {bookObjects.formats.map((format, index) => (
@@ -89,8 +93,8 @@ export default function BookForm({ setBooks }) {
             <label htmlFor="genres">Genre:</label>
             <select
                 name="genres"
-                value={formData.genres} // Bind the value to formData.genres
-                onChange={handleInputChange} // Update formData when a value is selected
+                value={formData.genres} 
+                onChange={handleInputChange} 
             >
                 <option value="0"></option> 
                 {bookObjects.genres.map((genre, index) => (
@@ -98,10 +102,29 @@ export default function BookForm({ setBooks }) {
                 ))}
             </select>
             <br />
+            <label htmlFor="author">Author:</label>
+                <select
+                    name="author"
+                    value={formData.author}
+                    onChange={handleInputChange}
+                >
+                    <option value="">Select Author</option>
+                    {authors.map((author) => (
+                        <option key={author._id} value={author._id}>
+                            {author.firstName} {author.lastName}
+                        </option>
+                    ))}
+                </select>
             <button type="submit">Add Book</button>
           
         </form>
       
+
+      {authors.map((author) => {
+        <li>
+               {author.firstName} {author.lastName} 
+        </li>
+      })}
         </>
     );
 }

@@ -1,7 +1,23 @@
 const mongoose = require('mongoose')
+const book = require('./book')
 
-const bookFormats = ['Paperback','Hardback', 'eBook', 'Audiobook']
-const genres = ["Biography", "Classics", "Fantasy", "Historical Fiction", "Horror", "Mystery", "Non-Fiction", "Romance", "Science Fiction", "Thriller", "Young Adult"]
+const bookAuthorSchema = new mongoose.Schema({ 
+    id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Author'
+    },
+    firstName: String,
+    lastName: String
+})
+
+// const bookSeriesSchema = new mongoose.Schema({ 
+//     series: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'Series'
+//     },
+//     title: String,
+//     volume: Number 
+// })
 
 const testSchema = new mongoose.Schema({
     title: {
@@ -16,6 +32,7 @@ const testSchema = new mongoose.Schema({
         required: true,
         default: Date.now
     },
+    author: bookAuthorSchema,
     format: [String],
     genres: [String]
 })

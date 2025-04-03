@@ -15,21 +15,14 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.error('MongoDB connection error:', err));
 
 //Routes for React server 
-const booksRouter = require('./server/routes/books')
+// const bookRouter = require('./server/routes/books')
+const authorRouter = require('./server/routes/authors')
 const testRouter = require('./server/routes/tests')
+// const seriesRouter = require('./server/routes/series')
 
-app.use('/api/books', booksRouter)
-app.use('/api/tests', testRouter)
+app.use('/api/tests', testRouter) //Eventually rename bookRouter
+app.use('/api/authors', authorRouter)
+// app.use('/api/series', seriesRouter)
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
-
-// create a GET route
-// app.get('/express_backend', (req, res) => {
-//   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' })
-// });
-
-// Route to get book formats
-// router.get('/formats', (req, res) => {
-//   res.json(bookFormats); // Send bookFormats as JSON
-// });
