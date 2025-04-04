@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Book = require('../models/book')
+const upload = require('../models/multer')
 
 // Get all book objects
 router.get('/', async (req, res) => {
@@ -30,7 +31,8 @@ router.post('/', async (req, res) => {
             id: req.body.seriesId,
             title: req.body.seriesTitle,
             volume: req.body.seriesVolume
-        }
+        },
+        coverImage: req.file ? `/uploads/${req.file.filename}` : null 
     });
 
     try {
@@ -88,7 +90,8 @@ router.put('/:id', async (req, res) => {
                     id: req.body.seriesId,
                     title: req.body.seriesTitle,
                     volume: req.body.seriesVolume
-                }
+                },
+                coverImage: req.file ? `/uploads/${req.file.filename}` : undefined
             },
             { new: true, runValidators: true } // Return the updated document and validate the data
         );

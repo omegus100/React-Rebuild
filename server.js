@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
 const port = process.env.PORT || 5000
+const path = require('path')
 
 app.use(express.static('public'))
 app.use(express.json());
@@ -22,6 +23,7 @@ const seriesRouter = require('./server/routes/series')
 app.use('/api/books', bookRouter) 
 app.use('/api/authors', authorRouter)
 app.use('/api/series', seriesRouter)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`))

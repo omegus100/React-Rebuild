@@ -1,23 +1,5 @@
 const mongoose = require('mongoose')
 
-const bookAuthorSchema = new mongoose.Schema({ 
-    id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Author'
-    },
-    firstName: String,
-    lastName: String
-})
-
-const bookSeriesSchema = new mongoose.Schema({ 
-    id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Series'
-    },
-    title: String,
-    volume: Number 
-})
-
 const bookSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -31,10 +13,19 @@ const bookSchema = new mongoose.Schema({
         required: true,
         default: Date.now
     },
-    author: bookAuthorSchema,
-    series: bookSeriesSchema,
+    author: {
+        id: { type: mongoose.Schema.Types.ObjectId, ref: 'Author' },
+        firstName: String,
+        lastName: String
+    },
+    series: {
+        id: { type: mongoose.Schema.Types.ObjectId, ref: 'Series'},
+        title: {type: String},
+        volume:{ type: Number} 
+    },
     format: [String],
-    genres: [String]
+    genres: [String],
+    coverImage: Buffer
 })
 
 module.exports = mongoose.model('Book', bookSchema)

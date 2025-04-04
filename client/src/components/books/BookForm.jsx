@@ -5,6 +5,7 @@ import GetAuthors from '../../hooks/GetAuthors'
 import GetSeries from '../../hooks/GetSeries'
 import { useParams, useNavigate } from 'react-router-dom'
 import { GoBackButton } from '../Buttons'
+import  FileUpload  from '../FileUpload'
 
 export default function BookForm({ setBooks }) {
     const { id } = useParams(); // Get the book ID from the URL (if editing)
@@ -235,10 +236,11 @@ export default function BookForm({ setBooks }) {
                     value={formData.seriesVolume}
                     onChange={handleInputChange}
                 />
-                <br />           
-                <button type="submit">{id ? 'Update Book' : 'Add Book'}</button>
+                <br />   
+                {/* <FileUpload name="cover" onFileChange={handleInputChange}/> */}
+                 <button type="submit">{id ? 'Update Book' : 'Add Book'}</button>
             </form>
-
+           
             {error && <p>Error fetching authors: {error.message}</p>}
         </>
     );
