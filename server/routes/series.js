@@ -16,7 +16,11 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const series = new Series({
         title: req.body.title,
-        author: req.body.author
+        author: {
+            id: req.body.authorId,
+            firstName: req.body.authorFirstName,
+            lastName: req.body.authorLastName
+        }
     }) 
 
     try {

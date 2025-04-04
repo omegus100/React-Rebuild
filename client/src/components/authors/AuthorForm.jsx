@@ -21,7 +21,7 @@ export default function AuthorForm({ setAuthors }) {
     const handleSubmit = async (event) => {
         event.preventDefault()
         try {
-            const response = await axios.post('api/authors', formData)
+            const response = await axios.post('/api/authors', formData)
             setFormData({firstName: '', lastName: ''})
             navigate('/authors'); // Redirect to the authors list page
         } catch (error) {

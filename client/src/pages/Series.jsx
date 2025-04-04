@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import GetSeries from '../hooks/GetSeries' 
 import SeriesForm from '../components/series/SeriesForm'
-// import SeriesList from '../components/series/SeriesList'
+import SeriesList from '../components/series/SeriesList'
 import { AddButton } from '../components/Buttons'
 
 const Series = () => {
@@ -18,7 +18,7 @@ const Series = () => {
             <Link to="/series/new">
                 <AddButton />               
             </Link>      
-             {/* <SeriesList series={series} />   */}
+             <SeriesList series={series} />  
         </>
     )
 }
