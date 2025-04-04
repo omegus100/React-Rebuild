@@ -51,7 +51,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-// Get all book objects
+// Edit book objects
 router.get('/:id/edit', async (req, res) => {
     try {
         const book = await Book.findById(req.params.id);
@@ -61,7 +61,7 @@ router.get('/:id/edit', async (req, res) => {
     }
 })
 
-// PUT route for /api/books/:id
+// Update book object
 router.put('/:id', async (req, res) => {
     try {
         // Find the book by ID and update it with the new data

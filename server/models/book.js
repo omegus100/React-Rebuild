@@ -9,14 +9,14 @@ const bookAuthorSchema = new mongoose.Schema({
     lastName: String
 })
 
-// const bookSeriesSchema = new mongoose.Schema({ 
-//     series: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'Series'
-//     },
-//     title: String,
-//     volume: Number 
-// })
+const bookSeriesSchema = new mongoose.Schema({ 
+    series: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Series'
+    },
+    title: String,
+    volume: Number 
+})
 
 const bookSchema = new mongoose.Schema({
     title: {
@@ -32,6 +32,7 @@ const bookSchema = new mongoose.Schema({
         default: Date.now
     },
     author: bookAuthorSchema,
+    series: bookSeriesSchema,
     format: [String],
     genres: [String]
 })

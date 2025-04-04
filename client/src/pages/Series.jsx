@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import GetSeries from '../hooks/GetSeries' 
-import SeriesForm from '../components/series/SeriesForm'
 import SeriesList from '../components/series/SeriesList'
 import { AddButton } from '../components/Buttons'
 

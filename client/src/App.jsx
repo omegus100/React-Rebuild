@@ -10,7 +10,7 @@ import BookDetails from './components/books/BookDetails.jsx'
 import AuthorForm from './components/authors/AuthorForm'
 import AuthorDetails from './components/authors/AuthorDetails'
 import SeriesForm from './components/series/SeriesForm'
-// import SeriesDetails from './components/series/SeriesDetails'
+import SeriesDetails from './components/series/SeriesDetails'
 
 export default function App() {
     return (
@@ -29,7 +29,9 @@ export default function App() {
                     <Route path="authors/:id" element={<AuthorDetails />} /> 
                     <Route path="authors/:id/edit" element={<AuthorForm />} /> 
                     <Route path="series" element={<Series />} />        
-                    <Route path="series/new" element={<SeriesForm />} />          
+                    <Route path="series/new" element={<SeriesForm />} />  
+                    <Route path="series/:id" element={<SeriesDetails />} /> 
+                    <Route path="series/:id/edit" element={<SeriesForm />} />         
                 </Route>
             </Routes>
         </Router>

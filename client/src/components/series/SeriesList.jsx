@@ -7,7 +7,7 @@ export default function AuthorList({ series }) {
             <ul>
                 {series.map((series) => (
                     <li key={series._id}>
-                        {series.title} 
+                        <Link to={`/series/${series._id}`}>{series.title}</Link>
                     </li>
                 ))}
             </ul>

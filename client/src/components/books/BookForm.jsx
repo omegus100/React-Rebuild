@@ -119,7 +119,7 @@ export default function BookForm({ setBooks }) {
                 <input
                     id="description"
                     name="description"
-                    type="text"
+                    type="textarea"
                     value={formData.description}
                     onChange={handleInputChange}
                 />

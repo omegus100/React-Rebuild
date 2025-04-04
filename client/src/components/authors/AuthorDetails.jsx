@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
-import { GoBackButton } from '../Buttons'
+import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
 import GetBooks from '../../hooks/GetBooks'
 import BookList from '../books/BookList'
 
 export default function AuthorDetails() {
-    const { id } = useParams(); // Get the author ID from the URL
-    const [author, setAuthor] = useState(null); // State to store author details
-    const [error, setError] = useState(null); // State to handle errors
-    const { books } = GetBooks(); // Get all books using the GetBooks hook
+    const { id } = useParams() // Get the author ID from the URL
+    const navigate = useNavigate()
+    const [author, setAuthor] = useState(null) // State to store author details
+    const [error, setError] = useState(null) // State to handle errors
+    const { books } = GetBooks()
 
     useEffect(() => {
         const fetchAuthor = async () => {
             try {
-                const response = await axios.get(`/api/authors/${id}`); // Fetch author details
+                const response = await axios.get(`/api/authors/${id}`)
                 setAuthor(response.data)
             } catch (err) {
                 console.error('Error fetching author details:', err)
@@ -35,6 +36,23 @@ export default function AuthorDetails() {
 
     const booksByAuthor = books.filter((book) => book.author.id === author._id)
 
+    const handleDelete = async () => {          
+        try {     
+            if (booksByAuthor.length > 0) {
+                // Check if the author has books assigned to them
+                alert('This author has book(s) assigned to it. Please delete the book(s) first.')
+                return
+            } else {
+                await axios.delete(`/api/authors/${id}`) 
+                alert('Author deleted successfully') 
+                navigate('/authors') 
+            }      
+        } catch (err) {
+            console.error('Error deleting author:', err)
+            alert('Failed to delete the author')
+        }
+    }
+
     return (
         <>
             <GoBackButton />
@@ -43,6 +61,8 @@ export default function AuthorDetails() {
                 <p><strong>Books:</strong></p>
                 <BookList books={booksByAuthor} /> 
             </div>
+            <EditButton onClick={() => navigate(`/authors/${author._id}/edit`)} />         
+            <DeleteButton onClick={handleDelete} />
         </>
     );
 }
