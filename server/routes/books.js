@@ -25,6 +25,11 @@ router.post('/', async (req, res) => {
             id: req.body.authorId,
             firstName: req.body.authorFirstName,
             lastName: req.body.authorLastName
+        },
+        series: {
+            id: req.body.seriesId,
+            title: req.body.seriesTitle,
+            volume: req.body.seriesVolume
         }
     });
 
@@ -78,6 +83,11 @@ router.put('/:id', async (req, res) => {
                     id: req.body.authorId,
                     firstName: req.body.authorFirstName,
                     lastName: req.body.authorLastName
+                },
+                series: {
+                    id: req.body.seriesId,
+                    title: req.body.seriesTitle,
+                    volume: req.body.seriesVolume
                 }
             },
             { new: true, runValidators: true } // Return the updated document and validate the data

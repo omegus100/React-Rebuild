@@ -11,7 +11,7 @@ export default function SeriesDetails() {
     const navigate = useNavigate()
     const [series, setSeries] = useState(null); // State to store series details
     const [error, setError] = useState(null); // State to handle errors
-    // const { books } = GetBooks();
+    const { books } = GetBooks();
     const { authors } = GetAuthors()
 
     useEffect(() => {
@@ -37,19 +37,19 @@ export default function SeriesDetails() {
          return <p>Loading series details...</p>
     }
 
-    // const booksbySeries = books.filter((book) => book.series.id === series._id)
+    const booksbySeries = books.filter((book) => book.series.id === series._id)
     const author = authors.find((author) => author._id === series.author?.id)
 
     const handleDelete = async () => {
         try {
-            // if (author) {
-            //     alert('This series has an author. Please delete the author first.')
-            //     return
-            // } else {
+            if (booksbySeries.length > 0) {
+                alert('This series has book(s) assigned to it. Please delete the book(s) first.')
+                return
+            } else {
                 await axios.delete(`/api/series/${id}`) // Call the DELETE route
                 alert('Series deleted successfully') // Notify the user
                 navigate('/series') // Redirect to the series list page
-            // }      
+            }      
         } catch (err) {
             console.error('Error deleting series:', err)
             alert('Failed to delete the series')
@@ -73,7 +73,7 @@ export default function SeriesDetails() {
                 )}
             </p>
             <p><strong>Books in this Series:</strong></p>
-            {/* <BookList books={booksbySeries } />  */}
+            <BookList books={booksbySeries } /> 
         </div>
         <EditButton onClick={() => navigate(`/series/${series._id}/edit`)} />         
         <DeleteButton onClick={handleDelete} />

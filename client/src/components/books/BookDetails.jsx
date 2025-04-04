@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
-import { GoBackButton, DeleteButton, EditButton } from '../Buttons';
-import GetAuthors from '../../hooks/GetAuthors';
+import React, { useEffect, useState } from 'react'
+import { useParams, useNavigate, Link } from 'react-router-dom'
+import axios from 'axios'
+import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
+import GetAuthors from '../../hooks/GetAuthors'
 
 export default function BookDetails() {
     const { id } = useParams(); // Get the book ID from the URL
@@ -64,6 +64,16 @@ export default function BookDetails() {
                         </Link>
                     ) : (
                         'Unknown Author'
+                    )}
+                </p>
+                <p>
+                    Series:{' '}
+                    {book.series ? (
+                        <Link to={`/series/${book.series.id}`}>
+                            {book.series.title} (Volume {book.series.volume})
+                        </Link>
+                    ) : (
+                        'No Series'
                     )}
                 </p>
                 <EditButton onClick={() => navigate(`/books/${book._id}/edit`)} />

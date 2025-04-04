@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import * as bookObjects from './bookObjects'
 import GetAuthors from '../../hooks/GetAuthors'
+import GetSeries from '../../hooks/GetSeries'
 import { useParams, useNavigate } from 'react-router-dom'
 import { GoBackButton } from '../Buttons'
 
@@ -17,10 +18,14 @@ export default function BookForm({ setBooks }) {
         genres: '',
         authorId: '',
         authorFirstName: '',
-        authorLastName: ''
+        authorLastName: '',
+        seriesId: '',
+        seriesTitle: '',
+        seriesVolume: ''
     });
 
-    const { authors, error } = GetAuthors();
+    const { authors, error } = GetAuthors()
+    const { series } = GetSeries()
 
     // Fetch existing data if editing
     useEffect(() => {
@@ -38,7 +43,10 @@ export default function BookForm({ setBooks }) {
                         genres: book.genres,
                         authorId: book.author.id,
                         authorFirstName: book.author.firstName,
-                        authorLastName: book.author.lastName
+                        authorLastName: book.author.lastName,
+                        seriesId: book.series.id,
+                        seriesTitle: book.series.title,
+                        seriesVolume: book.series.volume
                     });
                 } catch (err) {
                     console.error('Error fetching book:', err);
@@ -66,12 +74,27 @@ export default function BookForm({ setBooks }) {
                 authorLastName: selectedAuthor.lastName
             }));
         }
-    };
+    }
+
+    const updateSeriesInfo = (seriesId) => {
+        const selectedSeries = series.find((series) => series._id === seriesId);
+        if (selectedSeries) {
+            setFormData((prevData) => ({
+                ...prevData,
+                seriesTitle: selectedSeries.title
+            }));
+        }
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        // Update author info if authorId is present
         if (formData.authorId) {
             updateAuthorInfo(formData.authorId);
+        }
+        // Update series info if seriesId is present
+        if (formData.seriesId) {
+            updateSeriesInfo(formData.seriesId);
         }
 
         try {
@@ -187,6 +210,32 @@ export default function BookForm({ setBooks }) {
                     ))}
                 </select>
                 <br />
+                <label htmlFor="seriesId">Series:</label>
+                <select
+                    name="seriesId"
+                    value={formData.seriesId}
+                    onChange={(event) => {
+                        handleInputChange(event);
+                        updateSeriesInfo(event.target.value);
+                    }}
+                >
+                    <option value="">Select Series</option>
+                    {series.map((series) => (
+                        <option key={series._id} value={series._id}>
+                            {series.title} 
+                        </option>
+                    ))}
+                </select>
+                <br />
+                <label htmlFor="seriesVolume">Series Volume:</label>
+                <input
+                    type="number"
+                    name="seriesVolume"
+                    min="1"
+                    value={formData.seriesVolume}
+                    onChange={handleInputChange}
+                />
+                <br />           
                 <button type="submit">{id ? 'Update Book' : 'Add Book'}</button>
             </form>
 
