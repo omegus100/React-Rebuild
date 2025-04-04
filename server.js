@@ -15,12 +15,11 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.error('MongoDB connection error:', err));
 
 //Routes for React server 
-// const bookRouter = require('./server/routes/books')
+const bookRouter = require('./server/routes/books')
 const authorRouter = require('./server/routes/authors')
-const testRouter = require('./server/routes/tests')
 // const seriesRouter = require('./server/routes/series')
 
-app.use('/api/tests', testRouter) //Eventually rename bookRouter
+app.use('/api/books', bookRouter) 
 app.use('/api/authors', authorRouter)
 // app.use('/api/series', seriesRouter)
 

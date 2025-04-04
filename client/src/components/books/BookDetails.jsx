@@ -14,7 +14,7 @@ export default function BookDetails() {
     useEffect(() => {
         const fetchBook = async () => {
             try {
-                const response = await axios.get(`/api/tests/${id}`);
+                const response = await axios.get(`/api/books/${id}`);
                 setBook(response.data);
             } catch (err) {
                 console.error('Error fetching book details:', err);
@@ -27,7 +27,7 @@ export default function BookDetails() {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`/api/tests/${id}`); // Call the DELETE route
+            await axios.delete(`/api/books/${id}`); // Call the DELETE route
             alert('Book deleted successfully'); // Notify the user
             navigate('/books'); // Redirect to the books list page
         } catch (err) {

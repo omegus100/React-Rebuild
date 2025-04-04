@@ -27,7 +27,7 @@ export default function BookForm({ setBooks }) {
         if (id) {
             const fetchBook = async () => {
                 try {
-                    const response = await axios.get(`/api/tests/${id}`);
+                    const response = await axios.get(`/api/books/${id}`);
                     const book = response.data;
                     setFormData({
                         title: book.title,
@@ -77,7 +77,7 @@ export default function BookForm({ setBooks }) {
         try {
             if (id) {
                 // Update existing book entry
-                const response = await axios.put(`/api/tests/${id}`, formData);
+                const response = await axios.put(`/api/books/${id}`, formData);
                 if (setBooks) {
                     setBooks((prevBooks) =>
                         prevBooks.map((book) =>
@@ -88,7 +88,7 @@ export default function BookForm({ setBooks }) {
                 alert('Book updated successfully!');
             } else {
                 // Create new book entry
-                const response = await axios.post('/api/tests', formData);
+                const response = await axios.post('/api/books', formData);
                 if (setBooks) {
                     setBooks((prevBooks) => [...prevBooks, response.data]);
                 }
