@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-
+import { useNavigate } from 'react-router-dom'
+import { GoBackButton } from '../Buttons'
 
 export default function AuthorForm({ setAuthors }) {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: ''
@@ -21,6 +23,7 @@ export default function AuthorForm({ setAuthors }) {
         try {
             const response = await axios.post('api/authors', formData)
             setFormData({firstName: '', lastName: ''})
+            navigate('/authors'); // Redirect to the authors list page
         } catch (error) {
             console.error('Error adding author:', error)
         }
@@ -28,6 +31,7 @@ export default function AuthorForm({ setAuthors }) {
 
     return (
         <>
+        <GoBackButton />
         <form onSubmit={handleSubmit}>
                 <label htmlFor='firstName'>First Name</label>
                 <input type='text' name='firstName' value={formData.firstName}  onChange={handleInputChange}></input>

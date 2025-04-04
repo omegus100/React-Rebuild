@@ -7,11 +7,10 @@ export default function AuthorList({ authors }) {
             <ul>
                 {authors.map((author) => (
                     <li key={author._id}>
-                        {author.firstName} {author.lastName} -- {author._id}
+                        <Link to={`/authors/${author._id}`}>{author.firstName} {author.lastName}</Link>
                     </li>
                 ))}
             </ul>
-            
         </>
     );
 }

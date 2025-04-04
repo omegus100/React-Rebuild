@@ -28,4 +28,18 @@ router.post('/', async (req, res) => {
     }
 })
 
+// Get a single book by ID
+router.get('/:id', async (req, res) => {
+    try {
+        const author = await Author.findById(req.params.id);
+        if (!author) {
+            return res.status(404).json({ message: 'Author not found' });
+        }
+        res.json(author);
+    } catch (err) {
+        console.error('Error fetching author:', err);
+        res.status(500).json({ message: 'Failed to fetch author' });
+    }
+})
+
 module.exports = router;

@@ -1,7 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import GetAuthors from '../hooks/GetAuthors' 
 import AuthorList from '../components/authors/AuthorList'
 import AuthorForm from '../components/authors/AuthorForm'
+import { AddButton } from '../components/Buttons'
 
 const Authors = () => {
     const { authors, error } = GetAuthors()
@@ -13,7 +15,9 @@ const Authors = () => {
     return (
         <>
             <h1>Authors</h1>
-            <AuthorForm />        
+            <Link to="/authors/new">
+                <AddButton />               
+            </Link>      
              <AuthorList authors={authors} />  
         </>
     )

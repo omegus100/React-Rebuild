@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
-import axios from 'axios'
-import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import { GoBackButton, DeleteButton, EditButton } from '../Buttons';
+import GetAuthors from '../../hooks/GetAuthors';
 
 export default function BookDetails() {
-    const { id } = useParams(); // Get the test ID from the URL
+    const { id } = useParams(); // Get the book ID from the URL
     const navigate = useNavigate(); // Use navigate to redirect after deletion
-    const [test, setTest] = useState(null)
-    const [error, setError] = useState(null)
+    const [book, setBook] = useState(null);
+    const [error, setError] = useState(null);
+    const { authors } = GetAuthors(); 
 
     useEffect(() => {
-        const fetchTest = async () => {
+        const fetchBook = async () => {
             try {
-                const response = await axios.get(`/api/tests/${id}`)
-                setTest(response.data)
+                const response = await axios.get(`/api/tests/${id}`);
+                setBook(response.data);
             } catch (err) {
-                console.error('Error fetching test details:', err)
-                setError(err)
+                console.error('Error fetching book details:', err);
+                setError(err);
             }
         };
 
-        fetchTest();
+        fetchBook();
     }, [id]);
 
     const handleDelete = async () => {
@@ -29,31 +31,42 @@ export default function BookDetails() {
             alert('Book deleted successfully'); // Notify the user
             navigate('/books'); // Redirect to the books list page
         } catch (err) {
-            console.error('Error deleting book:', err)
-            alert('Failed to delete the book')
+            console.error('Error deleting book:', err);
+            alert('Failed to delete the book');
         }
     };
 
     if (error) {
-        return <p>Error fetching test details: {error.message}</p>
+        return <p>Error fetching book details: {error.message}</p>;
     }
 
-    if (!test) {
-        return <p>Loading...</p>
+    if (!book) {
+        return <p>Loading...</p>;
     }
+
+    const author = authors.find((author) => author._id === book.author?.id)
 
     return (
         <>
             <GoBackButton />
             <div>
-                <h1>{test.title}</h1>
-                <p>{test.description}</p>
-                <p>Publish Date: {new Date(test.publishDate).toLocaleDateString('en-US')}</p>
-                <p>Page Count: {test.pageCount}</p>
-                <p>Format: {test.format}</p>
-                <p>Genre: {test.genres}</p>
-                <p>Author: {test.author.firstName} {test.author.lastName}</p>
-                <EditButton onClick={() => navigate(`/books/${test._id}/edit`)} />
+                <h1>{book.title}</h1>
+                <p>{book.description}</p>
+                <p>Publish Date: {new Date(book.publishDate).toLocaleDateString('en-US')}</p>
+                <p>Page Count: {book.pageCount}</p>
+                <p>Format: {book.format}</p>
+                <p>Genre: {book.genres}</p>
+                <p>
+                    Author:{' '}
+                    {author ? (
+                        <Link to={`/authors/${author._id}`}>
+                            {author.firstName} {author.lastName}
+                        </Link>
+                    ) : (
+                        'Unknown Author'
+                    )}
+                </p>
+                <EditButton onClick={() => navigate(`/books/${book._id}/edit`)} />
                 <DeleteButton onClick={handleDelete} />
             </div>
         </>
