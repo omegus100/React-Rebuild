@@ -1,24 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styles from '../../stylesheets/BookList.module.css'
 
 export default function BookList({ books }) {
     return (
         <>
-            <span>
+            <div className={styles.container}>
             {books.map((book) => ( 
-                <span key={book._id} >
+                <div key={book._id} className={styles.book}>
                     <Link to={`/books/${book._id}`}>
                     <br />
                     <img
                         src={book.coverImagePath}
                         alt={book.title}
-                        style={{ width: '100px', height: '150px', marginTop: '10px' }}
+                        className={styles.coverImage}
                     />
-                    <span>{book.title}</span>
+                    <p>{book.title}</p>
                     </Link>
-                </span>
+                </div>
               ))}
-            </span>    
+            </div>    
         </>
     );
 }

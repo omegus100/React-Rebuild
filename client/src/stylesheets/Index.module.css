@@ -1,0 +1,30 @@
+/* Generic container for inline alignment */
+.indexHeader {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Adjust spacing between elements */
+    gap: 1rem; /* Space between the h1 and the Link */
+
+    h1 {
+        margin: 0; /* Remove default margin for better alignment */
+    }
+
+    button {
+        flex-direction: row; /* Corrected property value */
+    }
+}
+
+.searchContainer {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.searchInput {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
