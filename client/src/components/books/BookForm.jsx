@@ -89,19 +89,16 @@ export default function BookForm({ setBooks }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // Update author info if authorId is present
-        if (formData.authorId) {
-            updateAuthorInfo(formData.authorId);
-        }
-        // Update series info if seriesId is present
-        if (formData.seriesId) {
-            updateSeriesInfo(formData.seriesId);
-        }
+
+        // Create a copy of formData and remove empty fields
+        const filteredFormData = Object.fromEntries(
+            Object.entries(formData).filter(([key, value]) => value !== "")
+        );
 
         try {
             if (id) {
                 // Update existing book entry
-                const response = await axios.put(`/api/books/${id}`, formData);
+                const response = await axios.put(`/api/books/${id}`, filteredFormData);
                 if (setBooks) {
                     setBooks((prevBooks) =>
                         prevBooks.map((book) =>
@@ -112,7 +109,7 @@ export default function BookForm({ setBooks }) {
                 alert('Book updated successfully!');
             } else {
                 // Create new book entry
-                const response = await axios.post('/api/books', formData);
+                const response = await axios.post('/api/books', filteredFormData);
                 if (setBooks) {
                     setBooks((prevBooks) => [...prevBooks, response.data]);
                 }
