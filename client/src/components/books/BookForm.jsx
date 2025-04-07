@@ -35,19 +35,20 @@ export default function BookForm({ setBooks }) {
                 try {
                     const response = await axios.get(`/api/books/${id}`);
                     const book = response.data;
+
                     setFormData({
-                        title: book.title,
-                        description: book.description,
-                        publishDate: book.publishDate,
-                        pageCount: book.pageCount,
-                        format: book.format,
-                        genres: book.genres,
-                        authorId: book.author.id,
-                        authorFirstName: book.author.firstName,
-                        authorLastName: book.author.lastName,
-                        seriesId: book.series.id,
-                        seriesTitle: book.series.title,
-                        seriesVolume: book.series.volume
+                        title: book.title || '',
+                        description: book.description || '',
+                        publishDate: book.publishDate || '',
+                        pageCount: book.pageCount || '',
+                        format: book.format || '',
+                        genres: book.genres || '',
+                        authorId: book.author?.id || '',
+                        authorFirstName: book.author?.firstName || '',
+                        authorLastName: book.author?.lastName || '',
+                        seriesId: book.series?.id || '',
+                        seriesTitle: book.series?.title || '',
+                        seriesVolume: book.series?.volume || ''
                     });
                 } catch (err) {
                     console.error('Error fetching book:', err);

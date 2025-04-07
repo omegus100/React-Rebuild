@@ -3,6 +3,8 @@ const formats = [
     'Hardback',
     'eBook',
     'Audiobook',
+    'Graphic Novel',
+    'Comic Book'
 ].sort()
 
 const genres = [
