@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { FilePond } from 'react-filepond';
+import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+
+// Register the plugins globally
+registerPlugin(FilePondPluginFileValidateType, FilePondPluginImagePreview)
 
 export default function FileUpload({ name, onFileChange }) {
     const [files, setFiles] = useState([]);
@@ -24,6 +29,7 @@ export default function FileUpload({ name, onFileChange }) {
             maxFiles={1}
             name={name}
             labelIdle={`Drag & Drop your ${name || 'file'} or <span class="filepond--label-action">Browse</span>`}
+            
         />
     );
 }

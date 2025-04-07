@@ -5,7 +5,13 @@ import GetAuthors from '../../hooks/GetAuthors'
 import GetSeries from '../../hooks/GetSeries'
 import { useParams, useNavigate } from 'react-router-dom'
 import { GoBackButton } from '../Buttons'
-import  FileUpload  from '../FileUpload'
+import { FilePond, registerPlugin } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+
+// Register the FilePond plugin
+registerPlugin(FilePondPluginImagePreview)
 
 export default function BookForm({ setBooks }) {
     const { id } = useParams(); // Get the book ID from the URL (if editing)
@@ -22,7 +28,8 @@ export default function BookForm({ setBooks }) {
         authorLastName: '',
         seriesId: '',
         seriesTitle: '',
-        seriesVolume: ''
+        seriesVolume: '',
+        coverImagePath: ''
     });
 
     const { authors, error } = GetAuthors()
@@ -48,7 +55,8 @@ export default function BookForm({ setBooks }) {
                         authorLastName: book.author?.lastName || '',
                         seriesId: book.series?.id || '',
                         seriesTitle: book.series?.title || '',
-                        seriesVolume: book.series?.volume || ''
+                        seriesVolume: book.series?.volume || '',
+                        coverImagePath: book.coverImagePath
                     });
                 } catch (err) {
                     console.error('Error fetching book:', err);
@@ -88,6 +96,26 @@ export default function BookForm({ setBooks }) {
         }
     }
 
+    const handleFileChange = (fileItems) => {
+        if (fileItems.length > 0) {
+            const file = fileItems[0].file; // Get the first file from the FilePond file items
+            const reader = new FileReader();
+            reader.readAsDataURL(file); // Convert the file to a base64 string
+            reader.onloadend = () => {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    coverImagePath: reader.result // Store the base64 string in coverImagePath
+                }));
+            };
+        } else {
+            // If no file is selected, clear the coverImagePath
+            setFormData((prevData) => ({
+                ...prevData,
+                coverImagePath: ''
+            }));
+        }
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -95,6 +123,8 @@ export default function BookForm({ setBooks }) {
         const filteredFormData = Object.fromEntries(
             Object.entries(formData).filter(([key, value]) => value !== "")
         );
+
+        console.log('Submitting formData:', filteredFormData)
 
         try {
             if (id) {
@@ -235,7 +265,30 @@ export default function BookForm({ setBooks }) {
                     onChange={handleInputChange}
                 />
                 <br />   
-                {/* <FileUpload name="cover" onFileChange={handleInputChange}/> */}
+                <label htmlFor="cover">Cover Image:</label>
+                <input
+                    type="file"
+                    name="cover"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
+                <FilePond
+                    files={formData.coverImagePath ? [{ source: formData.coverImagePath }] : []}
+                    onupdatefiles={handleFileChange}
+                    allowMultiple={false}
+                    maxFiles={1}
+                    name="cover"
+                    labelIdle='Drag & Drop your cover image or <span class="filepond--label-action">Browse</span>'
+                />
+                {/* <br />
+                {formData.coverImagePath && (
+                    <img
+                        src={formData.coverImagePath}
+                        alt="Cover Preview"
+                        style={{ width: '100px', height: '150px', marginTop: '10px' }}
+                    />
+                )}
+                <br /> */}
                  <button type="submit">{id ? 'Update Book' : 'Add Book'}</button>
             </form>
            

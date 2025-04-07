@@ -5,7 +5,8 @@ const port = process.env.PORT || 5000
 const path = require('path')
 
 app.use(express.static('public'))
-app.use(express.json());
+app.use(express.json({ limit: '10mb' })); // Adjust the limit as needed
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // MongoDB connection URI (replace with your actual URI)
 const mongoURI = 'mongodb://localhost:27017/mydatabase'
@@ -24,6 +25,7 @@ app.use('/api/books', bookRouter)
 app.use('/api/authors', authorRouter)
 app.use('/api/series', seriesRouter)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`))

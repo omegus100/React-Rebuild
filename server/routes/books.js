@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Book = require('../models/book')
+const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
 const upload = require('../models/multer')
 
 // Get all book objects
@@ -15,32 +16,27 @@ router.get('/', async (req, res) => {
 
 // POST route for /api/books
 router.post('/', async (req, res) => {
+    console.log('Request Body:', req.body)
+    const { title, description, publishDate, pageCount, format, genres, authorId, seriesId, seriesTitle, seriesVolume, coverImagePath  } = req.body;
+
     const book = new Book({
-        title: req.body.title,
-        description: req.body.description,
-        publishDate: req.body.publishDate,
-        pageCount: req.body.pageCount,
-        format: req.body.format,
-        genres: req.body.genres,
-        author: {
-            id: req.body.authorId,
-            firstName: req.body.authorFirstName,
-            lastName: req.body.authorLastName
-        },
-        series: {
-            id: req.body.seriesId,
-            title: req.body.seriesTitle,
-            volume: req.body.seriesVolume
-        },
-        coverImage: req.file ? `/uploads/${req.file.filename}` : null 
+        title,
+        description,
+        publishDate,
+        pageCount,
+        format,
+        genres,
+        author: { id: authorId },
+        series: { id: seriesId, title: seriesTitle, volume: seriesVolume },
+        coverImagePath 
     });
 
     try {
         const newBook = await book.save();
-        res.status(201).json(newBook); // Send the newly created book object as a response
-    } catch (err) {
-        console.error('Error saving book:', err); // Log the error for debugging
-        res.status(500).json({ message: 'Failed to save book' }); // Send a 500 response with an error message
+        res.status(201).json(newBook);
+    } catch (error) {
+        console.error('Error creating book:', error);
+        res.status(500).json({ message: 'Failed to create book' });
     }
 });
 
@@ -70,39 +66,30 @@ router.get('/:id/edit', async (req, res) => {
 
 // Update book object
 router.put('/:id', async (req, res) => {
-    try {
-        // Find the book by ID and update it with the new data
-        const updatedBook = await Book.findByIdAndUpdate(
-            req.params.id, // The ID of the book to update
-            {
-                title: req.body.title,
-                description: req.body.description,
-                publishDate: req.body.publishDate,
-                pageCount: req.body.pageCount,
-                format: req.body.format,
-                genres: req.body.genres,
-                author: {
-                    id: req.body.authorId,
-                    firstName: req.body.authorFirstName,
-                    lastName: req.body.authorLastName
-                },
-                series: {
-                    id: req.body.seriesId,
-                    title: req.body.seriesTitle,
-                    volume: req.body.seriesVolume
-                },
-                coverImage: req.file ? `/uploads/${req.file.filename}` : undefined
-            },
-            { new: true, runValidators: true } // Return the updated document and validate the data
-        );
+    console.log('Request Body:', req.body)
+    const { title, description, publishDate, pageCount, format, genres, authorId, seriesId, seriesTitle, seriesVolume, coverImagePath } = req.body;
 
-        if (!updatedBook) {
+    try {
+        const book = await Book.findById(req.params.id);
+        if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
 
-        res.status(200).json(updatedBook); // Send the updated book object as a response
-    } catch (err) {
-        console.error('Error updating book:', err);
+        // Update the book fields
+        book.title = title;
+        book.description = description;
+        book.publishDate = publishDate;
+        book.pageCount = pageCount;
+        book.format = format;
+        book.genres = genres;
+        book.author = { id: authorId };
+        book.series = { id: seriesId, title: seriesTitle, volume: seriesVolume };
+        book.coverImagePath = coverImagePath
+
+        const updatedBook = await book.save();
+        res.status(200).json(updatedBook);
+    } catch (error) {
+        console.error('Error updating book:', error);
         res.status(500).json({ message: 'Failed to update book' });
     }
 })
@@ -120,6 +107,5 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ message: 'Failed to delete book' });
     }
 });
-
-
+   
 module.exports = router
