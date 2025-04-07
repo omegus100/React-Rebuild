@@ -37,7 +37,7 @@ export default function SeriesDetails() {
          return <p>Loading series details...</p>
     }
 
-    const booksbySeries = books.filter((book) => book.series.id === series._id)
+    const booksbySeries = books.filter((book) => book.series?.id === series._id)
     const author = authors.find((author) => author._id === series.author?.id)
 
     const handleDelete = async () => {

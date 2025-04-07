@@ -55,7 +55,7 @@ export default function BookDetails() {
                 <p>Publish Date: {new Date(book.publishDate).toLocaleDateString('en-US')}</p>
                 <p>Page Count: {book.pageCount}</p>
                 <p>Format: {book.format}</p>
-                <p>Genre: {book.genres}</p>
+                <p>Genre: <a href='/genres'>{book.genres}</a></p>
                 <p>
                     Author:{' '}
                     {author ? (
