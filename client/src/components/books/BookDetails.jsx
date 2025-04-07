@@ -51,8 +51,16 @@ export default function BookDetails() {
             <GoBackButton />
             <div>
                 <h1>{book.title}</h1>
+                <div>
+                <img
+                        src={book.coverImagePath}
+                        alt={book.title}
+                        style={{ width: '100px', height: '150px', marginTop: '10px' }}
+                    />
+                </div>
+                <div>
                 <p>{book.description}</p>
-                <p>Publish Date: {new Date(book.publishDate).toLocaleDateString('en-US')}</p>
+                <p>Publish Date: {new Date(book.publishDate).toLocaleDateString('en-US') }</p>
                 <p>Page Count: {book.pageCount}</p>
                 <p>Format: {book.format}</p>
                 <p>Genre: <a href='/genres'>{book.genres}</a></p>
@@ -76,6 +84,7 @@ export default function BookDetails() {
                         'No Series'
                     )}
                 </p>
+                </div>
                 <EditButton onClick={() => navigate(`/books/${book._id}/edit`)} />
                 <DeleteButton onClick={handleDelete} />
             </div>

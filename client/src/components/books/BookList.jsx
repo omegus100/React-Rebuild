@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 export default function BookList({ books }) {
     return (
         <>
-            <div>
+            <span>
             {books.map((book) => ( 
-                <div key={book._id} style={{ marginBottom: '20px' }}>
+                <span key={book._id} >
                     <Link to={`/books/${book._id}`}>
                     <br />
                     <img
@@ -16,9 +16,9 @@ export default function BookList({ books }) {
                     />
                     <span>{book.title}</span>
                     </Link>
-                </div>
+                </span>
               ))}
-            </div>    
+            </span>    
         </>
     );
 }
