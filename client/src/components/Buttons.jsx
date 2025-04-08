@@ -23,7 +23,7 @@ export function DeleteButton({ onClick }) {
 const SubmitButton = ({ isEditing, object }) => {
   return (
     <button type='submit'>
-       {isEditing ? `Edit ${object}` : `Create New ${object}`} 
+       {isEditing ? `Update ${object}` : `Create New ${object}`} 
     </button>
   );
 };

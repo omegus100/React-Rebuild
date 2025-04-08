@@ -78,7 +78,7 @@ export default function BookDetails() {
                     Series:{' '}
                     {book.series ? (
                         <Link to={`/series/${book.series.id}`}>
-                            {book.series.title} (Volume {book.series.volume})
+                            {book.series.title} (Book {book.series.volume})
                         </Link>
                     ) : (
                         'No Series'

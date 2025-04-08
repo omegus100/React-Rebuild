@@ -61,3 +61,15 @@ a {
         margin-bottom: -.5rem;
     }
 }
+
+.bookTitle {
+    font-size: 1rem;
+
+    @media (max-width: 1024px) {
+        margin-top: .5rem;
+    }
+}
+
+.bookSubtitle {
+    font-size: .85rem;
+}

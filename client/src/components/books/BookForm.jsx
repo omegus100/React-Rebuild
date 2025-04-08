@@ -211,7 +211,6 @@ export default function BookForm({ setBooks }) {
                     files={formData.coverImagePath}
                     onUpdateFiles={handleFileChange}
                 />
-                {/* <button type="submit">{id ? 'Update Book' : 'Add Book'}</button> */}
                 <SubmitButton 
                     isEditing={!!id}
                     object="Book"

@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
 import GetBooks from '../../hooks/GetBooks'
 import GetAuthors from '../../hooks/GetAuthors'
-import BookList from '../books/BookList'
+import BookCover from '../books/BookCover'
 
 export default function SeriesDetails() {
     const { id } = useParams(); // Get the series ID from the URL
@@ -73,7 +73,9 @@ export default function SeriesDetails() {
                 )}
             </p>
             <p><strong>Books in this Series:</strong></p>
-            <BookList books={booksbySeries } /> 
+            <BookCover 
+                books={booksbySeries} 
+                subtitle={(book) => `Book ${book.series.volume}`} /> 
         </div>
         <EditButton onClick={() => navigate(`/series/${series._id}/edit`)} />         
         <DeleteButton onClick={handleDelete} />

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
 import GetAuthors from '../../hooks/GetAuthors'
-import { GoBackButton } from '../Buttons'
+import { GoBackButton, SubmitButton } from '../Buttons'
 import { TextInput, SelectInput } from '../../components/FormOptions'
 
 
@@ -120,7 +120,10 @@ export default function SeriesForm({ setSeries }) {
                     updateAuthorInfo(event.target.value);
                 }}
             />
-            <button type="submit">{id ? 'Update Series' : 'Add Series'}</button>
+            <SubmitButton 
+                isEditing={!!id}
+                object="Series"            
+            />
         </form>
         {error && <p>Error fetching authors: {error.message}</p>}
         </>

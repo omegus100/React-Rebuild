@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
-import { GoBackButton } from '../Buttons'
+import { GoBackButton, SubmitButton } from '../Buttons'
 import { TextInput } from '../../components/FormOptions'
 
 export default function AuthorForm({ setAuthors }) {
@@ -87,7 +87,10 @@ export default function AuthorForm({ setAuthors }) {
                 onChange={handleInputChange}
                 placeholder='Enter last name'
             />
-            <button type="submit">{id ? 'Update Author' : 'Add Author'}</button>
+            <SubmitButton                  
+                isEditing={!!id}
+                object="Author"
+            />
         </form>
         </>
     )

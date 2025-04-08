@@ -43,6 +43,8 @@
 }
 
 .sidebarNav {
+    margin-top: 1rem;
+
     ul {
         list-style: none; 
         padding: 0;
@@ -54,8 +56,9 @@
             a {
                 text-decoration: none; 
                 color: var(--color-sidebar-link); 
-                font-size: 1rem;
+                font-size: 1.25rem;
                 transition: color 0.3s ease;
+                padding: 1rem;
 
                 &:hover {
                     color: var(--color-sidebar-link-hover); 

@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
 import GetBooks from '../../hooks/GetBooks'
-import BookList from '../books/BookList'
+import BookCover from '../books/BookCover'
 
 export default function AuthorDetails() {
     const { id } = useParams() // Get the author ID from the URL
@@ -56,11 +56,11 @@ export default function AuthorDetails() {
     return (
         <>
             <GoBackButton />
-            <div>
-                <h1>{author.firstName} {author.lastName}</h1>
-                <p><strong>Books:</strong></p>
-                <BookList books={booksByAuthor} /> 
-            </div>
+            <h1>{author.firstName} {author.lastName}</h1>
+            <p><strong>Books:</strong></p>
+            <BookCover 
+                books={booksByAuthor} 
+                subtitle={(book) => `${book.author.firstName} ${book.author.lastName}`} /> 
             <EditButton onClick={() => navigate(`/authors/${author._id}/edit`)} />         
             <DeleteButton onClick={handleDelete} />
         </>

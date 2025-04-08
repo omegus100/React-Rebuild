@@ -1,5 +1,6 @@
 import React from 'react'
 import GetBooks from "../hooks/GetBooks"
+import GridLayout from '../components/PageLayouts'
 
 export default function Genres() {
     const { books, error } = GetBooks() // Fetch genres using the custom hook
@@ -20,21 +21,11 @@ export default function Genres() {
     return (
         <>
             <h1>Genres</h1>
-            <div>     
+            <div> 
                 {genres.map((genre, index) => (
-                    <div key={index}>{genre}
-                        <ul>
-                            {books
-                                .filter((book) => book.genres.includes(genre)) // Filter books by genre
-                                .map((book) => (
-                                    <li key={book._id}>
-                                        <a href={`/books/${book._id}`}>{book.title}</a> {/* Link to book details */}
-                                    </li>
-                                ))}
-                        </ul>
-                    </div>
-                ))}
-            </div>
+                  <GridLayout key={index}  books={books} value={genre} property="genres"/>
+                ))}             
+            </div>       
         </>
     )
 }
