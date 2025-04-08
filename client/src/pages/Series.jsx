@@ -4,6 +4,7 @@ import GetSeries from '../hooks/GetSeries'
 import SeriesList from '../components/series/SeriesList'
 import { AddButton } from '../components/Buttons'
 import styles from '../stylesheets/Index.module.css'
+import { SearchInput } from '../components/FormOptions'
 
 const Series = () => {
     const { series, error } = GetSeries()
@@ -27,11 +28,11 @@ const Series = () => {
                 </Link>   
             </div>    
             <div className={styles.searchContainer}>
-                <input
+                <SearchInput
                     type="text"
                     placeholder="Search series..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+                    onChange={(e) => setSearchQuery(e.target.value)} 
                     className={styles.searchInput}
                 />
             </div>         

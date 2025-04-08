@@ -4,18 +4,13 @@ import * as bookObjects from './bookObjects'
 import GetAuthors from '../../hooks/GetAuthors'
 import GetSeries from '../../hooks/GetSeries'
 import { useParams, useNavigate } from 'react-router-dom'
-import { GoBackButton } from '../Buttons'
-import { FilePond, registerPlugin } from 'react-filepond';
-import 'filepond/dist/filepond.min.css';
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-
-// Register the FilePond plugin
-registerPlugin(FilePondPluginImagePreview)
+import { TextInput, SelectInput } from '../../components/FormOptions'
+import { GoBackButton, SubmitButton } from '../Buttons'
+import FileUploader from '../../components/FileUpload'
 
 export default function BookForm({ setBooks }) {
-    const { id } = useParams(); // Get the book ID from the URL (if editing)
-    const navigate = useNavigate(); // To redirect after submission
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -24,18 +19,14 @@ export default function BookForm({ setBooks }) {
         format: '',
         genres: '',
         authorId: '',
-        authorFirstName: '',
-        authorLastName: '',
         seriesId: '',
-        seriesTitle: '',
         seriesVolume: '',
         coverImagePath: ''
     });
 
-    const { authors, error } = GetAuthors()
-    const { series } = GetSeries()
+    const { authors, error } = GetAuthors();
+    const { series } = GetSeries();
 
-    // Fetch existing data if editing
     useEffect(() => {
         if (id) {
             const fetchBook = async () => {
@@ -51,10 +42,7 @@ export default function BookForm({ setBooks }) {
                         format: book.format || '',
                         genres: book.genres || '',
                         authorId: book.author?.id || '',
-                        authorFirstName: book.author?.firstName || '',
-                        authorLastName: book.author?.lastName || '',
                         seriesId: book.series?.id || '',
-                        seriesTitle: book.series?.title || '',
                         seriesVolume: book.series?.volume || '',
                         coverImagePath: book.coverImagePath
                     });
@@ -98,37 +86,32 @@ export default function BookForm({ setBooks }) {
 
     const handleFileChange = (fileItems) => {
         if (fileItems.length > 0) {
-            const file = fileItems[0].file; // Get the first file from the FilePond file items
+            const file = fileItems[0].file;
             const reader = new FileReader();
-            reader.readAsDataURL(file); // Convert the file to a base64 string
+            reader.readAsDataURL(file);
             reader.onloadend = () => {
                 setFormData((prevData) => ({
                     ...prevData,
-                    coverImagePath: reader.result // Store the base64 string in coverImagePath
+                    coverImagePath: reader.result
                 }));
             };
         } else {
-            // If no file is selected, clear the coverImagePath
             setFormData((prevData) => ({
                 ...prevData,
                 coverImagePath: ''
             }));
         }
-    }
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Create a copy of formData and remove empty fields
         const filteredFormData = Object.fromEntries(
-            Object.entries(formData).filter(([key, value]) => value !== "")
+            Object.entries(formData).filter(([key, value]) => value !== '')
         );
-
-        console.log('Submitting formData:', filteredFormData)
 
         try {
             if (id) {
-                // Update existing book entry
                 const response = await axios.put(`/api/books/${id}`, filteredFormData);
                 if (setBooks) {
                     setBooks((prevBooks) =>
@@ -139,7 +122,6 @@ export default function BookForm({ setBooks }) {
                 }
                 alert('Book updated successfully!');
             } else {
-                // Create new book entry
                 const response = await axios.post('/api/books', filteredFormData);
                 if (setBooks) {
                     setBooks((prevBooks) => [...prevBooks, response.data]);
@@ -147,7 +129,7 @@ export default function BookForm({ setBooks }) {
                 alert('Book created successfully!');
             }
 
-            navigate('/books'); // Redirect to the books list page
+            navigate('/books');
         } catch (error) {
             console.error('Error submitting form:', error);
         }
@@ -158,140 +140,83 @@ export default function BookForm({ setBooks }) {
             <GoBackButton />
             <h1>{id ? 'Edit Book' : 'New Book'}</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="title">Title:</label>
-                <input
-                    id="title"
+                <TextInput
+                    label="Title"
                     name="title"
-                    type="text"
                     value={formData.title}
                     onChange={handleInputChange}
                 />
-                <br />
-                <label htmlFor="description">Description:</label>
-                <input
-                    id="description"
+                <TextInput
+                    label="Description"
                     name="description"
-                    type="textarea"
                     value={formData.description}
                     onChange={handleInputChange}
                 />
-                <br />
-                <label htmlFor="publishDate">Publish Date:</label>
-                <input
-                    id="publishDate"
+                <TextInput
+                    label="Publish Date"
                     name="publishDate"
                     type="date"
                     value={formData.publishDate}
                     onChange={handleInputChange}
                 />
-                <br />
-                <label htmlFor="pageCount">Page Count:</label>
-                <input
-                    type="number"
+                <TextInput
+                    label="Page Count"
                     name="pageCount"
-                    min="1"
+                    type="number"
                     value={formData.pageCount}
                     onChange={handleInputChange}
                 />
-                <br />
-                <label htmlFor="format">Format:</label>
-                <select
+                <SelectInput
+                    label="Format"
                     name="format"
                     value={formData.format}
-                    onChange={handleInputChange}
-                >
-                    <option value="0"></option>
-                    {bookObjects.formats.map((format, index) => (
-                        <option key={index + 1} value={format}>
-                            {format}
-                        </option>
-                    ))}
-                </select>
-                <br />
-                <label htmlFor="genres">Genre:</label>
-                <select
+                    options={bookObjects.formats}
+                    onChange={handleInputChange}            
+                />
+                <SelectInput
+                    label="Genres"
                     name="genres"
                     value={formData.genres}
+                    options={bookObjects.genres}
                     onChange={handleInputChange}
-                >
-                    <option value="0"></option>
-                    {bookObjects.genres.map((genre, index) => (
-                        <option key={index + 1} value={genre}>
-                            {genre}
-                        </option>
-                    ))}
-                </select>
-                <br />
-                <label htmlFor="authorId">Author:</label>
-                <select
+                />
+                <SelectInput
+                    label="Author"
                     name="authorId"
                     value={formData.authorId}
+                    options={authors}
                     onChange={(event) => {
                         handleInputChange(event);
                         updateAuthorInfo(event.target.value);
                     }}
-                >
-                    <option value="">Select Author</option>
-                    {authors.map((author) => (
-                        <option key={author._id} value={author._id}>
-                            {author.firstName} {author.lastName}
-                        </option>
-                    ))}
-                </select>
-                <br />
-                <label htmlFor="seriesId">Series:</label>
-                <select
+                />
+                <SelectInput
+                    label="Series"
                     name="seriesId"
                     value={formData.seriesId}
+                    options={series}
                     onChange={(event) => {
                         handleInputChange(event);
                         updateSeriesInfo(event.target.value);
                     }}
-                >
-                    <option value="">Select Series</option>
-                    {series.map((series) => (
-                        <option key={series._id} value={series._id}>
-                            {series.title} 
-                        </option>
-                    ))}
-                </select>
-                <br />
-                <label htmlFor="seriesVolume">Series Volume:</label>
-                <input
-                    type="number"
+                />
+                <TextInput
+                    label="Series Volume"
                     name="seriesVolume"
-                    min="1"
+                    type="number"
                     value={formData.seriesVolume}
                     onChange={handleInputChange}
                 />
-                <br />   
-                <label htmlFor="cover">Cover Image:</label>
-                <input
-                    type="file"
-                    name="cover"
-                    accept="image/*"
-                    onChange={handleFileChange}
+                <FileUploader
+                    files={formData.coverImagePath}
+                    onUpdateFiles={handleFileChange}
                 />
-                <FilePond
-                    files={formData.coverImagePath ? [{ source: formData.coverImagePath }] : []}
-                    onupdatefiles={handleFileChange}
-                    allowMultiple={false}
-                    maxFiles={1}
-                    name="cover"
-                    labelIdle='Drag & Drop your cover image or <span class="filepond--label-action">Browse</span>'
+                {/* <button type="submit">{id ? 'Update Book' : 'Add Book'}</button> */}
+                <SubmitButton 
+                    isEditing={!!id}
+                    object="Book"
                 />
-                {/* <br />
-                {formData.coverImagePath && (
-                    <img
-                        src={formData.coverImagePath}
-                        alt="Cover Preview"
-                        style={{ width: '100px', height: '150px', marginTop: '10px' }}
-                    />
-                )}
-                <br /> */}
-                 <button type="submit">{id ? 'Update Book' : 'Add Book'}</button>
             </form>
-           
             {error && <p>Error fetching authors: {error.message}</p>}
         </>
     );

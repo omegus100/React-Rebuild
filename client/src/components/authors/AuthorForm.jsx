@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
 import { GoBackButton } from '../Buttons'
+import { TextInput } from '../../components/FormOptions'
 
 export default function AuthorForm({ setAuthors }) {
     const { id } = useParams()
@@ -70,14 +71,24 @@ export default function AuthorForm({ setAuthors }) {
         <GoBackButton />
         <h1>{id ? 'Edit Author' : 'New Author'}</h1>
         <form onSubmit={handleSubmit}>
-                <label htmlFor='firstName'>First Name</label>
-                <input type='text' name='firstName' value={formData.firstName}  onChange={handleInputChange}></input>
-                <br />
-                <label htmlFor='lastName'>Last Name</label>
-                <input type='text' name='lastName' value={formData.lastName}  onChange={handleInputChange}></input>
-                <br />
-                <button type="submit">{id ? 'Update Author' : 'Add Author'}</button>
-            </form>
+            <TextInput
+                label='First Name'
+                name='firstName'
+                type='text'
+                value={formData.firstName}
+                onChange={handleInputChange}
+                placeholder='Enter first name'
+            />
+            <TextInput
+                label='Last Name'
+                name='lastName'
+                type='text'
+                value={formData.lastName}   
+                onChange={handleInputChange}
+                placeholder='Enter last name'
+            />
+            <button type="submit">{id ? 'Update Author' : 'Add Author'}</button>
+        </form>
         </>
     )
 }

@@ -4,6 +4,7 @@ import GetBooks from '../hooks/GetBooks';
 import BookList from '../components/books/BookList';
 import { AddButton } from '../components/Buttons';
 import styles from '../stylesheets/Index.module.css';
+import { SearchInput } from '../components/FormOptions';
 
 const Books = () => {
     const { books, error } = GetBooks();
@@ -16,15 +17,6 @@ const Books = () => {
         // book.author?.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) 
     )
 
-    // const filteredBooks = books?.filter((book) => {
-    //     const titleMatch = book.title.toLowerCase().includes(searchQuery.toLowerCase());
-    //     const authorFirstNameMatch = book.author?.firstName?.toLowerCase().includes(searchQuery.toLowerCase());
-    //     const authorLastNameMatch = book.author?.lastName?.toLowerCase().includes(searchQuery.toLowerCase());
-    //     const seriesTitleMatch = book.series?.title?.toLowerCase().includes(searchQuery.toLowerCase());
-
-    //     return titleMatch || authorFirstNameMatch || authorLastNameMatch || seriesTitleMatch;
-    // });
-
     if (error) {
         return <p>Error fetching books: {error.message}</p>;
     }
@@ -36,17 +28,17 @@ const Books = () => {
                 <Link to="/books/new">
                     <AddButton />
                 </Link>
-            </div>
+            </div>    
             <div className={styles.searchContainer}>
-                <input
+                <SearchInput
                     type="text"
-                    placeholder="Search books, authors, or series..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)} // Update search query
-                    className={styles.searchInput}
+                    onChange={(e) => setSearchQuery(e.target.value)} 
+                    placeholder="Search books or series..."
+                    className={styles.searchInput}  
                 />
             </div>
-            <BookList books={filteredBooks} /> {/* Pass filtered books */}
+            <BookList books={filteredBooks} /> 
         </>
     );
 };

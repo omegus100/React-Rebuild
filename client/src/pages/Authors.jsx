@@ -4,6 +4,7 @@ import GetAuthors from '../hooks/GetAuthors'
 import AuthorList from '../components/authors/AuthorList'
 import { AddButton } from '../components/Buttons'
 import styles from '../stylesheets/Index.module.css'
+import { SearchInput } from '../components/FormOptions'
 
 const Authors = () => {
     const { authors, error } = GetAuthors()
@@ -28,13 +29,13 @@ const Authors = () => {
                 </Link>  
             </div>    
             <div className={styles.searchContainer}>
-                <input                  
+                <SearchInput
                     type="text"
                     placeholder="Search authors..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)} // Update search query
-                    className={styles.searchInput}           
-                />
+                    onChange={(e) => setSearchQuery(e.target.value)} 
+                    className={styles.searchInput}
+                />  
             </div>
              <AuthorList authors={filteredAuthors} />  
         </>

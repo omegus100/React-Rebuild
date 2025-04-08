@@ -16,8 +16,7 @@ router.get('/', async (req, res) => {
 
 // POST route for /api/books
 router.post('/', async (req, res) => {
-    console.log('Request Body:', req.body)
-    const { title, description, publishDate, pageCount, format, genres, authorId, seriesId, seriesTitle, seriesVolume, coverImagePath  } = req.body;
+    const { title, description, publishDate, pageCount, format, genres, authorId, authorFirstName, authorLastName, seriesId, seriesTitle, seriesVolume, coverImagePath  } = req.body;
 
     const book = new Book({
         title,
@@ -26,7 +25,7 @@ router.post('/', async (req, res) => {
         pageCount,
         format,
         genres,
-        author: { id: authorId },
+        author: { id: authorId, firstName: authorFirstName, lastName: authorLastName },
         series: { id: seriesId, title: seriesTitle, volume: seriesVolume },
         coverImagePath 
     });
@@ -66,8 +65,7 @@ router.get('/:id/edit', async (req, res) => {
 
 // Update book object
 router.put('/:id', async (req, res) => {
-    console.log('Request Body:', req.body)
-    const { title, description, publishDate, pageCount, format, genres, authorId, seriesId, seriesTitle, seriesVolume, coverImagePath } = req.body;
+    const { title, description, publishDate, pageCount, format, genres, authorId, authorFirstName, authorLastName, seriesId, seriesTitle, seriesVolume, coverImagePath } = req.body;
 
     try {
         const book = await Book.findById(req.params.id);
@@ -82,7 +80,7 @@ router.put('/:id', async (req, res) => {
         book.pageCount = pageCount;
         book.format = format;
         book.genres = genres;
-        book.author = { id: authorId };
+        book.author = { id: authorId, firstName: authorFirstName, lastName: authorLastName };
         book.series = { id: seriesId, title: seriesTitle, volume: seriesVolume };
         book.coverImagePath = coverImagePath
 

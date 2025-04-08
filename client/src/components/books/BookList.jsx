@@ -15,7 +15,8 @@ export default function BookList({ books }) {
                         alt={book.title}
                         className={styles.coverImage}
                     />
-                    <p>{book.title}</p>
+                    <div>{book.title}</div>
+                    <div>{book.author ? `${book.author.firstName} ${book.author.lastName}` : ''}</div>
                     </Link>
                 </div>
               ))}

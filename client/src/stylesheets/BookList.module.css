@@ -9,6 +9,14 @@ a {
     flex-wrap: wrap;
     gap: .5rem; /* Space between items */
     justify-content: left;
+
+    @media (max-width: 1024px) {
+        gap: 1.25rem; 
+    }
+
+    @media (max-width: 768px) {
+        gap: 1.5rem; 
+    }
 }
 
 .book {
@@ -16,17 +24,40 @@ a {
     max-width: calc(14.28% - 1rem); /* 7 books per row on desktop */
     text-align: center;
     margin: .5rem 0;
+
+    @media (max-width: 1024px) {
+        flex: 1 1 calc(20% - 1rem);     
+        max-width: calc(20% - 1rem);
+        margin: -1rem 0;
+    }
+
+    @media (max-width: 768px) {
+        flex: 1 1 calc(24% - 1rem); /* 2 books per row on mobile */      
+        max-width: calc(24% - 1rem); /* 2 books per row on mobile */
+        /* flex: 1 1 calc(50% - 1rem); /* 2 books per row on mobile */      
+        /* max-width: calc(50% - 1rem); 2 books per row on mobile */ 
+    }
+
+    @media (max-width: 480px) {
+        flex: 1 1 calc(50% - 1rem); 
+        max-width: calc(50% - 1rem); 
+    }
 }
 
 .coverImage {
     width: 12rem;
     height: 16rem;
     margin-bottom: .5rem;
-}
 
-@media (max-width: 768px) {
-    .book {
-        flex: 1 1 calc(50% - 1rem); /* 2 books per row on mobile */
-        max-width: calc(50% - 1rem); /* 2 books per row on mobile */
+    @media (max-width: 1024px) {
+        width: 9rem;
+        height: 13rem;
+        margin-bottom: -.5rem;
+    }
+
+    @media (max-width: 768px) {
+        width: 8rem;
+        height: 12rem;
+        margin-bottom: -.5rem;
     }
 }

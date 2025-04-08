@@ -14,7 +14,7 @@
 .layoutContainer {
     display: flex; 
     height: 100vh; 
-    overflow: hidden;;
+    overflow: hidden;
 }
 
 .mainContent {
@@ -23,6 +23,10 @@
     overflow-y: auto; 
     background-color: var(--color-main-content); 
     box-sizing: border-box;
+
+    @media (max-width: 768px) {  
+        padding: 1.5rem; 
+    }
 }
 
 .sidebar {
@@ -32,6 +36,10 @@
     flex-direction: column; 
     padding: 1rem;
     box-sizing: border-box; 
+
+    @media (max-width: 768px) {  
+        display: none;
+    }
 }
 
 .sidebarNav {
@@ -57,9 +65,3 @@
     } 
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .sidebar {
-        display: none;
-    }
-}

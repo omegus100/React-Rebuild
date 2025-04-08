@@ -3,6 +3,8 @@ import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
 import GetAuthors from '../../hooks/GetAuthors'
 import { GoBackButton } from '../Buttons'
+import { TextInput, SelectInput } from '../../components/FormOptions'
+
 
 export default function SeriesForm({ setSeries }) {
     const { id } = useParams()
@@ -100,29 +102,27 @@ export default function SeriesForm({ setSeries }) {
         <GoBackButton />
         <h1>{id ? 'Edit Series' : 'New Series'}</h1>
         <form onSubmit={handleSubmit}>
-                <label htmlFor="title">Title</label>
-                <input type="text" name="title" value={formData.title}  onChange={handleInputChange}></input>
-                <br />
-                <label htmlFor="authorId">Author:</label>
-                <select
-                    name="authorId"
-                    value={formData.authorId}
-                    onChange={(event) => {
-                        handleInputChange(event);
-                        updateAuthorInfo(event.target.value);
-                    }}
-                >
-                    <option value="">Select Author</option>
-                    {authors.map((author) => (
-                        <option key={author._id} value={author._id}>
-                            {author.firstName} {author.lastName}
-                        </option>
-                    ))}
-                </select>
-                <br />
-                <button type="submit">{id ? 'Update Series' : 'Add Series'}</button>
-            </form>
-            {error && <p>Error fetching authors: {error.message}</p>}
+            <TextInput
+                label="Title"
+                name="title"
+                type="text"
+                value={formData.title}
+                onChange={handleInputChange}
+                placeholder="Enter Series Title"
+            />  
+            <SelectInput
+                label="Author"
+                name="authorId"
+                value={formData.authorId}
+                options={authors}
+                onChange={(event) => {
+                    handleInputChange(event);
+                    updateAuthorInfo(event.target.value);
+                }}
+            />
+            <button type="submit">{id ? 'Update Series' : 'Add Series'}</button>
+        </form>
+        {error && <p>Error fetching authors: {error.message}</p>}
         </>
     )
 }
