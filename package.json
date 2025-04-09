@@ -1,11 +1,11 @@
 {
-  "name": "y",
+  "name": "react-rebuild",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "api/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "devStart": "nodemon server.js"
+    "start": "node api/server.js",
+    "build": "cd client && npm install && npm run build",
+    "vercel-build": "npm run build"
   },
   "repository": {
     "type": "git",
