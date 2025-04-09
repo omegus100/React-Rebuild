@@ -10,7 +10,7 @@ const GridLayout = ({ books, value, property }) => {
 
     return (
         <>
-            <h2>{value}</h2> {/* Display the property value (e.g., genre or format) */}
+            <h2>{value} ({value.length} Books)</h2> {/* Display the property value (e.g., genre or format) */}
             <BookCover 
                 books={filteredBooks} 
                 subtitle={(book) => `${book.author.firstName} ${book.author.lastName}`} /> 
