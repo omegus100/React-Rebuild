@@ -11,7 +11,7 @@ app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ limit: '10mb', extended: true }))
 
 // MongoDB connection URI (replace with your actual URI)
-const mongoURI = 'mongodb://localhost:27017/mydatabase'
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/mydatabase'; // Fallback to local MongoDB
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
