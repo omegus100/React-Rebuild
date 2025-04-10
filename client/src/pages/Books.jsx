@@ -35,6 +35,10 @@ const Books = () => {
             const seriesA = a.series?.title?.toLowerCase() || '';
             const seriesB = b.series?.title?.toLowerCase() || '';
             return seriesA.localeCompare(seriesB);
+        } else if (sortBy === 'pageCount') {
+            const pageCountA = a.pageCount || 0 ;
+            const pageCountB = b.pageCount || 0 ;
+            return pageCountA - pageCountB;
         }
         return 0;
     });
@@ -63,7 +67,21 @@ const Books = () => {
             </div>
             <BookCover 
                 books={sortedBooks} 
-                subtitle={(book) => `${book.author.firstName} ${book.author.lastName}`} />
+                subtitle={(book) => {
+                    if (sortBy === 'title' || sortBy === 'author') {
+                        return `${book.author?.firstName || ''} ${book.author?.lastName || ''}`
+                    }
+                    else if (sortBy === 'series') {
+                        return book.series?.title || 'No Series';
+                    }  
+                    else if (sortBy === 'pageCount') {
+                        return book.pageCount
+                    } 
+                    else {
+                        return `${book.author?.firstName || ''} ${book.author?.lastName || ''}`
+                    }
+                }}
+            />
         </>
     )
 }

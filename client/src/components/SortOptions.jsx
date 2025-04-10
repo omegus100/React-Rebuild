@@ -12,6 +12,7 @@ const SortOptions = ({ sortBy, setSortBy, className }) => {
                 <option value="title">Title</option>
                 <option value="author">Author</option>
                 <option value="series">Series</option>
+                <option value="pageCount">Page Count</option>
             </select>
         </div>
     );
