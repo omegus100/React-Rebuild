@@ -1,6 +1,28 @@
 import React from 'react';
 
-const SortOptions = ({ sortBy, setSortBy, className }) => {
+const SortOptions = ({ sortBy, setSortBy, className, object }) => {
+    const options = object === 'book'
+    ? [
+        { value: 'title', label: 'Title' },
+        { value: 'author', label: 'Author' },
+        { value: 'series', label: 'Series' },
+        { value: 'pageCount', label: 'Page Count' },
+        { value: 'publishDate', label: 'Publish Date' },
+        { value: 'createdAt', label: 'Date Created' },
+    ]
+    : object === 'author'
+    ? [
+        { value: 'firstName', label: 'First Name' },
+        { value: 'lastName', label: 'Last Name' },
+    ]
+    : object === 'series'
+    ? [
+        { value: 'title', label: 'Title' },
+        { value: 'author', label: 'Author' },
+        // { value: 'seriesLength', label: 'Books in Series' },
+    ]
+    : [];
+
     return (
         <div className={className ? className : '.sortContainer'}> 
             <label htmlFor="sort">Sort By:</label>
@@ -9,10 +31,11 @@ const SortOptions = ({ sortBy, setSortBy, className }) => {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
             >
-                <option value="title">Title</option>
-                <option value="author">Author</option>
-                <option value="series">Series</option>
-                <option value="pageCount">Page Count</option>
+                {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
             </select>
         </div>
     );

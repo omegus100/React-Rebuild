@@ -22,9 +22,19 @@ export default function Genres() {
         <>
             <h1>Genres</h1>
             <div> 
-                {genres.map((genre, index) => (
-                  <GridLayout key={index}  books={books} value={genre} property="genres"/>
-                ))}             
+                {genres.map((genre, index) => {
+                    const bookCount = books.filter((book) => book.genres.includes(genre)).length; // Count books for each genre
+    
+                    return (
+                        <GridLayout 
+                            key={index}  
+                            books={books} 
+                            value={genre} 
+                            property="genres"
+                            count={bookCount} // Pass the book count to the GridLayout component
+                            />
+                    )
+                })}             
             </div>       
         </>
     )

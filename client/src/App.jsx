@@ -6,6 +6,7 @@ import Books from './pages/Books'
 import Authors from './pages/Authors'
 import Series from './pages/Series'
 import Genres from './pages/Genres'
+import Formats from './pages/Formats'
 import BookForm from './components/books/BookForm'
 import BookDetails from './components/books/BookDetails.jsx'
 import AuthorForm from './components/authors/AuthorForm'
@@ -33,7 +34,8 @@ export default function App() {
                     <Route path="series/new" element={<SeriesForm />} />  
                     <Route path="series/:id" element={<SeriesDetails />} /> 
                     <Route path="series/:id/edit" element={<SeriesForm />} />         
-                    <Route path="genres" element={<Genres />} />        
+                    <Route path="genres" element={<Genres />} />      
+                    <Route path="formats" element={<Formats />} />     
                 </Route>
             </Routes>
         </Router>
