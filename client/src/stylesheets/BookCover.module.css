@@ -1,14 +1,16 @@
 /* BookList.module.css */
-a {
-    text-decoration: none;
-    color: inherit; /* Inherit color from parent element */
-}
+
 
 .container {
     display: flex;
     flex-wrap: wrap;
     gap: .5rem; /* Space between items */
     justify-content: left;
+
+    a {
+        text-decoration: none;
+        color: inherit; /* Inherit color from parent element */
+    }
 
     @media (max-width: 1024px) {
         gap: 1.25rem; 

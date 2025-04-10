@@ -1,0 +1,65 @@
+/* [project]/client/src/stylesheets/Index.module.css [app-client] (css) */
+.Index-module__Z9wViW__indexHeader {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  display: flex;
+}
+
+.Index-module__Z9wViW__indexHeader h1 {
+  margin: 0;
+}
+
+.Index-module__Z9wViW__indexHeader button {
+  flex-direction: row;
+}
+
+.Index-module__Z9wViW__filterContainer {
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+}
+
+.Index-module__Z9wViW__searchContainer {
+  justify-content: flex-start;
+  margin: 1rem 0;
+  display: flex;
+}
+
+.Index-module__Z9wViW__searchInput {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+  width: 100%;
+  max-width: 400px;
+  padding: .5rem;
+  font-size: 1rem;
+}
+
+@media (width <= 1024px) {
+  .Index-module__Z9wViW__searchInput {
+    max-width: 100%;
+  }
+}
+
+.Index-module__Z9wViW__sortContainer {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  display: flex;
+}
+
+.Index-module__Z9wViW__sortContainer label {
+  font-weight: bold;
+}
+
+.Index-module__Z9wViW__sortContainer select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: .5rem;
+  font-size: 1rem;
+}
+
+/*# sourceMappingURL=client_src_stylesheets_Index_module_css_f9ee138c._.single.css.map*/

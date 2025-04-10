@@ -1,0 +1,71 @@
+/* [project]/client/src/stylesheets/Layout.module.css [app-client] (css) */
+:root {
+  --color-main-content: #f0f0f0;
+  --color-sidebar-background: #333;
+  --color-sidebar-title: #f8f9fa;
+  --color-sidebar-link: #f8f9fa;
+  --color-sidebar-link-hover: #e5e2e249;
+}
+
+.Layout-module__nnnu5W__layoutContainer {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.Layout-module__nnnu5W__mainContent {
+  background-color: var(--color-main-content);
+  box-sizing: border-box;
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+@media (width <= 768px) {
+  .Layout-module__nnnu5W__mainContent {
+    padding: 1.5rem;
+  }
+}
+
+.Layout-module__nnnu5W__sidebar {
+  background-color: var(--color-sidebar-background);
+  box-sizing: border-box;
+  flex-direction: column;
+  width: 15%;
+  padding: 1rem;
+  display: flex;
+}
+
+@media (width <= 768px) {
+  .Layout-module__nnnu5W__sidebar {
+    display: none;
+  }
+}
+
+.Layout-module__nnnu5W__sidebarNav {
+  margin-top: 1rem;
+}
+
+.Layout-module__nnnu5W__sidebarNav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.Layout-module__nnnu5W__sidebarNav ul li {
+  margin-bottom: 1rem;
+}
+
+.Layout-module__nnnu5W__sidebarNav ul li a {
+  color: var(--color-sidebar-link);
+  padding: 1rem;
+  font-size: 1.25rem;
+  text-decoration: none;
+  transition: color .3s;
+}
+
+.Layout-module__nnnu5W__sidebarNav ul li a:hover {
+  color: var(--color-sidebar-link-hover);
+}
+
+/*# sourceMappingURL=client_src_stylesheets_Layout_module_css_f9ee138c._.single.css.map*/

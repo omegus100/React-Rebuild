@@ -1,0 +1,14 @@
+{
+  "[project]/client/src/App.jsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/client/src/App.jsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/client_src_86486a0e._.js",
+      "static/chunks/add2e_react-router_dist_development_chunk-XJI4KG32_mjs_1565baa3._.js",
+      "static/chunks/add2e_axios_lib_f7883b20._.js",
+      "static/chunks/add2e_filepond_dist_filepond_914d03bd.js",
+      "static/chunks/_826e5936._.js",
+      "static/chunks/client_bc0fe910._.css",
+      "static/chunks/client_src_App_jsx_ec5b4d40._.js"
+    ]
+  }
+}
