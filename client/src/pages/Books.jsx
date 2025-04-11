@@ -35,6 +35,19 @@ const Books = () => {
             const seriesA = a.series?.title?.toLowerCase() || '';
             const seriesB = b.series?.title?.toLowerCase() || '';
             return seriesA.localeCompare(seriesB);
+        } else if (sortBy === 'pageCount') {
+            const pageCountA = a.pageCount || 0 ;
+            const pageCountB = b.pageCount || 0 ;
+            return pageCountA - pageCountB;
+        } else if (sortBy === 'publishDate') {
+            const publishDateA = new Date(a.publishDate) || new Date(0);
+            const publishDateB = new Date(b.publishDate) || new Date(0);
+            return publishDateB - publishDateA;
+        } 
+        else if (sortBy === 'createdAt') {
+            const createdAtA = new Date(a.createdAt) || new Date(0);
+            const createdAtB = new Date(b.createdAt) || new Date(0);
+            return createdAtA - createdAtB;
         }
         return 0;
     });
@@ -59,11 +72,30 @@ const Books = () => {
                     placeholder="Search books, authors, or series..."
                     className={styles.searchInput}  
                 />   
-                <SortOptions sortBy={sortBy} setSortBy={setSortBy} className={styles.sortContainer}/> 
+                <SortOptions sortBy={sortBy} setSortBy={setSortBy} object="book" className={styles.sortContainer}/> 
             </div>
             <BookCover 
                 books={sortedBooks} 
-                subtitle={(book) => `${book.author.firstName} ${book.author.lastName}`} />
+                subtitle={(book) => {
+                    if (sortBy === 'title' || sortBy === 'author') {
+                        return `${book.author?.firstName || ''} ${book.author?.lastName || ''}`
+                    }
+                    else if (sortBy === 'series') {
+                        return book.series?.title || 'No Series';
+                    }  
+                    else if (sortBy === 'pageCount') {
+                        return `${book.pageCount || 0} pages`;
+                    } 
+                    else if (sortBy === 'publishDate') {
+                        return book.publishDate ? new Date(book.publishDate).toLocaleDateString() : 'No Publish Date';
+                    } else if (sortBy === 'createdAt') {
+                        return new Date(book.createdAt).toLocaleDateString();
+                    }
+                    else {
+                        return `${book.author?.firstName || ''} ${book.author?.lastName || ''}`
+                    }
+                }}
+            />
         </>
     )
 }

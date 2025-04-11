@@ -62,11 +62,9 @@ export default function SeriesDetails() {
         <div>            
             <h1>{series.title}</h1>
             <p>              
-                Author:{' '}
-                {author ? (
-                    <Link to={`/authors/${author._id}`}>
-                                        
-                        {author.firstName} {author.lastName}
+                {author ? ( 
+                    <Link to={`/authors/${author._id}`}>             
+                       {author.firstName} {author.lastName}
                     </Link>
                 ) : (
                     'Unknown Author'

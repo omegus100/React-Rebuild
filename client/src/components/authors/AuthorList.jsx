@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function AuthorList({ authors }) {
+export default function SeriesList({ authors }) {
     return (
         <>
             <ul>
