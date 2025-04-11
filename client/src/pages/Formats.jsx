@@ -1,6 +1,6 @@
 import React from 'react'
 import GetBooks from "../hooks/GetBooks"
-import GridLayout from '../components/PageLayouts'
+import {GridLayout} from '../components/PageLayouts'
 
 export default function Formats() {
     const { books, error } = GetBooks() // Fetch format using the custom hook

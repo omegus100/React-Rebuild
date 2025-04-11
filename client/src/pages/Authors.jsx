@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import GetAuthors from '../hooks/GetAuthors' 
-import AuthorList from '../components/authors/AuthorList'
 import { AddButton } from '../components/Buttons'
 import styles from '../stylesheets/Index.module.css'
 import { SearchInput } from '../components/FormOptions'
 import SortOptions from '../components/SortOptions'
+import ListLayout from '../components/PageLayouts'
 
 const Authors = () => {
     const { authors, error } = GetAuthors()
     const [searchQuery, setSearchQuery] = useState('')
-    const [sortBy, setSortBy] = useState('firstName')
+    const [sortBy, setSortBy] = useState('lastName')
 
      // Filter authors based on the search query
      const filteredAuthors = authors?.filter((author) =>
@@ -53,7 +53,7 @@ const Authors = () => {
                 />  
                 <SortOptions sortBy={sortBy} setSortBy={setSortBy} object="author" className={styles.sortContainer}/> 
             </div>
-             <AuthorList authors={sortedAuthors} />  
+             <ListLayout authors={sortedAuthors} sortBy={sortBy}/>  
         </>
     )
 }
