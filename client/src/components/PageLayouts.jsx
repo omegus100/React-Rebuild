@@ -12,7 +12,7 @@ const GridLayout = ({ books, value, property, count }) => {
         <>
             <div className={styles.gridHeader}>
                 <h2>{value} ({count} Books)</h2> 
-                <ViewAllButton object="Books" />
+                {/* <ViewAllButton object="Books" /> */}
             </div>
             <BookCover 
                 books={filteredBooks} 
