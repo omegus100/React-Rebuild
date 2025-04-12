@@ -9,14 +9,16 @@ export const handleFormSubmit = async ({
     navigateTo,
     navigate,
 }) => {
+    // Filter out empty values from formData to avoid sending empty strings to the server
     const filteredFormData = Object.fromEntries(
         Object.entries(formData).filter(([_, value]) => value !== '')
     );
 
     try {
         let response;
-        if (id) {
-            // Update existing item
+        // Check if id is provided to determine if we're updating or creating
+        if (id) { 
+            // Update existing item (book, author, series)
             response = await axios.put(`${endpoint}/${id}`, filteredFormData);
             if (setItems) {
                 setItems((prevItems) =>
@@ -24,7 +26,7 @@ export const handleFormSubmit = async ({
                 );
             }
         } else {
-            // Create new item
+            // Create new item (book, author, series)
             response = await axios.post(endpoint, filteredFormData);
             if (setItems) {
                 setItems((prevItems) => [...prevItems, response.data]);
@@ -32,6 +34,8 @@ export const handleFormSubmit = async ({
         }
 
         alert(successMessage);
+        // Optionally navigate to a different page after successful submission
+        // Check if navigateTo is provided and navigate function is available
         if (navigateTo && navigate) {
             navigate(navigateTo);
         }

@@ -3,7 +3,7 @@ import React from 'react';
 const SortOptions = ({ sortBy, setSortBy, className, object }) => {
     const options = object === 'book'
     ? [
-        { value: 'title', label: 'Title' },
+        { value: 'title', label: 'Title'},
         { value: 'author', label: 'Author' },
         { value: 'series', label: 'Series' },
         { value: 'pageCount', label: 'Page Count' },

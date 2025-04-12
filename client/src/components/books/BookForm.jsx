@@ -29,19 +29,22 @@ export default function BookForm({ setBooks }) {
     // const { book, error } = useFetchBook(id);
 
     // const [formData, setFormData] = useState({
-    //     title: book?.title || '',
-    //     description: book?.description || '',
-    //     publishDate: book?.publishDate || '',
-    //     pageCount: book?.pageCount || '',
-    //     format: book?.format || '',
-    //     genres: book?.genres || '',
-    //     authorId: book?.author?.id || '',
-    //     seriesId: book?.series?.id || '',
-    //     seriesVolume: book?.series?.volume || '',
-    //     coverImagePath: book?.coverImagePath || '',
-    //     publisher: book?.publisher || '',
-    //     isbn: book?.isbn || '',
-    // });
+    //     title: book.title || '',
+    //     description: book.description || '',
+    //     publishDate: book.publishDate || '',
+    //     pageCount: book.pageCount || '',
+    //     format: book.format || '',
+    //     genres: book.genres || '',
+    //     authorId: book.author?.id || '',
+    //     authorFirstName: book.author?.firstName || '',
+    //     authorLastName: book.author?.lastName || '',
+    //     seriesTitle: book.series?.title || '',
+    //     seriesId: book.series?.id || '',
+    //     seriesVolume: book.series?.volume || '',
+    //     coverImagePath: book.coverImagePath,
+    //     publisher: book.publisher || '',
+    //     isbn: book.isbn || 
+    // })
 
     const { authors, error } = GetAuthors();
     const { series } = GetSeries();
@@ -61,6 +64,9 @@ export default function BookForm({ setBooks }) {
                         format: book.format || '',
                         genres: book.genres || '',
                         authorId: book.author?.id || '',
+                        authorFirstName: book.author?.firstName || '',
+                        authorLastName: book.author?.lastName || '',
+                        seriesTitle: book.series?.title || '',
                         seriesId: book.series?.id || '',
                         seriesVolume: book.series?.volume || '',
                         coverImagePath: book.coverImagePath,
@@ -119,9 +125,10 @@ export default function BookForm({ setBooks }) {
                 }));
             };
         } else {
+            // Set the default cover image if no file is uploaded
             setFormData((prevData) => ({
                 ...prevData,
-                coverImagePath: ''
+                coverImagePath: '/no_book_cover_available.svg'
             }));
         }
     };
@@ -142,8 +149,13 @@ export default function BookForm({ setBooks }) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        const finalFormData = {
+            ...formData,
+            coverImagePath: formData.coverImagePath || '/no_book_cover_available.svg' // Default file path
+        };
+
         const filteredFormData = Object.fromEntries(
-            Object.entries(formData).filter(([key, value]) => value !== '')
+            Object.entries(finalFormData).filter(([key, value]) => value !== '')
         );
 
         try {
@@ -171,101 +183,65 @@ export default function BookForm({ setBooks }) {
         }
     };
 
+    const formFields = [
+        { label: "Title", name: "title", type: "text", component: "TextInput" },
+        { label: "Description", name: "description", type: "text", component: "TextInput" },
+        { label: "Publish Date", name: "publishDate", type: "date", component: "TextInput" },
+        { label: "Page Count", name: "pageCount", type: "number", component: "TextInput" },
+        { label: "Format", name: "format", component: "SelectInput", options: bookObjects.formats },
+        { label: "Genres", name: "genres", component: "SelectInput", options: bookObjects.genres },
+        { label: "Author", name: "authorId", component: "SelectInput", options: authors, customHandler: updateAuthorInfo },
+        { label: "Series", name: "seriesId", component: "SelectInput", options: series, customHandler: updateSeriesInfo },
+        { label: "Series Volume", name: "seriesVolume", type: "number", component: "TextInput" },
+        { label: "Publisher", name: "publisher", type: "text", component: "TextInput" },
+        { label: "ISBN", name: "isbn", type: "number", component: "TextInput" },
+        { label: "Cover Image", name: "coverImagePath", component: "FileUploader" }
+    ]
+
     return (
         <>
             <GoBackButton />
             <h1>{id ? 'Edit Book' : 'New Book'}</h1>
             <form onSubmit={handleSubmit}>
-                <TextInput
-                    label="Title"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                />
-                <TextInput
-                    label="Description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                />
-                <TextInput
-                    label="Publish Date"
-                    name="publishDate"
-                    type="date"
-                    value={formData.publishDate}
-                    onChange={handleInputChange}
-                />
-                <TextInput
-                    label="Page Count"
-                    name="pageCount"
-                    type="number"
-                    value={formData.pageCount}
-                    onChange={handleInputChange}
-                />
-                <SelectInput
-                    label="Format"
-                    name="format"
-                    value={formData.format}
-                    options={bookObjects.formats}
-                    onChange={handleInputChange}            
-                />
-                <SelectInput
-                    label="Genres"
-                    name="genres"
-                    value={formData.genres}
-                    options={bookObjects.genres}
-                    onChange={handleInputChange}
-                />
-                <SelectInput
-                    label="Author"
-                    name="authorId"
-                    value={formData.authorId}
-                    options={authors}
-                    onChange={(event) => {
-                        const { value } = event.target;
-                        handleInputChange(event);
-                        updateAuthorInfo(value); // Call only if a valid value is selected
-                    }}
-                />
-                <SelectInput
-                    label="Series"
-                    name="seriesId"
-                    value={formData.seriesId}
-                    options={series}
-                    onChange={(event) => {
-                        const { value } = event.target;
-                        handleInputChange(event);
-                        updateSeriesInfo(value); // Call only if a valid value is selected
-                    }}
-                />
-                <TextInput
-                    label="Series Volume"
-                    name="seriesVolume"
-                    type="number"
-                    value={formData.seriesVolume}
-                    onChange={handleInputChange}
-                />
-                <FileUploader
-                    files={formData.coverImagePath}
-                    onUpdateFiles={handleFileChange}
-                />
-                <TextInput
-                    label="Publisher"
-                    name="publisher"
-                    value={formData.publisher}
-                    onChange={handleInputChange}
-                />
-                 <TextInput
-                    label="ISBN"
-                    name="isbn"
-                    type="number"
-                    value={formData.isbn}
-                    onChange={handleInputChange}
-                />
-                <SubmitButton 
-                    isEditing={!!id}
-                    object="Book"
-                />  
+                {formFields.map((field, index) => {
+                    if (field.component === "TextInput") {
+                        return (
+                            <TextInput
+                                key={index}
+                                label={field.label}
+                                name={field.name}
+                                type={field.type || "text"}
+                                value={formData[field.name]}
+                                onChange={handleInputChange}
+                            />
+                        );
+                    } else if (field.component === "SelectInput") {
+                        return (
+                            <SelectInput
+                                key={index}
+                                label={field.label}
+                                name={field.name}
+                                value={formData[field.name]}
+                                options={field.options}
+                                onChange={(event) => {
+                                    const { value } = event.target;
+                                    handleInputChange(event);
+                                    if (field.customHandler) field.customHandler(value);
+                                }}
+                            />
+                        );
+                    } else if (field.component === "FileUploader") {
+                        return (
+                            <FileUploader
+                                key={index}
+                                files={formData[field.name]}
+                                onUpdateFiles={handleFileChange}
+                            />
+                        );
+                    }
+                    return null;
+                })}
+                <SubmitButton isEditing={!!id} object="Book" />
             </form>
             {error && <p>Error fetching authors: {error.message}</p>}
         </>

@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import GetAuthors from '../../hooks/GetAuthors'
 import { GoBackButton, SubmitButton } from '../Buttons'
 import { TextInput, SelectInput } from '../../components/FormOptions'
-
+import { handleFormSubmit } from '../../utils/handleFormSubmit'
 
 export default function SeriesForm({ setSeries }) {
     const { id } = useParams()
@@ -28,8 +28,8 @@ export default function SeriesForm({ setSeries }) {
                         setFormData({
                             title: series.title,
                             authorId: series.author.id,
-                            // authorFirstName: series.author.firstName,
-                            // authorLastName: series.author.lastName                    
+                            authorFirstName: series.author.firstName,
+                            authorLastName: series.author.lastName                    
                         })
                     } catch (err) {
                         console.error('Error fetching series:', err)
@@ -41,11 +41,16 @@ export default function SeriesForm({ setSeries }) {
         }, [id])
 
     const handleInputChange = (event) => {
-        const { name, value } = event.target
+        const { name, value } = event.target;
         setFormData((prevData) => ({
             ...prevData,
-            [name]: value
-        }))
+            [name]: value,
+        }));
+
+       // Update author info immediately when authorId changes
+        if (name === "authorId") {
+            updateAuthorInfo(value);
+        }
     }
     
     const updateAuthorInfo = (authorId) => {
@@ -59,50 +64,55 @@ export default function SeriesForm({ setSeries }) {
         }
     }
 
-    const handleSubmit = async (event) => {
-        event.preventDefault()
-        // Prevents form from submitting if no author is selected
+    // This function is called when the form is submitted
+         
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        // Prevent submission if no author is selected
         if (!formData.authorId) {
             alert('Please select an author before submitting the form.');
-            return; // Stop form submission
-        }
+            return;
+        } 
 
-        if (formData.authorId) {
-            updateAuthorInfo(formData.authorId);
-        }
-
-        try {
-            if (id) {
-                // Update existing series entry
-                const response =  await axios.put(`/api/series/${id}`, formData)
-                if (setSeries) {
-                    setSeries((prevSeries) => 
-                        prevSeries.map((series) => 
-                            series._id === id ? response.data : series
-                        )
-                    );
-                }
-                alert('Series updated successfully!')
-            } else {
-                // Create new series entry
-                const response = await axios.post('/api/series', formData)
-                if (setSeries) {
-                    setSeries((prevSeries) => [...prevSeries, response.data])
-                }
-                alert('Series created successfully!')
-            }
-            navigate('/series') // Redirect to the series list page
-        } catch (error) {
-            console.error('Error adding series:', error)
-        }
+        handleFormSubmit({
+            endpoint: '/api/series',
+            id,
+            formData,
+            setItems: setSeries,
+            successMessage: id ? 'Series updated successfully!' : 'Series created successfully!',
+            navigateTo: '/series',
+            navigate,
+        });
     }
+
+    const formFields = [
+        { label: 'Title', name: 'title', type: 'text', placeholder: 'Enter Series Title', component: TextInput },
+        { label: 'Author', name: 'authorId', value: formData.authorId, options: authors, placeholder: 'Select Author', component: SelectInput },
+    ]
 
     return (
         <>
         <GoBackButton />
         <h1>{id ? 'Edit Series' : 'New Series'}</h1>
         <form onSubmit={handleSubmit}>
-            <TextInput
+            {formFields.map((field) => {
+                const FieldComponent = field.component
+                return (
+                    <FieldComponent
+                        key={field.name}
+                        label={field.label}
+                        name={field.name}
+                        type={field.type}
+                        value={formData[field.name]}
+                        onChange={handleInputChange}
+                        options={field.options}
+                        placeholder={field.placeholder}
+                    />
+                )
+            }
+            )}
+            {/* <TextInput
                 label="Title"
                 name="title"
                 type="text"
@@ -119,7 +129,7 @@ export default function SeriesForm({ setSeries }) {
                     handleInputChange(event);
                     updateAuthorInfo(event.target.value);
                 }}
-            />
+            /> */}
             <SubmitButton 
                 isEditing={!!id}
                 object="Series"            
