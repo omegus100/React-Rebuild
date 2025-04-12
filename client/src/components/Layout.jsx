@@ -15,6 +15,7 @@ export default function Layout() {
                         <li><Link to="/series">Series</Link></li>
                         <li><Link to="/genres">Genres</Link></li>
                         <li><Link to="/formats">Formats</Link></li>
+                        <li><Link to="/books/new/search">Add from search</Link></li>
                     </ul>
                 </nav>
            </div>
