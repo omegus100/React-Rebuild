@@ -19,7 +19,7 @@ const SortOptions = ({ sortBy, setSortBy, className, object }) => {
     ? [
         { value: 'title', label: 'Title' },
         { value: 'author', label: 'Author' },
-        // { value: 'seriesLength', label: 'Books in Series' },
+        { value: 'seriesLength', label: 'Books in Series' },
     ]
     : [];
 

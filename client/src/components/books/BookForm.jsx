@@ -7,6 +7,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { TextInput, SelectInput } from '../../components/FormOptions'
 import { GoBackButton, SubmitButton } from '../Buttons'
 import FileUploader from '../../components/FileUpload'
+// import useFetchBook from '../../hooks/useFetchBook'
+// import { handleFormSubmit } from '../../utils/formSubmitHelper'
 
 export default function BookForm({ setBooks }) {
     const { id } = useParams();
@@ -23,6 +25,23 @@ export default function BookForm({ setBooks }) {
         seriesVolume: '',
         coverImagePath: ''
     });
+
+    // const { book, error } = useFetchBook(id);
+
+    // const [formData, setFormData] = useState({
+    //     title: book?.title || '',
+    //     description: book?.description || '',
+    //     publishDate: book?.publishDate || '',
+    //     pageCount: book?.pageCount || '',
+    //     format: book?.format || '',
+    //     genres: book?.genres || '',
+    //     authorId: book?.author?.id || '',
+    //     seriesId: book?.series?.id || '',
+    //     seriesVolume: book?.series?.volume || '',
+    //     coverImagePath: book?.coverImagePath || '',
+    //     publisher: book?.publisher || '',
+    //     isbn: book?.isbn || '',
+    // });
 
     const { authors, error } = GetAuthors();
     const { series } = GetSeries();
@@ -44,7 +63,9 @@ export default function BookForm({ setBooks }) {
                         authorId: book.author?.id || '',
                         seriesId: book.series?.id || '',
                         seriesVolume: book.series?.volume || '',
-                        coverImagePath: book.coverImagePath
+                        coverImagePath: book.coverImagePath,
+                        publisher: book.publisher || '',
+                        isbn: book.isbn || ''
                     });
                 } catch (err) {
                     console.error('Error fetching book:', err);
@@ -64,25 +85,27 @@ export default function BookForm({ setBooks }) {
     };
 
     const updateAuthorInfo = (authorId) => {
+        if (!authorId || authorId === formData.authorId) return; // Prevent overwriting if no change
         const selectedAuthor = authors.find((author) => author._id === authorId);
         if (selectedAuthor) {
             setFormData((prevData) => ({
                 ...prevData,
                 authorFirstName: selectedAuthor.firstName,
-                authorLastName: selectedAuthor.lastName
+                authorLastName: selectedAuthor.lastName,
             }));
         }
-    }
+    };
 
     const updateSeriesInfo = (seriesId) => {
+        if (!seriesId || seriesId === formData.seriesId) return; // Prevent overwriting if no change
         const selectedSeries = series.find((series) => series._id === seriesId);
         if (selectedSeries) {
             setFormData((prevData) => ({
                 ...prevData,
-                seriesTitle: selectedSeries.title
+                seriesTitle: selectedSeries.title,
             }));
         }
-    }
+    };
 
     const handleFileChange = (fileItems) => {
         if (fileItems.length > 0) {
@@ -102,6 +125,19 @@ export default function BookForm({ setBooks }) {
             }));
         }
     };
+
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     handleFormSubmit({
+    //         endpoint: '/api/books',
+    //         id,
+    //         formData,
+    //         setItems: setBooks,
+    //         successMessage: id ? 'Book updated successfully!' : 'Book created successfully!',
+    //         navigateTo: '/books',
+    //         navigate,
+    //     });
+    // };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -186,8 +222,9 @@ export default function BookForm({ setBooks }) {
                     value={formData.authorId}
                     options={authors}
                     onChange={(event) => {
+                        const { value } = event.target;
                         handleInputChange(event);
-                        updateAuthorInfo(event.target.value);
+                        updateAuthorInfo(value); // Call only if a valid value is selected
                     }}
                 />
                 <SelectInput
@@ -196,8 +233,9 @@ export default function BookForm({ setBooks }) {
                     value={formData.seriesId}
                     options={series}
                     onChange={(event) => {
+                        const { value } = event.target;
                         handleInputChange(event);
-                        updateSeriesInfo(event.target.value);
+                        updateSeriesInfo(value); // Call only if a valid value is selected
                     }}
                 />
                 <TextInput
@@ -211,10 +249,23 @@ export default function BookForm({ setBooks }) {
                     files={formData.coverImagePath}
                     onUpdateFiles={handleFileChange}
                 />
+                <TextInput
+                    label="Publisher"
+                    name="publisher"
+                    value={formData.publisher}
+                    onChange={handleInputChange}
+                />
+                 <TextInput
+                    label="ISBN"
+                    name="isbn"
+                    type="number"
+                    value={formData.isbn}
+                    onChange={handleInputChange}
+                />
                 <SubmitButton 
                     isEditing={!!id}
                     object="Book"
-                />
+                />  
             </form>
             {error && <p>Error fetching authors: {error.message}</p>}
         </>

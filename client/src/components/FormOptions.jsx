@@ -41,22 +41,6 @@ const SelectInput = ({ label, name, value, options, onChange, placeholder = `Sel
   </>
 );
 
-// const SelectInput = ({ label, name, value, options, onChange }) => (
-//     <>
-//         <label htmlFor={name}>{label}:</label>
-//         <select name={name} value={value} onChange={onChange}>
-//             <option value="">Select {label}</option>
-//             {options.map((option) => (
-//                 <option key={option._id} value={option._id}>
-//                     {option.firstName ? `${option.firstName} ${option.lastName}` : option.title}
-//                 </option>
-//             ))}
-//         </select>
-//         <br />
-//     </>
-// );
-
-
 const TextInput = ({ label, name, type = 'text', value, onChange, placeholder }) => (
   <>
       <label htmlFor={name}>{label}:</label>

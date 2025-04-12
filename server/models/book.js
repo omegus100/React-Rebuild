@@ -27,7 +27,9 @@ const bookSchema = new mongoose.Schema({
     genres: [String],
     coverImage: Buffer,
     coverImageType: String,
-    coverImagePath: { type: String } 
+    coverImagePath: { type: String },
+    publisher: String,
+    isbn: Number,
 })
 
 module.exports = mongoose.model('Book', bookSchema)

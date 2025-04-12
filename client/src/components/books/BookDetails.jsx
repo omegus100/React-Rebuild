@@ -59,31 +59,29 @@ export default function BookDetails() {
                     />
                 </div>
                 <div>
-                <p>{book.description}</p>
-                <p>Publish Date: {new Date(book.publishDate).toLocaleDateString('en-US') }</p>
-                <p>Page Count: {book.pageCount}</p>
-                <p>Format: {book.format}</p>
+                <p>{book.description ? `Description: ${book.description}` : null}</p>
+                <p>{book.publishDate ? `Publish Date: ${new Date(book.publishDate).toLocaleDateString('en-US')}` : null}</p>
+                <p>{book.pageCount ? `Page Count: ${book.pageCount}` : null}</p>
+                <p>Format: <a href='/formats'>{book.format}</a></p>
                 <p>Genre: <a href='/genres'>{book.genres}</a></p>
-                <p>
-                    Author:{' '}
-                    {author ? (
+                {author && (
+                    <p>
+                        Author:{' '}
                         <Link to={`/authors/${author._id}`}>
                             {author.firstName} {author.lastName}
                         </Link>
-                    ) : (
-                        'Unknown Author'
-                    )}
-                </p>
-                <p>
-                    Series:{' '}
-                    {book.series ? (
+                    </p>
+                )}
+                {book.series && (
+                    <p>
+                        Series:{' '}
                         <Link to={`/series/${book.series.id}`}>
                             {book.series.title} (Book {book.series.volume})
                         </Link>
-                    ) : (
-                        'No Series'
-                    )}
-                </p>
+                    </p>
+                )}
+                <p>{book.publisher ? `Publisher: ${book.publisher}` : null}</p>
+                <p>{book.isbn ? `ISBN: ${book.isbn}` : null}</p>
                 </div>
                 <EditButton onClick={() => navigate(`/books/${book._id}/edit`)} />
                 <DeleteButton onClick={handleDelete} />

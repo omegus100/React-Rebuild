@@ -1,6 +1,6 @@
 import React from 'react'
 import GetBooks from "../hooks/GetBooks"
-import GridLayout from '../components/PageLayouts'
+import {GridLayout} from '../components/PageLayouts'
 
 export default function Genres() {
     const { books, error } = GetBooks() // Fetch genres using the custom hook
