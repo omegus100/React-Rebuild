@@ -65,7 +65,6 @@ export default function SeriesForm({ setSeries }) {
     }
 
     // This function is called when the form is submitted
-         
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -112,28 +111,7 @@ export default function SeriesForm({ setSeries }) {
                 )
             }
             )}
-            {/* <TextInput
-                label="Title"
-                name="title"
-                type="text"
-                value={formData.title}
-                onChange={handleInputChange}
-                placeholder="Enter Series Title"
-            />  
-            <SelectInput
-                label="Author"
-                name="authorId"
-                value={formData.authorId}
-                options={authors}
-                onChange={(event) => {
-                    handleInputChange(event);
-                    updateAuthorInfo(event.target.value);
-                }}
-            /> */}
-            <SubmitButton 
-                isEditing={!!id}
-                object="Series"            
-            />
+        <SubmitButton isEditing={!!id} object="Series" />
         </form>
         {error && <p>Error fetching authors: {error.message}</p>}
         </>

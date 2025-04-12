@@ -29,18 +29,24 @@ const Series = () => {
     )
 
     const sortedSeries = filteredSeries?.sort((a, b) => {
-        if (sortBy === 'title') {
-            return normalizeTitle(a.title).localeCompare(normalizeTitle(b.title));
-        } else if (sortBy === 'author') {
-            const authorA = `${a.author?.firstName || ''} ${a.author?.lastName || ''}`.toLowerCase();
-            const authorB = `${b.author?.firstName || ''} ${b.author?.lastName || ''}`.toLowerCase();
-            return authorA.localeCompare(authorB);
-        } else if (sortBy === 'seriesLength') {
-            const seriesLengthA = a.bookCount || 0 ;
-            const seriesLengthB = b.bookCount || 0 ;
-            return seriesLengthB - seriesLengthA
-        } 
-        return 0;
+        // Sort series based on the selected criterion
+        switch (sortBy) {
+            case 'title': {
+                return normalizeTitle(a.title).localeCompare(normalizeTitle(b.title));
+            }
+            case 'author': {    
+                const authorA = `${a.author?.firstName || ''} ${a.author?.lastName || ''}`.toLowerCase();
+                const authorB = `${b.author?.firstName || ''} ${b.author?.lastName || ''}`.toLowerCase();
+                return authorA.localeCompare(authorB);
+            }
+            case 'seriesLength': {
+                const seriesLengthA = a.bookCount || 0 ;
+                const seriesLengthB = b.bookCount || 0 ;
+                return seriesLengthB - seriesLengthA
+            }
+            default:
+                return 0;
+        }
     })
 
     if (error) {

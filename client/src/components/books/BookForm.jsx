@@ -8,7 +8,7 @@ import { TextInput, SelectInput } from '../../components/FormOptions'
 import { GoBackButton, SubmitButton } from '../Buttons'
 import FileUploader from '../../components/FileUpload'
 // import useFetchBook from '../../hooks/useFetchBook'
-// import { handleFormSubmit } from '../../utils/formSubmitHelper'
+import { handleFormSubmit } from '../../utils/handleFormSubmit'
 
 export default function BookForm({ setBooks }) {
     const { id } = useParams();
@@ -59,7 +59,7 @@ export default function BookForm({ setBooks }) {
                     setFormData({
                         title: book.title || '',
                         description: book.description || '',
-                        publishDate: book.publishDate || '',
+                        publishDate: book.publishDate ? new Date(book.publishDate).toISOString().split('T')[0] : '',
                         pageCount: book.pageCount || '',
                         format: book.format || '',
                         genres: book.genres || '',
@@ -69,7 +69,7 @@ export default function BookForm({ setBooks }) {
                         seriesTitle: book.series?.title || '',
                         seriesId: book.series?.id || '',
                         seriesVolume: book.series?.volume || '',
-                        coverImagePath: book.coverImagePath,
+                        coverImagePath: book.coverImagePath || '/no_book_cover_available.svg',
                         publisher: book.publisher || '',
                         isbn: book.isbn || ''
                     });
@@ -87,8 +87,8 @@ export default function BookForm({ setBooks }) {
         setFormData((prevData) => ({
             ...prevData,
             [name]: value
-        }));
-    };
+        }))
+    }
 
     const updateAuthorInfo = (authorId) => {
         if (!authorId || authorId === formData.authorId) return; // Prevent overwriting if no change
@@ -98,9 +98,9 @@ export default function BookForm({ setBooks }) {
                 ...prevData,
                 authorFirstName: selectedAuthor.firstName,
                 authorLastName: selectedAuthor.lastName,
-            }));
+            }))
         }
-    };
+    }
 
     const updateSeriesInfo = (seriesId) => {
         if (!seriesId || seriesId === formData.seriesId) return; // Prevent overwriting if no change
@@ -109,12 +109,12 @@ export default function BookForm({ setBooks }) {
             setFormData((prevData) => ({
                 ...prevData,
                 seriesTitle: selectedSeries.title,
-            }));
+            }))
         }
-    };
+    }
 
     const handleFileChange = (fileItems) => {
-        if (fileItems.length > 0) {
+        if (fileItems.length > 0 && fileItems[0].file instanceof Blob) {
             const file = fileItems[0].file;
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -125,63 +125,33 @@ export default function BookForm({ setBooks }) {
                 }));
             };
         } else {
-            // Set the default cover image if no file is uploaded
+            console.warn('Invalid file or no file selected. Using default cover image.');
+            // Set the default cover image if no valid file is uploaded
             setFormData((prevData) => ({
                 ...prevData,
                 coverImagePath: '/no_book_cover_available.svg'
-            }));
+            }))
         }
-    };
+    }
 
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     handleFormSubmit({
-    //         endpoint: '/api/books',
-    //         id,
-    //         formData,
-    //         setItems: setBooks,
-    //         successMessage: id ? 'Book updated successfully!' : 'Book created successfully!',
-    //         navigateTo: '/books',
-    //         navigate,
-    //     });
-    // };
-
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
 
         const finalFormData = {
             ...formData,
-            coverImagePath: formData.coverImagePath || '/no_book_cover_available.svg' // Default file path
+            coverImagePath: formData.coverImagePath || '/no_book_cover_available.svg' // Apply default value
         };
 
-        const filteredFormData = Object.fromEntries(
-            Object.entries(finalFormData).filter(([key, value]) => value !== '')
-        );
-
-        try {
-            if (id) {
-                const response = await axios.put(`/api/books/${id}`, filteredFormData);
-                if (setBooks) {
-                    setBooks((prevBooks) =>
-                        prevBooks.map((book) =>
-                            book._id === id ? response.data : book
-                        )
-                    );
-                }
-                alert('Book updated successfully!');
-            } else {
-                const response = await axios.post('/api/books', filteredFormData);
-                if (setBooks) {
-                    setBooks((prevBooks) => [...prevBooks, response.data]);
-                }
-                alert('Book created successfully!');
-            }
-
-            navigate('/books');
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        }
-    };
+        handleFormSubmit({
+            endpoint: '/api/books',
+            id,
+            formData: finalFormData,
+            setItems: setBooks,
+            successMessage: id ? 'Book updated successfully!' : 'Book created successfully!',
+            navigateTo: '/books',
+            navigate,
+        })
+    }
 
     const formFields = [
         { label: "Title", name: "title", type: "text", component: "TextInput" },
@@ -204,44 +174,47 @@ export default function BookForm({ setBooks }) {
             <h1>{id ? 'Edit Book' : 'New Book'}</h1>
             <form onSubmit={handleSubmit}>
                 {formFields.map((field, index) => {
-                    if (field.component === "TextInput") {
-                        return (
-                            <TextInput
-                                key={index}
-                                label={field.label}
-                                name={field.name}
-                                type={field.type || "text"}
-                                value={formData[field.name]}
-                                onChange={handleInputChange}
-                            />
-                        );
-                    } else if (field.component === "SelectInput") {
-                        return (
-                            <SelectInput
-                                key={index}
-                                label={field.label}
-                                name={field.name}
-                                value={formData[field.name]}
-                                options={field.options}
-                                onChange={(event) => {
-                                    const { value } = event.target;
-                                    handleInputChange(event);
-                                    if (field.customHandler) field.customHandler(value);
-                                }}
-                            />
-                        );
-                    } else if (field.component === "FileUploader") {
-                        return (
-                            <FileUploader
-                                key={index}
-                                files={formData[field.name]}
-                                onUpdateFiles={handleFileChange}
-                            />
-                        );
+                    switch (field.component) {
+                        case "TextInput":
+                            return (
+                                <TextInput
+                                    key={index}
+                                    label={field.label}
+                                    name={field.name}
+                                    type={field.type || "text"}
+                                    value={formData[field.name]}
+                                    onChange={handleInputChange}
+                                    placeholder={field.label}
+                                />
+                            );
+                        case "SelectInput":
+                            return (
+                                <SelectInput
+                                    key={index}
+                                    label={field.label}
+                                    name={field.name}
+                                    value={formData[field.name]}
+                                    options={field.options}
+                                    onChange={(event) => {
+                                        const { value } = event.target;
+                                        handleInputChange(event);
+                                        if (field.customHandler) field.customHandler(value);
+                                    }}
+                                />
+                            );
+                        case "FileUploader":
+                            return (
+                                <FileUploader
+                                    key={index}
+                                    files={formData[field.name]}
+                                    onUpdateFiles={handleFileChange}
+                                />
+                            );
+                        default:
+                            return null;
                     }
-                    return null;
                 })}
-                <SubmitButton isEditing={!!id} object="Book" />
+            <SubmitButton isEditing={!!id} object="Book" />
             </form>
             {error && <p>Error fetching authors: {error.message}</p>}
         </>

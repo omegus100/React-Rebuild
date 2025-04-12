@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
 import GetBooks from '../../hooks/GetBooks'
@@ -34,7 +34,7 @@ export default function AuthorDetails() {
         return <p>Loading author details...</p>
     }
 
-    const booksByAuthor = books.filter((book) => book.author.id === author._id)
+    const booksByAuthor = books.filter((book) => book.author?.id === author._id)
 
     const handleDelete = async () => {          
         try {     

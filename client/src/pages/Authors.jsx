@@ -18,17 +18,18 @@ const Authors = () => {
         author.lastName.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
-    // Sort authors by last name, then first name
+    // Sort authors by last name, then first name  
     const sortedAuthors = filteredAuthors?.sort((a, b) => {
         const lastNameA = a.lastName.toLowerCase()
         const lastNameB = b.lastName.toLowerCase()
-        if (sortBy === 'firstName') {
-            return lastNameB.localeCompare(lastNameA)
+        switch (sortBy) {
+            case 'firstName':
+                return lastNameA.localeCompare(lastNameB)
+            case 'lastName':
+                return lastNameB.localeCompare(lastNameA)
+            default:
+                return lastNameA.localeCompare(lastNameB)
         }
-        if (sortBy === 'lastName') {
-            return lastNameA.localeCompare(lastNameB)
-        }
-        return 0;
     })
 
     if (error) {

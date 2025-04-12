@@ -25,31 +25,38 @@ const Books = () => {
 
     // Sort books based on the selected criterion
     const sortedBooks = filteredBooks?.sort((a, b) => {
-        if (sortBy === 'title') {
-            return normalizeTitle(a.title).localeCompare(normalizeTitle(b.title));
-        } else if (sortBy === 'author') {
-            const authorA = `${a.author?.firstName || ''} ${a.author?.lastName || ''}`.toLowerCase();
-            const authorB = `${b.author?.firstName || ''} ${b.author?.lastName || ''}`.toLowerCase();
-            return authorA.localeCompare(authorB);
-        } else if (sortBy === 'series') {
-            const seriesA = a.series?.title?.toLowerCase() || '';
-            const seriesB = b.series?.title?.toLowerCase() || '';
-            return seriesA.localeCompare(seriesB);
-        } else if (sortBy === 'pageCount') {
-            const pageCountA = a.pageCount || 0 ;
-            const pageCountB = b.pageCount || 0 ;
-            return pageCountA - pageCountB;
-        } else if (sortBy === 'publishDate') {
-            const publishDateA = new Date(a.publishDate) || new Date(0);
-            const publishDateB = new Date(b.publishDate) || new Date(0);
-            return publishDateB - publishDateA;
-        } 
-        else if (sortBy === 'createdAt') {
-            const createdAtA = new Date(a.createdAt) || new Date(0);
-            const createdAtB = new Date(b.createdAt) || new Date(0);
-            return createdAtA - createdAtB;
+        switch (sortBy) {
+            case 'title': {
+                return normalizeTitle(a.title).localeCompare(normalizeTitle(b.title));
+            }
+            case 'author': {
+                const authorA = `${a.author?.firstName || ''} ${a.author?.lastName || ''}`.toLowerCase();
+                const authorB = `${b.author?.firstName || ''} ${b.author?.lastName || ''}`.toLowerCase();
+                return authorA.localeCompare(authorB);
+            }
+            case 'series': {
+                const seriesA = a.series?.title?.toLowerCase() || '';
+                const seriesB = b.series?.title?.toLowerCase() || '';
+                return seriesA.localeCompare(seriesB);
+            }
+            case 'pageCount': {
+                const pageCountA = a.pageCount || 0;
+                const pageCountB = b.pageCount || 0;
+                return pageCountA - pageCountB;
+            }
+            case 'publishDate': {
+                const publishDateA = new Date(a.publishDate) || new Date(0);
+                const publishDateB = new Date(b.publishDate) || new Date(0);
+                return publishDateA - publishDateB;
+            }
+            case 'createdAt': {
+                const createdAtA = new Date(a.createdAt) || new Date(0);
+                const createdAtB = new Date(b.createdAt) || new Date(0);
+                return createdAtA - createdAtB;
+            }
+            default:
+                return 0;
         }
-        return 0;
     });
 
     if (error) {
@@ -77,22 +84,26 @@ const Books = () => {
             <BookCover 
                 books={sortedBooks} 
                 subtitle={(book) => {
-                    if (sortBy === 'title' || sortBy === 'author') {
-                        return `${book.author?.firstName || ''} ${book.author?.lastName || ''}`
-                    }
-                    else if (sortBy === 'series') {
-                        return book.series?.title || 'No Series';
-                    }  
-                    else if (sortBy === 'pageCount') {
-                        return `${book.pageCount || 0} pages`;
-                    } 
-                    else if (sortBy === 'publishDate') {
-                        return book.publishDate ? new Date(book.publishDate).toLocaleDateString() : 'No Publish Date';
-                    } else if (sortBy === 'createdAt') {
-                        return new Date(book.createdAt).toLocaleDateString();
-                    }
-                    else {
-                        return `${book.author?.firstName || ''} ${book.author?.lastName || ''}`
+                    switch (sortBy) {
+                        case 'title':
+                        case 'author': {
+                            return `${book.author?.firstName || ''} ${book.author?.lastName || ''}`;
+                        }
+                        case 'series': {
+                            return `${book.series?.title || ''} ${book.series?.volume || ''}`;
+                        }
+                        case 'pageCount': {
+                            return `${book.pageCount || 0} pages`;
+                        }
+                        case 'publishDate': {
+                            return book.publishDate ? new Date(book.publishDate).toLocaleDateString() : 'No Publish Date';
+                        }
+                        case 'createdAt': {
+                            return new Date(book.createdAt).toLocaleDateString();
+                        }
+                        default: {
+                            return `${book.author?.firstName || ''} ${book.author?.lastName || ''}`;
+                        }
                     }
                 }}
             />
