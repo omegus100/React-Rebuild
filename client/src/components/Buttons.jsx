@@ -23,7 +23,7 @@ export function ViewAllButton({  }) {
 const SubmitButton = ({ isEditing, object }) => {
   return (
     <button type='submit'>
-       {isEditing ? `Update ${object}` : `Create New ${object}`} 
+       {isEditing ? `Update ${object}` : `Add ${object}`} 
     </button>
   );
 }

@@ -1,104 +1,164 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { SubmitButton } from '../components/Buttons';
+import React, { useState } from 'react'
+import axios from 'axios'
 
-const AddNew = () => {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [books, setBooks] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+export default function AddNewBook() {
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        publishDate: '',
+        pageCount: '',
+        format: '',
+        genres: [],
+        authorId: '',
+        seriesId: '',
+        seriesVolume: '',
+        coverImagePath: ''
+    })
+
+    const [authors, setAuthors] = useState([])
+    const [books, setBooks] = useState([]) // State to store books mapped to bookSchema
+    const [searchQuery, setSearchQuery] = useState('') // State to store the search query
 
     const fetchBooks = async () => {
-        if (!searchQuery) return;
-
-        setLoading(true);
-        setError(null);
-
         try {
             const response = await axios.get('https://www.googleapis.com/books/v1/volumes', {
-                params: { q: searchQuery }
-            });
+                params: { q: searchQuery } // Use the search query entered by the user
+            })
 
-            // Map the retrieved data to match the bookSchema
-            const mappedBooks = (response.data.items || []).map((book) => {
-                const volumeInfo = book.volumeInfo;
+            // Map the response to bookSchema
+            const mappedBooks = response.data.items.map((item) => {
+                const volumeInfo = item.volumeInfo
+                const authorName = volumeInfo.authors?.[0] || 'Unknown Author'
+                const nameParts = authorName.split(' ');
+                const authorFirstName = nameParts.slice(0, -1).join(' ') || 'Unknown'; // All parts except the last
+                const authorLastName = nameParts.slice(-1).join(' ') || 'Unknown'; // The last part
+
 
                 return {
-                    title: volumeInfo.title || 'Unknown Title',
-                    author: volumeInfo.authors?.join(', ') || 'Unknown Author',
-                    publishDate: volumeInfo.publishedDate || 'N/A',
-                    publisher: volumeInfo.publisher || 'N/A',
-                    pageCount: volumeInfo.pageCount || 0,
+                    title: volumeInfo.title || '',
+                    description: volumeInfo.description || '',
+                    publishDate: volumeInfo.publishedDate || '',
+                    pageCount: volumeInfo.pageCount || '',
                     genres: volumeInfo.categories || [],
-                    description: volumeInfo.description || 'No description available.',
-                    coverImagePath: volumeInfo.imageLinks?.thumbnail || '/no_book_cover_available.svg'
-                };
-            });
+                    authorId: '', // Placeholder, as authorId is not available in the API
+                    authorFirstName: authorFirstName || '',
+                    authorLastName: authorLastName || '',
+                    coverImagePath: volumeInfo.imageLinks?.thumbnail || '',
+                    publisher: volumeInfo.publisher || 'N/A',
+                    isbn: volumeInfo.industryIdentifiers?.[0]?.identifier || '',
+                    author: volumeInfo.authors || [],
+                }
+            })
 
-            setBooks(mappedBooks); // Set the mapped books to state
-        } catch (err) {
-            console.error('Error fetching books:', err);
-            setError('Failed to fetch books. Please try again.');
-        } finally {
-            setLoading(false);
+            setBooks(mappedBooks)
+            console.log('Mapped Books:', mappedBooks) // Log the mapped books to the console
+        } catch (error) {
+            console.error('Error fetching books:', error)
         }
-    };
+    }
 
-    const handleSubmit = async (book) => {
+    const findMatchingAuthor = async (book) => {
         try {
-            console.log('Submitting Book:', book);
+            // Fetch all authors from the backend
+            const response = await axios.get('/api/authors')
+            const authors = response.data
 
-            // Example: Send the book data to an API endpoint
-            const response = await axios.post('/api/books', book);
-            console.log('Book submitted successfully:', response.data);
+            // Find a matching author
+            const matchingAuthor = authors.find(
+                (author) =>
+                    author.firstName === book.authorFirstName &&
+                    author.lastName === book.authorLastName
+            )
 
-            // Optionally, show a success message or update the UI
-            alert(`Book "${book.title}" submitted successfully!`);
-        } catch (err) {
-            console.error('Error submitting book:', err);
-            alert('Failed to submit the book. Please try again.');
+            if (matchingAuthor) {
+                // Update the book's authorId with the matching author's ID
+                book.authorId = matchingAuthor._id
+    
+                return book
+            } else {
+                return addNewAuthor(book)
+            }
+           
+        } catch (error) {
+            console.error('Error fetching authors:', error)
+            throw error
         }
-    };
+    }
+
+    const addNewAuthor = async (book) => {
+        try {
+            // Create a new author using book.authorFirstName and book.authorLastName
+            const response = await axios.post('/api/authors', {
+                firstName: book.authorFirstName,
+                lastName: book.authorLastName
+            })
+
+            const newAuthor = response.data // Get the newly created author from the response
+            book.authorId = newAuthor._id // Update the book's authorId with the ID of the newly created author
+
+            // Return the updated book
+            return book           
+        } catch (error) {
+            console.error('Error adding new author:', error)
+            throw error
+        }
+    }
+
+    const handleFormSubmit = async (e, book) => {
+        e.preventDefault()
+        try {
+            // Check for a matching author and update the book
+            const updatedBook = await findMatchingAuthor(book)
+            // Add the updated book to the backend
+            const response = await axios.post('/api/books', updatedBook)    
+            alert('Book added successfully!')
+        } catch (error) {
+            console.error('Error handling form submission:', error)
+        }
+    }
 
     return (
-        <>
-            <div>
-                <h1>Search for Books</h1>
+        <div>
+            <h1>Add New Book</h1>
+            {/* Search Input */}
+            <div style={{ marginBottom: '20px' }}>
                 <input
                     type="text"
+                    placeholder="Search for books..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Enter book title"
+                    style={{ padding: '10px', width: '300px' }}
                 />
-                <button onClick={fetchBooks}>Search</button>
-
-                {loading && <p>Loading...</p>}
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-
-                <div>
-                    {books.map((book, index) => (
-                        <form
-                            key={index}
-                            onSubmit={async (e) => {
-                                e.preventDefault();
-                                await handleSubmit(book);
-                            }}
-                        >
-                            <h3>{book.title}</h3>
-                            <p>Author: {book.author}</p>
-                            <img src={book.coverImagePath} alt={book.title} />
-                            <span>Published Date: {book.publishDate}</span>
-                            <span>Publisher: {book.publisher}</span>
-                            <p>Page Count: {book.pageCount}</p>
-                            <p>Genre: {book.genres.join(', ') || 'N/A'}</p>
-                            <p>Description: {book.description}</p>
-                            <SubmitButton isEditing={false} object="Book" />
-                        </form>
-                    ))}
-                </div>
+                <button onClick={fetchBooks} style={{ padding: '10px', marginLeft: '10px' }}>
+                    Search
+                </button>
             </div>
-        </>
-    );
-};
 
-export default AddNew;
+            {/* Display Books as Forms */}
+            <div>
+                {books.map((book, index) => (
+                    <form
+                        key={index}
+                        onSubmit={(e) => handleFormSubmit(e, book)}
+                        style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}
+                    >
+                        <h2>{book.title}</h2>
+                        <p><strong>Author:</strong> {book.authorFirstName} {book.authorLastName}</p>
+                        <p>Author (other): {book.author}</p>
+                        <p><strong>Description:</strong> {book.description}</p>
+                        <p><strong>Publish Date:</strong> {book.publishDate}</p>
+                        <p><strong>Page Count:</strong> {book.pageCount}</p>
+                        {/* <p><strong>Format:</strong> {book.format}</p> */}
+                        <p><strong>Genres:</strong> {book.genres.join(', ')}</p>
+                        <p><strong>Publisher:</strong> {book.publisher}</p>
+                        <p><strong>ISBN:</strong> {book.isbn}</p>
+                        <img src={book.coverImagePath} alt={book.title} style={{ width: '100px' }} />
+                        <button type="submit" style={{ marginTop: '10px', padding: '10px' }}>
+                            Submit Book
+                        </button>
+                    </form>
+                ))}
+            </div>
+        </div>
+    )
+}
