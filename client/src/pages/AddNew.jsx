@@ -2,20 +2,20 @@ import React, { useState } from 'react'
 import axios from 'axios'
 
 export default function AddNewBook() {
-    const [formData, setFormData] = useState({
-        title: '',
-        description: '',
-        publishDate: '',
-        pageCount: '',
-        format: '',
-        genres: [],
-        authorId: '',
-        seriesId: '',
-        seriesVolume: '',
-        coverImagePath: ''
-    })
+    // const [formData, setFormData] = useState({
+    //     title: '',
+    //     description: '',
+    //     publishDate: '',
+    //     pageCount: '',
+    //     format: '',
+    //     genres: [],
+    //     authorId: '',
+    //     seriesId: '',
+    //     seriesVolume: '',
+    //     coverImagePath: ''
+    // })
 
-    const [authors, setAuthors] = useState([])
+    // const [authors, setAuthors] = useState([])
     const [books, setBooks] = useState([]) // State to store books mapped to bookSchema
     const [searchQuery, setSearchQuery] = useState('') // State to store the search query
 
@@ -45,13 +45,12 @@ export default function AddNewBook() {
                     authorLastName: authorLastName || '',
                     coverImagePath: volumeInfo.imageLinks?.thumbnail || '',
                     publisher: volumeInfo.publisher || 'N/A',
-                    isbn: volumeInfo.industryIdentifiers?.[0]?.identifier || '',
-                    author: volumeInfo.authors || [],
+                    isbn: volumeInfo.industryIdentifiers?.[0]?.identifier || ''
                 }
             })
 
             setBooks(mappedBooks)
-            console.log('Mapped Books:', mappedBooks) // Log the mapped books to the console
+            console.log(response.data) // Log the mapped books to the console
         } catch (error) {
             console.error('Error fetching books:', error)
         }
@@ -144,7 +143,6 @@ export default function AddNewBook() {
                     >
                         <h2>{book.title}</h2>
                         <p><strong>Author:</strong> {book.authorFirstName} {book.authorLastName}</p>
-                        <p>Author (other): {book.author}</p>
                         <p><strong>Description:</strong> {book.description}</p>
                         <p><strong>Publish Date:</strong> {book.publishDate}</p>
                         <p><strong>Page Count:</strong> {book.pageCount}</p>

@@ -11,6 +11,7 @@ const genres = [
     'Biography',
     'Classics',
     'Fantasy',
+    'Fiction',
     'Historical Fiction',
     'Horror',
     'Mystery',
