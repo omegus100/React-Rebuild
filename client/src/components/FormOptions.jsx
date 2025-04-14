@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { GoBackButton } from '../components/Buttons'
 
 const FormHeader = ({ isEditing }) => {
@@ -7,8 +7,8 @@ const FormHeader = ({ isEditing }) => {
       <h1>{isEditing ? 'Edit Book' : 'Create New Book'}</h1>
       <GoBackButton />
     </div>
-  );
-};
+  )
+}
 
 const SearchInput = ({ type = 'text', value, onChange, placeholder, className }) => (
   <>
@@ -21,7 +21,7 @@ const SearchInput = ({ type = 'text', value, onChange, placeholder, className })
       />
       <br />
   </>
-);
+)
 
 const SelectInput = ({ label, name, value, options, onChange, placeholder = `Select ${label}` }) => (
   <>
@@ -39,7 +39,7 @@ const SelectInput = ({ label, name, value, options, onChange, placeholder = `Sel
       </select>
       <br />
   </>
-);
+)
 
 const TextInput = ({ label, name, type = 'text', value, onChange, placeholder }) => (
   <>
@@ -54,8 +54,22 @@ const TextInput = ({ label, name, type = 'text', value, onChange, placeholder })
       />
       <br />
   </>
-);
+)
 
+const TextAreaInput = ({ label, name, value, onChange, placeholder, rows }) => (  
+  <>
+      <label htmlFor={name}>{label}:</label>
+      <textarea
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder ? placeholder : `Enter ${label}`}
+          rows={rows ? rows : 4} // Default to 4 rows if not specified
+      />
+      <br />
+  </>
+)
 
-export { FormHeader, SearchInput, SelectInput, TextInput } 
+export { FormHeader, SearchInput, SelectInput, TextInput, TextAreaInput } 
 

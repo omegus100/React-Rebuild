@@ -4,11 +4,12 @@ import * as bookObjects from './bookObjects'
 import GetAuthors from '../../hooks/GetAuthors'
 import GetSeries from '../../hooks/GetSeries'
 import { useParams, useNavigate } from 'react-router-dom'
-import { TextInput, SelectInput } from '../../components/FormOptions'
+import { TextInput, SelectInput, TextAreaInput } from '../../components/FormOptions'
 import { GoBackButton, SubmitButton } from '../Buttons'
 import FileUploader from '../../components/FileUpload'
 // import useFetchBook from '../../hooks/useFetchBook'
 import { handleFormSubmit } from '../../utils/handleFormSubmit'
+import styles from '../../stylesheets/Forms.css'
 
 export default function BookForm({ setBooks }) {
     const { id } = useParams();
@@ -155,7 +156,6 @@ export default function BookForm({ setBooks }) {
 
     const formFields = [
         { label: "Title", name: "title", type: "text", component: "TextInput" },
-        { label: "Description", name: "description", type: "text", component: "TextInput" },
         { label: "Publish Date", name: "publishDate", type: "date", component: "TextInput" },
         { label: "Page Count", name: "pageCount", type: "number", component: "TextInput" },
         { label: "Format", name: "format", component: "SelectInput", options: bookObjects.formats },
@@ -165,7 +165,8 @@ export default function BookForm({ setBooks }) {
         { label: "Series Volume", name: "seriesVolume", type: "number", component: "TextInput" },
         { label: "Publisher", name: "publisher", type: "text", component: "TextInput" },
         { label: "ISBN", name: "isbn", type: "number", component: "TextInput" },
-        { label: "Cover Image", name: "coverImagePath", component: "FileUploader" }
+        { label: "Cover Image", name: "coverImagePath", component: "FileUploader" },
+        { label: "Description", name: "description", component: "TextAreaInput" }
     ]
 
     return (
@@ -187,6 +188,18 @@ export default function BookForm({ setBooks }) {
                                     placeholder={field.label}
                                 />
                             );
+                        case "TextAreaInput":
+                            return (
+                                <TextAreaInput
+                                    key={index}
+                                    label={field.label}
+                                    name={field.name}
+                                    value={formData[field.name]}
+                                    onChange={handleInputChange}
+                                    placeholder={field.label}
+                                    rows="4"
+                                />
+                            );    
                         case "SelectInput":
                             return (
                                 <SelectInput

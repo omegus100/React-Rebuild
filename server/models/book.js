@@ -27,7 +27,7 @@ const bookSchema = new mongoose.Schema({
     genres: [String],
     coverImage: Buffer,
     coverImageType: String,
-    coverImagePath: { type: String },
+    coverImagePath: String,
     publisher: String,
     isbn: Number,
 })

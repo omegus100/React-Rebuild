@@ -50,6 +50,7 @@ export default function BookDetails() {
 
     const author = authors.find((author) => author._id === book.author?.id)
     const booksBySeries = books.filter((b) => b.series?.id === book.series?.id)
+    const booksByAuthor = books.filter((b) => b.author?.id === book.author?.id && b.series?.id !== book.series?.id)
 
     return (
         <div className="book-details-container">
@@ -102,6 +103,13 @@ export default function BookDetails() {
                 <div>
                     <p><strong>{book.series.title} Series:</strong></p>
                     <BookCover books={booksBySeries} subtitle={(book) => `Book ${book.series.volume}`} />
+                </div>
+            ) : null}
+            <br /><br />
+             {booksByAuthor.length > 0 && book.author ? (
+                <div>
+                    <p><strong>Other Books by {book.author.lastName}:</strong></p>
+                    <BookCover books={booksByAuthor} />
                 </div>
             ) : null}
             {/* Buttons */}
