@@ -9,6 +9,8 @@
      --color-sidebar-title: #f8f9fa;
      --color-sidebar-link: #f8f9fa;
      --color-sidebar-link-hover: #e5e2e249;   
+     --color-link-text: #2162a1;
+
 }
 
 .layoutContainer {
@@ -23,6 +25,11 @@
     overflow-y: auto; 
     background-color: var(--color-main-content); 
     box-sizing: border-box;
+
+    /* a {
+        text-decoration: none;
+        color: var(--color-link-text); /* Inherit color from parent element */
+    /* } */ 
 
     @media (max-width: 768px) {  
         padding: 1.5rem; 

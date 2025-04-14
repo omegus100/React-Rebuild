@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import styles from '../stylesheets/Index.module.css'
+import { SearchInput } from '../components/FormOptions'
 
 export default function AddNewBook() {
     // const [formData, setFormData] = useState({
@@ -120,15 +122,23 @@ export default function AddNewBook() {
         <div>
             <h1>Add New Book</h1>
             {/* Search Input */}
-            <div style={{ marginBottom: '20px' }}>
-                <input
+           
+            <div className={styles.filterContainer}>
+                {/* <input
                     type="text"
                     placeholder="Search for books..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     style={{ padding: '10px', width: '300px' }}
-                />
-                <button onClick={fetchBooks} style={{ padding: '10px', marginLeft: '10px' }}>
+                /> */}
+                <SearchInput
+                    type="text"
+                    placeholder="Search for books..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)} 
+                    className={styles.searchInput}
+                />  
+                <button onClick={fetchBooks} style={{ padding: '.5rem' }}>
                     Search
                 </button>
             </div>
