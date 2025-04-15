@@ -14,35 +14,68 @@ export default function AddNewBook() {
             const response = await axios.get('https://www.googleapis.com/books/v1/volumes', {
                 params: { q: searchQuery },
             });
+    
+            const mappedBooks = await Promise.all(
+                response.data.items.map(async (item) => {
+                    const volumeInfo = item.volumeInfo;
+                    const authorName = volumeInfo.authors?.[0] || 'Unknown Author';
+                    const nameParts = authorName.split(' ');
+                    const authorFirstName = nameParts.slice(0, -1).join(' ') || 'Unknown';
+                    const authorLastName = nameParts.slice(-1).join(' ') || 'Unknown';
+    
+                        // Append &fife=w800 to the thumbnail URL
+                    const thumbnailUrl = volumeInfo.imageLinks?.thumbnail
+                    ? `${volumeInfo.imageLinks.thumbnail}&fife=w800`
+                    : '';
 
-            const mappedBooks = response.data.items.map((item) => {
-                const volumeInfo = item.volumeInfo;
-                const authorName = volumeInfo.authors?.[0] || 'Unknown Author';
-                const nameParts = authorName.split(' ');
-                const authorFirstName = nameParts.slice(0, -1).join(' ') || 'Unknown';
-                const authorLastName = nameParts.slice(-1).join(' ') || 'Unknown';
-
-                return {
-                    title: volumeInfo.title || '',
-                    description: volumeInfo.description || '',
-                    publishDate: volumeInfo.publishedDate || '',
-                    pageCount: volumeInfo.pageCount || '',
-                    genres: volumeInfo.categories || [],
-                    authorId: '',
-                    authorFirstName: authorFirstName || '',
-                    authorLastName: authorLastName || '',
-                    coverImagePath: volumeInfo.imageLinks?.thumbnail || '',
-                    publisher: volumeInfo.publisher || 'N/A',
-                    isbn: volumeInfo.industryIdentifiers?.[0]?.identifier || '',
-                };
-            });
-
+                    // Convert the modified URL to Base64
+                    const coverImagePath = thumbnailUrl
+                        ? await convertUrlToBase64(thumbnailUrl)
+                        : '';
+    
+                    return {
+                        title: volumeInfo.title || '',
+                        description: volumeInfo.description || '',
+                        publishDate: volumeInfo.publishedDate || '',
+                        pageCount: volumeInfo.pageCount || '',
+                        genres: volumeInfo.categories || [],
+                        authorId: '',
+                        authorFirstName: authorFirstName || '',
+                        authorLastName: authorLastName || '',
+                        coverImage: volumeInfo.imageLinks?.thumbnail || '/no_book_cover_available.svg', // Keep the original URL,
+                        coverImagePath, // Add the Base64 value as a new variable
+                        publisher: volumeInfo.publisher || 'N/A',
+                        isbn: volumeInfo.industryIdentifiers?.[0]?.identifier || '',
+                    };
+                })
+            );
+    
             setBooks(mappedBooks);
             setEditStates(mappedBooks.reduce((acc, _, index) => ({ ...acc, [index]: false }), {})); // Initialize edit states
         } catch (error) {
             console.error('Error fetching books:', error);
         }
-    };
+    }
+
+    const convertUrlToBase64 = async (url) => {
+        try {
+            // const response = await fetch(url);
+            const response = await fetch(`http://localhost:3000/proxy?url=${encodeURIComponent(url)}`);
+            const blob = await response.blob();
+
+            console.log('Blob:', response); // Log the blob object for debugging
+    
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result); // Base64 string
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        } catch (error) {
+            console.error('Error converting URL to Base64:', error);
+            return ''; // Return an empty string if conversion fails
+        }
+    }
 
     const toggleEditState = (index) => {
         setEditStates((prevStates) => ({
@@ -122,7 +155,7 @@ export default function AddNewBook() {
         { label: 'Genres', name: 'genres', type: 'text' },
         { label: 'Publisher', name: 'publisher', type: 'text' },
         { label: 'ISBN', name: 'isbn', type: 'text' },
-        { label: 'Cover Image Path', name: 'coverImagePath', type: 'text' }
+        { label: 'Cover Image Path', name: 'coverImagePath', type: 'file' }
     ]
 
     return (
@@ -156,7 +189,8 @@ export default function AddNewBook() {
                                 <p><strong>Genres:</strong> {Array.isArray(book.genres) ? book.genres.join(', ') : book.genres}</p>
                                 <p><strong>Publisher:</strong> {book.publisher}</p>
                                 <p><strong>ISBN:</strong> {book.isbn}</p>
-                                <p><strong>Cover Image:</strong> <img src={book.coverImagePath} alt="Cover" style={{ maxWidth: '100px' }} /></p>
+                                <p><strong>Image ID:</strong> {book.coverImage}</p>
+                                <p><strong>Cover Image:</strong> <img src={book.coverImage} alt="Cover" style={{ maxWidth: '100px' }} /></p>
                                 <button onClick={() => toggleEditState(index)} style={{ marginTop: '10px', padding: '10px' }}>
                                     Edit
                                 </button>
@@ -206,18 +240,18 @@ export default function AddNewBook() {
                                                     rows="10"
                                                 />
                                             );
-                                        case 'file':
+                                        case 'file':                          
                                             return (
                                                 <FileUploader
                                                     key={fieldIndex}
-                                                    files={book[field.name]}
+                                                    files={book.coverImagePath} // Use the coverImagePath value here
                                                     onChange={(file) => {
                                                         const updatedBooks = [...books];
-                                                        updatedBooks[index][field.name] = file;
+                                                        updatedBooks[index].coverImagePath = file; // Update the coverImagePath value
                                                         setBooks(updatedBooks);
                                                     }}
                                                 />
-                                            );    
+                                            )
                                         default:
                                             return null;
                                     }
