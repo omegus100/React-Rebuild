@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import GetBooks from '../hooks/GetBooks'
-import { AddButton } from '../components/Buttons'
+import { AddButton, AddButtonDropdown } from '../components/Buttons'
 import styles from '../stylesheets/Index.module.css'
 import { SearchInput } from '../components/FormOptions'
 import SortOptions from '../components/SortOptions'
@@ -59,6 +59,12 @@ const Books = () => {
         }
     });
 
+    const dropdownOptions = [
+        { text: 'Search', link: '/books/new/search' },
+        { text: 'Manually', link: '/books/new' },
+        // { text: 'Delete All', link: '/delete-all', isDanger: true },
+    ]
+
     if (error) {
         return <p>Error fetching books: {error.message}</p>
     }
@@ -67,9 +73,7 @@ const Books = () => {
         <>
             <div className={styles.indexHeader}>
                 <h1>Books</h1>
-                <Link to="/books/new">
-                    <AddButton />
-                </Link>
+                <AddButtonDropdown mainText="Add New" options={dropdownOptions} />
             </div>    
             <div className={styles.filterContainer}>
                 <SearchInput      

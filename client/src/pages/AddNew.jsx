@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import styles from '../stylesheets/Index.module.css';
-import { SearchInput, TextInput, TextAreaInput } from '../components/FormOptions';
-import FileUploader from '../components/FileUpload'; // Assuming you have a file uploader component
+import React, { useState } from 'react'
+import axios from 'axios'
+import styles from '../stylesheets/Index.module.css'
+import { SearchInput, TextInput, TextAreaInput } from '../components/FormOptions'
+import FileUploader from '../components/FileUpload' // Assuming you have a file uploader component
 
 export default function AddNewBook() {
-    const [books, setBooks] = useState([]); // State to store books mapped to bookSchema
-    const [searchQuery, setSearchQuery] = useState(''); // State to store the search query
-    const [editStates, setEditStates] = useState({}); // State to track edit mode for each book
+    const [books, setBooks] = useState([]) // State to store books mapped to bookSchema
+    const [searchQuery, setSearchQuery] = useState('') // State to store the search query
+    const [editStates, setEditStates] = useState({}) // State to track edit mode for each book
 
     const fetchBooks = async () => {
         try {
             const response = await axios.get('https://www.googleapis.com/books/v1/volumes', {
                 params: { q: searchQuery },
-            });
+            })
     
             const mappedBooks = await Promise.all(
                 response.data.items.map(async (item) => {
-                    const volumeInfo = item.volumeInfo;
-                    const authorName = volumeInfo.authors?.[0] || 'Unknown Author';
-                    const nameParts = authorName.split(' ');
-                    const authorFirstName = nameParts.slice(0, -1).join(' ') || 'Unknown';
-                    const authorLastName = nameParts.slice(-1).join(' ') || 'Unknown';
+                    const volumeInfo = item.volumeInfo
+                    const authorName = volumeInfo.authors?.[0] || 'Unknown Author'
+                    const nameParts = authorName.split(' ')
+                    const authorFirstName = nameParts.slice(0, -1).join(' ') || 'Unknown'
+                    const authorLastName = nameParts.slice(-1).join(' ') || 'Unknown'
     
-                        // Append &fife=w800 to the thumbnail URL
+                    // Append &fife=w800 to the thumbnail URL
                     const thumbnailUrl = volumeInfo.imageLinks?.thumbnail
                     ? `${volumeInfo.imageLinks.thumbnail}&fife=w800`
-                    : '';
+                    : ''
 
                     // Convert the modified URL to Base64
                     const coverImagePath = thumbnailUrl
                         ? await convertUrlToBase64(thumbnailUrl)
-                        : '';
+                        : ''
     
                     return {
                         title: volumeInfo.title || '',
@@ -46,34 +46,32 @@ export default function AddNewBook() {
                         coverImagePath, // Add the Base64 value as a new variable
                         publisher: volumeInfo.publisher || 'N/A',
                         isbn: volumeInfo.industryIdentifiers?.[0]?.identifier || '',
-                    };
+                    }
                 })
-            );
+            )
     
-            setBooks(mappedBooks);
-            setEditStates(mappedBooks.reduce((acc, _, index) => ({ ...acc, [index]: false }), {})); // Initialize edit states
+            setBooks(mappedBooks)
+            setEditStates(mappedBooks.reduce((acc, _, index) => ({ ...acc, [index]: false }), {})) // Initialize edit states
         } catch (error) {
-            console.error('Error fetching books:', error);
+            console.error('Error fetching books:', error)
         }
     }
 
     const convertUrlToBase64 = async (url) => {
         try {
-            // const response = await fetch(url);
-            const response = await fetch(`http://localhost:3000/proxy?url=${encodeURIComponent(url)}`);
-            const blob = await response.blob();
-
-            console.log('Blob:', response); // Log the blob object for debugging
+            // const response = await fetch(url)
+            const response = await fetch(`http://localhost:3000/proxy?url=${encodeURIComponent(url)}`)
+            const blob = await response.blob()
     
             return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result); // Base64 string
-                reader.onerror = reject;
-                reader.readAsDataURL(blob);
-            });
+                const reader = new FileReader()
+                reader.onloadend = () => resolve(reader.result) // Base64 string
+                reader.onerror = reject
+                reader.readAsDataURL(blob)
+            })
         } catch (error) {
-            console.error('Error converting URL to Base64:', error);
-            return ''; // Return an empty string if conversion fails
+            console.error('Error converting URL to Base64:', error)
+            return '' // Return an empty string if conversion fails
         }
     }
 
@@ -81,8 +79,8 @@ export default function AddNewBook() {
         setEditStates((prevStates) => ({
             ...prevStates,
             [index]: !prevStates[index], // Toggle the edit state for the specific book
-        }));
-    };
+        }))
+    }
 
     const findMatchingAuthor = async (book) => {
         try {
@@ -132,16 +130,16 @@ export default function AddNewBook() {
     }
 
     const handleFormSubmit = async (e, book, index) => {
-        e.preventDefault();
+        e.preventDefault()
         try {
             // Check for a matching author and update the book
-            const updatedBook = await findMatchingAuthor(book);
+            const updatedBook = await findMatchingAuthor(book)
     
             // Add the updated book to the backend
-            const response = await axios.post('/api/books', updatedBook);
-            alert('Book added successfully!');
+            const response = await axios.post('/api/books', updatedBook)
+            alert('Book added successfully!')
         } catch (error) {
-            console.error('Error handling form submission:', error);
+            console.error('Error handling form submission:', error)
         }
     }
 
@@ -161,7 +159,6 @@ export default function AddNewBook() {
     return (
         <div>
             <h1>Add New Book</h1>
-
             <div className={styles.filterContainer}>
                 <SearchInput
                     type="text"
@@ -174,13 +171,13 @@ export default function AddNewBook() {
                     Search
                 </button>
             </div>
-
             <div>
                 {books.map((book, index) => (
                     <div key={index} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
                         {/* Render Book Details as Text */}
                         {!editStates[index] && (
-                            <div style={{ marginBottom: '10px' }} className="returned-books-text">
+                            <div style={{ marginBottom: '10px' }} className="returned-books-text">                                    
+                                <p><img src={book.coverImage} alt="Cover" style={{ maxWidth: '100px' }} /></p>
                                 <p><strong>Title:</strong> {book.title}</p>
                                 <p><strong>Author:</strong> {book.authorFirstName} {book.authorLastName}</p>
                                 <p><strong>Description:</strong> {book.description}</p>
@@ -189,8 +186,7 @@ export default function AddNewBook() {
                                 <p><strong>Genres:</strong> {Array.isArray(book.genres) ? book.genres.join(', ') : book.genres}</p>
                                 <p><strong>Publisher:</strong> {book.publisher}</p>
                                 <p><strong>ISBN:</strong> {book.isbn}</p>
-                                <p><strong>Image ID:</strong> {book.coverImage}</p>
-                                <p><strong>Cover Image:</strong> <img src={book.coverImage} alt="Cover" style={{ maxWidth: '100px' }} /></p>
+                                {/* <p><strong>Image ID:</strong> {book.coverImage}</p> */}
                                 <button onClick={() => toggleEditState(index)} style={{ marginTop: '10px', padding: '10px' }}>
                                     Edit
                                 </button>
@@ -217,13 +213,13 @@ export default function AddNewBook() {
                                                     type={field.type}
                                                     value={book[field.name]}
                                                     onChange={(e) => {
-                                                        const updatedBooks = [...books];
-                                                        updatedBooks[index][field.name] = e.target.value;
-                                                        setBooks(updatedBooks);
+                                                        const updatedBooks = [...books]
+                                                        updatedBooks[index][field.name] = e.target.value
+                                                        setBooks(updatedBooks)
                                                     }}
                                                     placeholder={field.label}
                                                 />
-                                            );
+                                            )
                                         case 'textarea':
                                             return (
                                                 <TextAreaInput
@@ -232,33 +228,31 @@ export default function AddNewBook() {
                                                     name={field.name}
                                                     value={book[field.name]}
                                                     onChange={(e) => {
-                                                        const updatedBooks = [...books];
-                                                        updatedBooks[index][field.name] = e.target.value;
-                                                        setBooks(updatedBooks);
+                                                        const updatedBooks = [...books]
+                                                        updatedBooks[index][field.name] = e.target.value
+                                                        setBooks(updatedBooks)
                                                     }}
                                                     placeholder={field.label}
                                                     rows="10"
                                                 />
-                                            );
+                                            )
                                         case 'file':                          
                                             return (
                                                 <FileUploader
                                                     key={fieldIndex}
                                                     files={book.coverImagePath} // Use the coverImagePath value here
                                                     onChange={(file) => {
-                                                        const updatedBooks = [...books];
-                                                        updatedBooks[index].coverImagePath = file; // Update the coverImagePath value
-                                                        setBooks(updatedBooks);
+                                                        const updatedBooks = [...books]
+                                                        updatedBooks[index].coverImagePath = file // Update the coverImagePath value
+                                                        setBooks(updatedBooks)
                                                     }}
                                                 />
                                             )
                                         default:
-                                            return null;
+                                            return null
                                     }
                                 })}
-                                {/* <button type="submit" style={{ marginTop: '10px', padding: '10px' }}>
-                                    Submit
-                                </button> */}
+                                
                                 <button
                                     type="button"
                                     onClick={() => toggleEditState(index)}
@@ -269,15 +263,15 @@ export default function AddNewBook() {
                             </form>
                         )}
                         <button
-                    type="button"
-                    onClick={(e) => handleFormSubmit(e, book, index)}
-                    style={{ marginTop: '10px', padding: '10px', backgroundColor: '#4CAF50', color: 'white' }}
-                >
-                    Add Book
-                </button>
+                            type="button"
+                            onClick={(e) => handleFormSubmit(e, book, index)}
+                            style={{ marginTop: '10px', padding: '10px', backgroundColor: '#4CAF50', color: 'white' }}
+                        >
+                            Add Book
+                        </button>
                     </div>
                 ))}
             </div>
         </div>
-    );
+    )
 }

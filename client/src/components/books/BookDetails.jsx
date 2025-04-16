@@ -88,14 +88,14 @@ export default function BookDetails() {
                                 {book.series.title} (Book {book.series.volume})
                             </Link>
                         </p>
-                    )}
-                    <p>{book.description ? `Description: ${book.description}` : null}</p>
+                    )}                 
                     <p>{book.publishDate ? `Publish Date: ${new Date(book.publishDate).toLocaleDateString('en-US')}` : null}</p>
                     <p>{book.pageCount ? `Page Count: ${book.pageCount}` : null}</p>
                     <p>Format: <a href="/formats">{book.format}</a></p>
                     <p>Genre: <a href="/genres">{book.genres}</a></p>
                     <p>{book.publisher ? `Publisher: ${book.publisher}` : null}</p>
                     <p>{book.isbn ? `ISBN: ${book.isbn}` : null}</p>
+                    <p>{book.description ? `Description: ${book.description}` : null}</p>
                 </div>
             </div>
             {/* Series Section */}
