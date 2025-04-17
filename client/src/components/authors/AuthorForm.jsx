@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { GoBackButton, SubmitButton } from '../Buttons'
 import { TextInput } from '../../components/FormOptions'
 import { handleFormSubmit } from '../../utils/handleFormSubmit'
+import { GetAuthorById } from '../../hooks/GetAuthors'
 
 export default function AuthorForm({ setAuthors }) {
     const { id } = useParams()
@@ -18,8 +19,7 @@ export default function AuthorForm({ setAuthors }) {
         if (id) {          
             const fetchAuthor = async () => {                       
                 try {                         
-                    const response = await axios.get(`/api/authors/${id}`)
-                    const author = response.data     
+                    const author = await GetAuthorById(id) 
                     setFormData({          
                         firstName: author.firstName,
                         lastName: author.lastName                                   

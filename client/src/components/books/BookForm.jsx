@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import * as bookObjects from './bookObjects'
-import GetAuthors from '../../hooks/GetAuthors'
+import { GetAuthors } from '../../hooks/GetAuthors'
 import GetSeries from '../../hooks/GetSeries'
 import { useParams, useNavigate } from 'react-router-dom'
 import { TextInput, SelectInput, TextAreaInput } from '../../components/FormOptions'
@@ -26,26 +26,6 @@ export default function BookForm({ setBooks }) {
         seriesVolume: '',
         coverImagePath: ''
     });
-
-    // const { book, error } = useFetchBook(id);
-
-    // const [formData, setFormData] = useState({
-    //     title: book.title || '',
-    //     description: book.description || '',
-    //     publishDate: book.publishDate || '',
-    //     pageCount: book.pageCount || '',
-    //     format: book.format || '',
-    //     genres: book.genres || '',
-    //     authorId: book.author?.id || '',
-    //     authorFirstName: book.author?.firstName || '',
-    //     authorLastName: book.author?.lastName || '',
-    //     seriesTitle: book.series?.title || '',
-    //     seriesId: book.series?.id || '',
-    //     seriesVolume: book.series?.volume || '',
-    //     coverImagePath: book.coverImagePath,
-    //     publisher: book.publisher || '',
-    //     isbn: book.isbn || 
-    // })
 
     const { authors, error } = GetAuthors();
     const { series } = GetSeries();

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import GetAuthors from '../hooks/GetAuthors' 
+import { GetAuthors } from '../hooks/GetAuthors' 
 import { AddButton } from '../components/Buttons'
 import styles from '../stylesheets/Index.module.css'
 import { SearchInput } from '../components/FormOptions'

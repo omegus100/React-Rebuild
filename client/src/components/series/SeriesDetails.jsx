@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
 import GetBooks from '../../hooks/GetBooks'
-import GetAuthors from '../../hooks/GetAuthors'
+import { GetAuthors } from '../../hooks/GetAuthors'
 import BookCover from '../books/BookCover'
 
 export default function SeriesDetails() {

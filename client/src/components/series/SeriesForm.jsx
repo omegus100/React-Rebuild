@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
-import GetAuthors from '../../hooks/GetAuthors'
+import { GetAuthors } from '../../hooks/GetAuthors'
 import { GoBackButton, SubmitButton } from '../Buttons'
 import { TextInput, SelectInput } from '../../components/FormOptions'
 import { handleFormSubmit } from '../../utils/handleFormSubmit'
