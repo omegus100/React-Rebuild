@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import GetBooks from '../hooks/GetBooks'
+import { GetData } from '../hooks/getData'
 import { AddButton, AddButtonDropdown } from '../components/Buttons'
 import styles from '../stylesheets/Index.module.css'
 import { SearchInput } from '../components/FormOptions'
@@ -8,7 +8,7 @@ import SortOptions from '../components/SortOptions'
 import BookCover from '../components/books/BookCover'
 
 const Books = () => {
-    const { books, error } = GetBooks()
+    const { data: books, error } = GetData('books')
     const [searchQuery, setSearchQuery] = useState('') // State for search query
     const [sortBy, setSortBy] = useState('title')
 
@@ -62,7 +62,6 @@ const Books = () => {
     const dropdownOptions = [
         { text: 'Search', link: '/books/new/search' },
         { text: 'Manually', link: '/books/new' },
-        // { text: 'Delete All', link: '/delete-all', isDanger: true },
     ]
 
     if (error) {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { GetAuthors } from '../hooks/GetAuthors' 
+import { GetData } from '../hooks/getData'
 import { AddButton } from '../components/Buttons'
 import styles from '../stylesheets/Index.module.css'
 import { SearchInput } from '../components/FormOptions'
@@ -8,7 +8,7 @@ import SortOptions from '../components/SortOptions'
 import ListLayout from '../components/PageLayouts'
 
 const Authors = () => {
-    const { authors, error } = GetAuthors()
+    const { data: authors, error } = GetData('authors')
     const [searchQuery, setSearchQuery] = useState('')
     const [sortBy, setSortBy] = useState('lastName')
 

@@ -2,36 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
-import { GetAuthors } from '../../hooks/GetAuthors'
-import GetBooks from '../../hooks/GetBooks'
+import { GetDataById, GetData } from '../../hooks/getData'
 import BookCover from './BookCover'
 import styles from '../../stylesheets/BookDetails.css'
 
 export default function BookDetails() {
     const { id } = useParams() // Get the book ID from the URL
     const navigate = useNavigate() // Use navigate to redirect after deletion
-    const [book, setBook] = useState(null)
-    const [error, setError] = useState(null)
-    const { authors } = GetAuthors() 
-    const { books } = GetBooks() 
 
-    useEffect(() => {
-        const fetchBook = async () => {
-            try {
-                const response = await axios.get(`/api/books/${id}`)
-                setBook(response.data)
-            } catch (err) {
-                console.error('Error fetching book details:', err)
-                setError(err)
-            }
-        }
-
-        fetchBook()
-    }, [id])
+    const { data: book, error: bookError } = GetData('books', id)
+    const { data: authors, error: authorsError } = GetData('authors')
+    const { data: books, error: bookserror } = GetData('books')
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`/api/books/${id}`) // Call the DELETE route
+            // await axios.delete(`/api/books/${id}`) // Call the DELETE route
+            await GetDataById('books', id) // Call the DELETE route
             alert('Book deleted successfully') // Notify the user
             navigate('/books') // Redirect to the books list page
         } catch (err) {
@@ -40,11 +26,13 @@ export default function BookDetails() {
         }
     }
 
-    if (error) {
-        return <p>Error fetching book details: {error.message}</p>
+    if (bookError || authorsError || bookserror) {
+        // Handle errors from GetData or book fetching
+        return <p>Error fetching book details: {bookError.message}</p>
     }
 
-    if (!book) {
+    if (!book || !authors || !books) {
+        // Check if book, authors, or books data is not available
         return <p>Loading...</p>
     }
 

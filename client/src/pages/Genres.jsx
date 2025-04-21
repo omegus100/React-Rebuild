@@ -1,9 +1,9 @@
 import React from 'react'
-import GetBooks from "../hooks/GetBooks"
+import { GetData } from '../hooks/getData'
 import {GridLayout} from '../components/PageLayouts'
 
 export default function Genres() {
-    const { books, error } = GetBooks() // Fetch genres using the custom hook
+    const { data: books, error } = GetData('books') // Fetch genres using the custom hook
 
     if (error) {
         return <p>Error fetching genres: {error.message}</p> // Handle error state

@@ -1,9 +1,9 @@
 import React from 'react'
-import GetBooks from "../hooks/GetBooks"
+import { GetData } from '../hooks/getData'
 import {GridLayout} from '../components/PageLayouts'
 
 export default function Formats() {
-    const { books, error } = GetBooks() // Fetch format using the custom hook
+    const { data: books, error } = GetData('books') // Fetch format using the custom hook
 
     if (error) {
         return <p>Error fetching format: {error.message}</p> // Handle error state

@@ -1,52 +1,40 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
-import GetBooks from '../../hooks/GetBooks'
+import { GetData } from '../../hooks/getData'
 import BookCover from '../books/BookCover'
+import axios from 'axios'
 
 export default function AuthorDetails() {
     const { id } = useParams() // Get the author ID from the URL
     const navigate = useNavigate()
-    const [author, setAuthor] = useState(null) // State to store author details
-    const [error, setError] = useState(null) // State to handle errors
-    const { books } = GetBooks()
 
-    useEffect(() => {
-        const fetchAuthor = async () => {
-            try {
-                const response = await axios.get(`/api/authors/${id}`)
-                setAuthor(response.data)
-            } catch (err) {
-                console.error('Error fetching author details:', err)
-                setError(err)
-            }
-        };
+    const { data: author, error: authorsError } = GetData('authors', id) 
+    const { data: books, error: booksError } = GetData('books')
 
-        fetchAuthor()
-    }, [id])
-
-    if (error) {
-        return <p>Error fetching author details: {error.message}</p>
+    // Handle errors from GetData or author fetching
+    if (authorsError || booksError) {
+        return <p>Error fetching data: {authorsError?.message || booksError?.message}</p>
     }
 
-    if (!author) {
+    if (!author || !books) {
         return <p>Loading author details...</p>
     }
 
+    // Filter books by the current author
     const booksByAuthor = books.filter((book) => book.author?.id === author._id)
 
-    const handleDelete = async () => {          
-        try {     
+    const handleDelete = async () => {
+        try {
             if (booksByAuthor.length > 0) {
                 // Check if the author has books assigned to them
                 alert('This author has book(s) assigned to it. Please delete the book(s) first.')
                 return
             } else {
-                await axios.delete(`/api/authors/${id}`) 
-                alert('Author deleted successfully') 
-                navigate('/authors') 
-            }      
+                await axios.delete(`/api/authors/${id}`) // Call the DELETE route
+                alert('Author deleted successfully') // Notify the user
+                navigate('/authors') // Redirect to the authors list page
+            }
         } catch (err) {
             console.error('Error deleting author:', err)
             alert('Failed to delete the author')
@@ -58,11 +46,12 @@ export default function AuthorDetails() {
             <GoBackButton />
             <h1>{author.firstName} {author.lastName}</h1>
             <p><strong>Books:</strong></p>
-            <BookCover 
-                books={booksByAuthor} 
-                subtitle={(book) => `${book.author.firstName} ${book.author.lastName}`} /> 
-            <EditButton onClick={() => navigate(`/authors/${author._id}/edit`)} />         
+            <BookCover
+                books={booksByAuthor}
+                subtitle={(book) => `${book.author.firstName} ${book.author.lastName}`}
+            />
+            <EditButton onClick={() => navigate(`/authors/${author._id}/edit`)} />
             <DeleteButton onClick={handleDelete} />
         </>
-    );
+    )
 }

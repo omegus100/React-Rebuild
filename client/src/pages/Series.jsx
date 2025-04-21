@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import GetSeries from '../hooks/GetSeries' 
-import GetBooks from '../hooks/GetBooks'
+import { GetData } from '../hooks/getData'
 import { AddButton } from '../components/Buttons'
 import styles from '../stylesheets/Index.module.css'
 import { SearchInput } from '../components/FormOptions'
@@ -9,10 +8,10 @@ import SortOptions from '../components/SortOptions'
 import {TableLayout} from '../components/PageLayouts'
 
 const Series = () => {
-    const { series, error } = GetSeries()
+    const { data: series, error } = GetData('series')
     const [searchQuery, setSearchQuery] = useState(''); // State for search query
     const [sortBy, setSortBy] = useState('title')
-    const { books } = GetBooks()
+    const { data: books } = GetData('books')
 
     // Helper function to normalize titles (e.g., remove "The" for sorting)
     const normalizeTitle = (title) => title.replace(/^The\s+/i, '').toLowerCase()   

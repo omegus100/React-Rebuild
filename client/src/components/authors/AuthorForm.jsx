@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
 import { GoBackButton, SubmitButton } from '../Buttons'
 import { TextInput } from '../../components/FormOptions'
-import { handleFormSubmit } from '../../utils/handleFormSubmit'
-import { GetAuthorById } from '../../hooks/GetAuthors'
+import { handleFormSubmit } from '../../hooks/handleFormSubmit'
+import { GetData } from '../../hooks/getData'
 
 export default function AuthorForm({ setAuthors }) {
     const { id } = useParams()
@@ -14,23 +13,18 @@ export default function AuthorForm({ setAuthors }) {
         lastName: ''
     })
 
-    // Fetch existing data if editing
-    useEffect(() => {             
-        if (id) {          
-            const fetchAuthor = async () => {                       
-                try {                         
-                    const author = await GetAuthorById(id) 
-                    setFormData({          
-                        firstName: author.firstName,
-                        lastName: author.lastName                                   
-                    })
-                    } catch (err) {                          
-                        console.error('Error fetching author:', err)                       
-                    }                
-                }      
-                fetchAuthor()                  
-            }        
-        }, [id])
+    // Use the custom hook to fetch author data
+    const { data: author, error } = GetData('authors', id);
+
+    // Populate form data when author data is fetched
+    React.useEffect(() => {
+        if (author) {
+            setFormData({
+                firstName: author.firstName,
+                lastName: author.lastName,
+            });
+        }
+    }, [author])
 
     // This function handles input changes and updates the form data state    
     const handleInputChange = (event) => {
