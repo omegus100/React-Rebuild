@@ -34,3 +34,24 @@ export const GetDataById = async (object, id) => {
         throw error; // Re-throw the error for handling in the calling function
     }
 }
+
+export const GetBookObjectData = async (object) => {
+    try {
+        const response = await axios.get(`/api/books`) // Fetch all books
+        const books = response.data
+
+        // Extract unique values for the specified object (e.g., genres, format)
+        const uniqueValues = Array.from(
+            new Set(
+                books
+                    .flatMap((book) => book[object]) // Access the property dynamically
+                    .filter((value) => value && value.trim() !== "") // Remove falsy or empty values
+            )
+        )
+
+        return uniqueValues // Return the unique values as an array
+    } catch (error) {
+        console.error(`Error fetching book object data for ${object}:`, error)
+        throw error // Re-throw the error for handling in the calling function
+    }
+}

@@ -14,6 +14,7 @@ import AuthorDetails from './components/authors/AuthorDetails'
 import SeriesForm from './components/series/SeriesForm'
 import SeriesDetails from './components/series/SeriesDetails'
 import AddNew from './pages/AddNew.jsx'
+import BookObjects from './pages/BookObjects.jsx'
 
 export default function App() {
     return (
@@ -21,7 +22,7 @@ export default function App() {
             <Routes>
                 {/* Wrap all routes with the Layout component */}
                 <Route path="/" element={<Layout />}>
-                    <Route index element={<h1>Home Page</h1>} />
+                    <Route index element={<Home />} />
                     <Route path="home" element={<Home />} />
                     <Route path="books" element={<Books />} />
                     <Route path="books/new" element={<BookForm />} /> 
@@ -35,8 +36,10 @@ export default function App() {
                     <Route path="series/new" element={<SeriesForm />} />  
                     <Route path="series/:id" element={<SeriesDetails />} /> 
                     <Route path="series/:id/edit" element={<SeriesForm />} />         
-                    <Route path="genres" element={<Genres />} />      
-                    <Route path="formats" element={<Formats />} />    
+                    <Route path="genres" element={<Genres />} /> 
+                    <Route path="genres/:id" element={<BookObjects />} />     
+                    <Route path="format" element={<Formats />} />    
+                    <Route path="format/:id" element={<BookObjects />} />
                     <Route path="books/new/search" element={<AddNew />} />  
                 </Route>
             </Routes>

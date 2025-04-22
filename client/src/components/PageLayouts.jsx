@@ -4,7 +4,7 @@ import BookCover from './books/BookCover'
 import { ViewAllButton } from './Buttons'
 import styles from '../stylesheets/Index.module.css'
 
-const GridLayout = ({ books, value, property, count }) => {
+const GridLayout = ({ books, value, property, count, object, link, limit }) => {
     // Filter books by the given property and value
     const filteredBooks = books.filter((book) => book[property]?.includes(value));
 
@@ -12,7 +12,7 @@ const GridLayout = ({ books, value, property, count }) => {
         <>
             <div className={styles.gridHeader}>
                 <h2>{value} ({count} Books)</h2> 
-                {/* <ViewAllButton object="Books" /> */}
+                {count > limit && <ViewAllButton object={object} link={link} />}
             </div>
             <BookCover 
                 books={filteredBooks} 

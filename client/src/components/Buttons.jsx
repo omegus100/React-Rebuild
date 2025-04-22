@@ -18,8 +18,12 @@ export function DeleteButton({ onClick }) {
     return <button onClick={onClick}>Delete</button>
 }
 
-export function ViewAllButton({  }) {
-  return <button>View All</button>
+export function ViewAllButton({ link, object }) {
+  return (
+        <Link to={`${link}`} object={object} className="view-all-button">
+           <button>View All</button>
+        </Link>  
+  )
 }
 
 const SubmitButton = ({ isEditing, object }) => {
