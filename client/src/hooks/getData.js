@@ -3,35 +3,39 @@ import axios from 'axios'
 
 // Reusable hook to fetch data (list or single item)
 export function GetData(object, id = null) {
-    const [data, setData] = useState(id ? null : []); // Default to an empty array for lists
-    const [error, setError] = useState(null);
+    const [data, setData] = useState(id ? null : []) // Default to an empty array for lists
+    const [error, setError] = useState(null)
+    const [isLoading, setIsLoading] = useState(true) // Add isLoading state
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true) // Set loading to true before fetching
             try {
-                const endpoint = id ? `/api/${object}/${id}` : `/api/${object}`; // Determine endpoint based on id
-                const response = await axios.get(endpoint);
-                setData(response.data);
+                const endpoint = id ? `/api/${object}/${id}` : `/api/${object}` // Determine endpoint based on id
+                const response = await axios.get(endpoint)
+                setData(response.data)
             } catch (err) {
-                console.error(`Error fetching ${id ? 'item' : 'list'} from ${object}:`, err);
-                setError(err);
+                console.error(`Error fetching ${id ? 'item' : 'list'} from ${object}:`, err)
+                setError(err)
+            } finally {
+                setIsLoading(false) // Set loading to false after fetching
             }
-        };
+        }
 
-        fetchData();
-    }, [object, id]); // Re-run if object or id changes
+        fetchData()
+    }, [object, id]) // Re-run if object or id changes
 
-    return { data, error, setData };
+    return { data, error, isLoading, setData }
 }
 
 // Custom hook to fetch id data from the API
 export const GetDataById = async (object, id) => {
     try {
-        const response = await axios.get(`/api/${object}/${id}`);
-        return response.data; // Return the data for the specific object
+        const response = await axios.get(`/api/${object}/${id}`)
+        return response.data // Return the data for the specific object
     } catch (error) {
-        console.error('Error fetching data by ID:', error);
-        throw error; // Re-throw the error for handling in the calling function
+        console.error('Error fetching data by ID:', error)
+        throw error // Re-throw the error for handling in the calling function
     }
 }
 

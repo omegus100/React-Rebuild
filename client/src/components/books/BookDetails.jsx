@@ -5,12 +5,13 @@ import { GoBackButton, DeleteButton, EditButton } from '../Buttons'
 import { GetDataById, GetData } from '../../hooks/getData'
 import BookCover from './BookCover'
 import styles from '../../stylesheets/BookDetails.css'
+import { Loading } from '../Icons'
 
 export default function BookDetails() {
     const { id } = useParams() // Get the book ID from the URL
     const navigate = useNavigate() // Use navigate to redirect after deletion
 
-    const { data: book, error: bookError } = GetData('books', id)
+    const { data: book, error: bookError, isLoading } = GetData('books', id)
     const { data: authors, error: authorsError } = GetData('authors')
     const { data: books, error: bookserror } = GetData('books')
 
@@ -24,6 +25,10 @@ export default function BookDetails() {
             console.error('Error deleting book:', err)
             alert('Failed to delete the book')
         }
+    }
+
+    if (isLoading) {
+        return <Loading />
     }
 
     if (bookError || authorsError || bookserror) {
@@ -79,8 +84,8 @@ export default function BookDetails() {
                     )}                 
                     <p>{book.publishDate ? `Publish Date: ${new Date(book.publishDate).toLocaleDateString('en-US')}` : null}</p>
                     <p>{book.pageCount ? `Page Count: ${book.pageCount}` : null}</p>
-                    <p>Format: <a href="/formats">{book.format}</a></p>
-                    <p>Genre: <a href="/genres">{book.genres}</a></p>
+                    <p>Format: <Link to={`/format/${book.format}`}>{book.format}</Link>  </p>
+                    <p>Genre: <Link to={`/genres/${book.genres}`} >{book.genres}</Link>  </p>
                     <p>{book.publisher ? `Publisher: ${book.publisher}` : null}</p>
                     <p>{book.isbn ? `ISBN: ${book.isbn}` : null}</p>
                     <p>{book.description ? `Description: ${book.description}` : null}</p>

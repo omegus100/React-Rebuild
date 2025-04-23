@@ -15,6 +15,7 @@ const BookCover = ({ books, subtitle }) => {
                             src={book.coverImagePath}
                             alt={book.title}
                             className={styles.coverImage}
+                            loading="lazy"
                         />
                         <div className={styles.bookTitle}>{book.title}</div>
                         <div className={styles.bookSubtitle}>

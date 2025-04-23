@@ -23,7 +23,7 @@ a {
     flex: 1 1 calc(14.28% - 1rem); /* 7 books per row on desktop */
     max-width: calc(14.28% - 1rem); /* 7 books per row on desktop */
     text-align: center;
-    margin: .5rem 0;
+    margin-bottom: .5rem 0;
 
     @media (max-width: 1024px) {
         flex: 1 1 calc(20% - 1rem);     
@@ -45,13 +45,13 @@ a {
 }
 
 .coverImage {
-    width: 12rem;
-    height: 16rem;
+    width: 8rem;
+    height: 12rem;
     margin-bottom: .5rem;
 
     @media (max-width: 1024px) {
-        width: 9rem;
-        height: 13rem;
+        width: 8rem;
+        height: 12rem;
         margin-bottom: -.5rem;
     }
 

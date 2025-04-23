@@ -6,9 +6,10 @@ import styles from '../stylesheets/Index.module.css'
 import { SearchInput } from '../components/FormOptions'
 import SortOptions from '../components/SortOptions'
 import BookCover from '../components/books/BookCover'
+import { Loading } from '../components/Icons'
 
 const Books = () => {
-    const { data: books, error } = GetData('books')
+    const { data: books, error, isLoading } = GetData('books')
     const [searchQuery, setSearchQuery] = useState('') // State for search query
     const [sortBy, setSortBy] = useState('title')
 
@@ -63,6 +64,10 @@ const Books = () => {
         { text: 'Search', link: '/books/new/search' },
         { text: 'Manually', link: '/books/new' },
     ]
+
+    if (isLoading) {
+        return <Loading /> // Display loading text
+    }
 
     if (error) {
         return <p>Error fetching books: {error.message}</p>
