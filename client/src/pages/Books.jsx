@@ -66,7 +66,7 @@ const Books = () => {
     ]
 
     if (isLoading) {
-        return <Loading /> // Display loading text
+        return <Loading /> 
     }
 
     if (error) {

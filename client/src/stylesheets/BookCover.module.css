@@ -20,8 +20,8 @@ a {
 }
 
 .book {
-    flex: 1 1 calc(14.28% - 1rem); /* 7 books per row on desktop */
-    max-width: calc(14.28% - 1rem); /* 7 books per row on desktop */
+    flex: 1 1 calc(11.11% - 1rem); /* 7 books per row on desktop */
+    max-width: calc(11.11% - 1rem); /* 7 books per row on desktop */
     text-align: center;
     margin-bottom: .5rem 0;
 

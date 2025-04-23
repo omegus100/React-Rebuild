@@ -23,4 +23,11 @@ const genres = [
     'Other'
 ]
 
-export { formats, genres };
+const readingStatus = [
+    'Want To Read',
+    'Currently Reading',
+    'Read',
+    'Did Not Finish'
+]
+
+export { formats, genres, readingStatus };

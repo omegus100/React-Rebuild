@@ -39,23 +39,59 @@ export const GetDataById = async (object, id) => {
     }
 }
 
-export const GetBookObjectData = async (object) => {
-    try {
-        const response = await axios.get(`/api/books`) // Fetch all books
-        const books = response.data
+export function GetBookObjectData(object) {
+    const [data, setData] = useState([]) // Default to an empty array
+    const [error, setError] = useState(null)
+    const [isLoading, setIsLoading] = useState(true) // Add isLoading state
 
-        // Extract unique values for the specified object (e.g., genres, format)
-        const uniqueValues = Array.from(
-            new Set(
-                books
-                    .flatMap((book) => book[object]) // Access the property dynamically
-                    .filter((value) => value && value.trim() !== "") // Remove falsy or empty values
-            )
-        )
+    useEffect(() => {
+        const fetchObjectData = async () => {
+            setIsLoading(true) // Set loading to true before fetching
+            try {
+                const response = await axios.get(`/api/books`) // Fetch all books
+                const books = response.data
 
-        return uniqueValues // Return the unique values as an array
-    } catch (error) {
-        console.error(`Error fetching book object data for ${object}:`, error)
-        throw error // Re-throw the error for handling in the calling function
-    }
+                // Extract unique values for the specified object (e.g., genres, format)
+                const uniqueValues = Array.from(
+                    new Set(
+                        books
+                            .flatMap((book) => book[object]) // Access the property dynamically
+                            .filter((value) => value && value.trim() !== "") // Remove falsy or empty values
+                    )
+                )
+
+                setData(uniqueValues) // Store the unique values in state
+            } catch (err) {
+                console.error(`Error fetching book object data for ${object}:`, err)
+                setError(err) // Store the error in state
+            } finally {
+                setIsLoading(false) // Set loading to false after fetching
+            }
+        }
+
+        fetchObjectData()
+    }, [object]) // Re-run if the object changes
+
+    return { data, error, isLoading, setData }
 }
+
+// export const GetBookObjectData = async (object) => {
+//     try {
+//         const response = await axios.get(`/api/books`) // Fetch all books
+//         const books = response.data
+
+//         // Extract unique values for the specified object (e.g., genres, format)
+//         const uniqueValues = Array.from(
+//             new Set(
+//                 books
+//                     .flatMap((book) => book[object]) // Access the property dynamically
+//                     .filter((value) => value && value.trim() !== "") // Remove falsy or empty values
+//             )
+//         )
+
+//         return uniqueValues // Return the unique values as an array
+//     } catch (error) {
+//         console.error(`Error fetching book object data for ${object}:`, error)
+//         throw error // Re-throw the error for handling in the calling function
+//     }
+// }

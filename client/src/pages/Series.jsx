@@ -6,9 +6,10 @@ import styles from '../stylesheets/Index.module.css'
 import { SearchInput } from '../components/FormOptions'
 import SortOptions from '../components/SortOptions'
 import {TableLayout} from '../components/PageLayouts'
+import { Loading } from '../components/Icons'
 
 const Series = () => {
-    const { data: series, error } = GetData('series')
+    const { data: series, error, isLoading } = GetData('series')
     const [searchQuery, setSearchQuery] = useState(''); // State for search query
     const [sortBy, setSortBy] = useState('title')
     const { data: books } = GetData('books')
@@ -47,6 +48,10 @@ const Series = () => {
                 return 0;
         }
     })
+
+    if (isLoading) {
+        return <Loading /> 
+    }
 
     if (error) {
         return <p>Error fetching series: {error.message}</p>

@@ -30,6 +30,7 @@ const bookSchema = new mongoose.Schema({
     coverImagePath: String,
     publisher: String,
     isbn: Number,
+    readingStatus: String
 })
 
 module.exports = mongoose.model('Book', bookSchema)

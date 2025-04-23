@@ -3,6 +3,7 @@ const router = express.Router()
 const Book = require('../models/book')
 const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
 const upload = require('../models/multer')
+const { readingStatus } = require('../../client/src/components/books/bookObjects')
 
 // Get all book objects
 router.get('/', async (req, res) => {
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
 
 // POST route for /api/books
 router.post('/', async (req, res) => {
-    const { title, description, publishDate, pageCount, format, genres, authorId, authorFirstName, authorLastName, seriesId, seriesTitle, seriesVolume, coverImagePath, publisher, isbn  } = req.body;
+    const { title, description, publishDate, pageCount, format, genres, authorId, authorFirstName, authorLastName, seriesId, seriesTitle, seriesVolume, coverImagePath, publisher, isbn, readingStatus  } = req.body;
 
     const book = new Book({
         title,
@@ -29,7 +30,8 @@ router.post('/', async (req, res) => {
         series: { id: seriesId, title: seriesTitle, volume: seriesVolume },
         coverImagePath,
         publisher,
-        isbn 
+        isbn,
+        readingStatus, 
     });
 
     try {
@@ -67,7 +69,7 @@ router.get('/:id/edit', async (req, res) => {
 
 // Update book object
 router.put('/:id', async (req, res) => {
-    const { title, description, publishDate, pageCount, format, genres, authorId, authorFirstName, authorLastName, seriesId, seriesTitle, seriesVolume, coverImagePath, publisher, isbn } = req.body;
+    const { title, description, publishDate, pageCount, format, genres, authorId, authorFirstName, authorLastName, seriesId, seriesTitle, seriesVolume, coverImagePath, publisher, isbn, readingStatus } = req.body;
 
     try {
         const book = await Book.findById(req.params.id);
@@ -87,6 +89,7 @@ router.put('/:id', async (req, res) => {
         book.coverImagePath = coverImagePath;
         book.publisher = publisher;
         book.isbn = isbn;
+        book.readingStatus = readingStatus
 
         const updatedBook = await book.save();
         res.status(200).json(updatedBook);

@@ -1,62 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import BookCover from '../components/books/BookCover';
-import { GetData } from '../hooks/getData';
+import React, { useEffect, useState } from 'react'
+import BookCover from '../components/books/BookCover'
+import { GetData, GetBookObjectData } from '../hooks/getData'
+import { Loading } from '../components/Icons'
+import { GridLayout } from '../components/PageLayouts'
 
 export default function Home() {
-    const [totalBooks, setTotalBooks] = useState(0);
-    const [recentBooks, setRecentBooks] = useState([]);
-    const [genres, setGenres] = useState([]);
-    const [formats, setFormats] = useState([]);
+    const [totalBooks, setTotalBooks] = useState(0)
+    const [recentBooks, setRecentBooks] = useState([])
+    // const [genres, setGenres] = useState([])
+    // const [formats, setFormats] = useState([])
+    const { data: books, error, isLoading } = GetData('books')
+    const { data: genres  } = GetBookObjectData('genres') 
+    const { data: formats } = GetBookObjectData('format') 
 
-    const { data: books, error } = GetData('books');
-    const newBooksLimit = 7; // Limit for the number of new books to display
+    const newBooksLimit = 7 // Limit for the number of new books to display
 
-    useEffect(() => {
-        // Fetch data from your backend or API
-        async function fetchBooks() {
-            try {
-                const response = await fetch('/api/books'); // Replace with your API endpoint
-                const books = await response.json();
+    // Process books to find recent ones
+    if (books && books.length > 0 && recentBooks.length === 0) {
+        // Update total books
+        setTotalBooks(books.length)
 
-                // Update total books
-                setTotalBooks(books.length);
+   
 
-                // Sort books by date (assuming books have a `dateAdded` field)
-                const sortedBooks = books.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+        // Sort books by dateAdded (assuming books have a `dateAdded` field)
+        const sortedBooks = books.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
 
-                // Get the 5 most recent books
-                setRecentBooks(sortedBooks.slice(0, newBooksLimit));
-            } catch (error) {
-                console.error('Error fetching books:', error);
-            }
-        }
+        // Get the most recent books
+        setRecentBooks(sortedBooks.slice(0, newBooksLimit))
+    }
 
-        // Fetch genres data
-        async function fetchGenres() {
-            try {
-                const response = await fetch('/api/genres'); // Replace with your API endpoint
-                const genresData = await response.json();
-                setGenres(genresData);
-            } catch (error) {
-                console.error('Error fetching genres:', error);
-            }
-        }
+    // Update finished books (assuming finished books are those with a reading status of 'finished')
+    const finishedBooksCount = books.filter((book) => book.readingStatus === 'Read').length
 
-        // Fetch formats data
-        async function fetchFormats() {
-            try {
-                const response = await fetch('/api/formats'); // Replace with your API endpoint
-                const formatsData = await response.json();
-                setFormats(formatsData);
-            } catch (error) {
-                console.error('Error fetching formats:', error);
-            }
-        }
-
-        fetchBooks();
-        fetchGenres();
-        fetchFormats(); // Ensure this is always called, even if the logic is commented out
-    }, []); // Ensure the dependency array is correct and doesn't cause conditional calls
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <>
@@ -89,23 +67,47 @@ export default function Home() {
             {/* Genres Section */}
             <section>
                 <h2>Genres</h2>
-                <div className="book-grid">
-                    <BookCover
-                        books={genres}
-                        subtitle={(genre) => `Genre: ${genre.name}`}
-                    />
-                </div>
+                {genres.map((genre, index) => {
+                    const booksInGenre = books.filter((book) => book.genres.includes(genre)) // Filter books for the genre
+                    const bookCount = booksInGenre.length // Count books for each genre
+                    const limitedBooks = booksInGenre.slice(0, newBooksLimit) // Limit books to listLimit
+                    const genreName = genre.toLowerCase()
+
+                    return (
+                        <div key={index}>
+                            
+                            <GridLayout
+                                books={limitedBooks} // Pass only the limited books
+                                value={genre}
+                                property="genres"
+                                count={bookCount} // Pass the book count to the GridLayout component
+                                object="Genres"
+                                link={`/genres/${genreName}`}
+                                limit={limitedBooks.length} // Pass the limit to the GridLayout component
+                            />
+                            
+                        </div>
+                    )
+                })}
             </section>
 
             {/* Formats Section */}
             <section>
                 <h2>Formats</h2>
-                <div className="book-grid">
-                    <BookCover
-                        books={formats}
-                        subtitle={(format) => `Format: ${format.name}`}
-                    />
-                </div>
+                {formats.map((format, index) => {
+                    // const booksInFormat = books.filter((book) => book.formats.includes(format)) // Filter books for the format
+                    // const bookCount = booksInFormat.length // Count books for each format
+                    // const limitedBooks = booksInFormat.slice(0, newBooksLimit) // Limit books to listLimit
+                    // const formatName = format.toLowerCase()
+
+                    return (
+                        <div key={index}>
+                            <span>{format} </span>
+                        
+                        </div>
+                    )
+                }
+                )}
             </section>
 
             {/* Recommendations */}
@@ -123,7 +125,7 @@ export default function Home() {
                 <h2>Your Library Stats</h2>
                 <ul>
                     <li>Total Books: {totalBooks}</li>
-                    <li>Books Read: 45</li>
+                    <li>Books Read: {finishedBooksCount}</li>
                     <li>Currently Reading: 2</li>
                 </ul>
             </section>
@@ -139,5 +141,5 @@ export default function Home() {
                 </button>
             </section>
         </>
-    );
+    )
 }

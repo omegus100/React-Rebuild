@@ -6,9 +6,10 @@ import styles from '../stylesheets/Index.module.css'
 import { SearchInput } from '../components/FormOptions'
 import SortOptions from '../components/SortOptions'
 import ListLayout from '../components/PageLayouts'
+import { Loading } from '../components/Icons'
 
 const Authors = () => {
-    const { data: authors, error } = GetData('authors')
+    const { data: authors, error, isLoading } = GetData('authors')
     const [searchQuery, setSearchQuery] = useState('')
     const [sortBy, setSortBy] = useState('lastName')
 
@@ -31,6 +32,10 @@ const Authors = () => {
                 return lastNameA.localeCompare(lastNameB)
         }
     })
+
+    if (isLoading) {
+            return <Loading /> 
+    }
 
     if (error) {
         return <p>Error fetching authors: {error.message}</p>

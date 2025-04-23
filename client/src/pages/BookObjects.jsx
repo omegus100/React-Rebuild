@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useParams, useLocation } from "react-router-dom"
 import { GetData, GetBookObjectData } from "../hooks/getData" // Custom hook to fetch data
 import BookCover from "../components/books/BookCover" // Component to display book covers
@@ -10,10 +10,25 @@ export default function BookObjects() {
     const location = useLocation() // Get the full URL path
     const { data: books, error } = GetData('books') // Fetch books using the custom hook
     const [sortBy, setSortBy] = useState('title')
-    const { data: test } = GetBookObjectData('genres') // Fetch authors using the custom hook
+    const [test, setTest] = useState([])
+    // const { data: test } = GetBookObjectData('genres') // Fetch authors using the custom hook
 
     // Extract the string before :id in the URL and remove the leading slash
     const basePath = location.pathname.split(`/${id}`)[0].slice(1)
+
+     // Fetch the object data dynamically based on basePath
+    //  useEffect(() => {
+    //     const fetchObjectData = async () => {
+    //         try {
+    //             const data = await GetBookObjectData(basePath) // Fetch data for the specified object
+    //             setTest(data) // Store the fetched data in state
+    //         } catch (err) {
+    //             console.error(`Error fetching data for ${basePath}:`, err)
+    //         }
+    //     }
+
+    //     fetchObjectData()
+    // }, [basePath]) 
 
     // Dynamically filter books based on basePath and return unique values (lowercased)
     const objects = Array.from(
@@ -86,8 +101,6 @@ export default function BookObjects() {
     if (error) {
         return <p>Error fetching books: {error.message}</p> // Handle error state
     }
-
-    console.log(test)
 
     return (
         <div>

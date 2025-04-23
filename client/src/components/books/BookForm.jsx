@@ -47,7 +47,8 @@ export default function BookForm({ setBooks }) {
                 seriesVolume: book.series?.volume || '',
                 coverImagePath: book.coverImagePath || '/no_book_cover_available.svg',
                 publisher: book.publisher || '',
-                isbn: book.isbn || ''   
+                isbn: book.isbn || '',
+                readingStatus: book.readingStatus || ''   
             });
         }
     }, [book])
@@ -135,7 +136,8 @@ export default function BookForm({ setBooks }) {
         { label: "Publisher", name: "publisher", type: "text", component: "TextInput" },
         { label: "ISBN", name: "isbn", type: "number", component: "TextInput" },
         { label: "Cover Image", name: "coverImagePath", component: "FileUploader" },
-        { label: "Description", name: "description", component: "TextAreaInput" }
+        { label: "Description", name: "description", component: "TextAreaInput" },
+        { label: "Reading Status", name: "readingStatus", component: "SelectInput", options: bookObjects.readingStatus },
     ]
 
     return (

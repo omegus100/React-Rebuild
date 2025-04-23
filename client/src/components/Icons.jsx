@@ -5,7 +5,7 @@ export function Loading() {
     return (
         <>
             <div className="loading-container">
-                <img src="/images/loading_icon.gif" alt="Loading..." className="loading-image" />
+                <img src="/images/loading_icon.gif" alt="Loading..." className="loading-image" loading="lazy" />
             </div>
         </>
     );
