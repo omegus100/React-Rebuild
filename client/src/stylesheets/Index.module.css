@@ -112,3 +112,27 @@
         /* font-weight: bold; */
     }
 }
+
+.tabMenu {
+    display: flex;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabLink {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    font-size: 1.25rem;
+}
+
+.tabLink:hover {
+    color: #007bff;
+}
+
+.activeTab {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}

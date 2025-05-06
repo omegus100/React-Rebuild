@@ -1,4 +1,19 @@
 /* BookList.module.css */
+:root {
+    /* --nav-title-font-size: 3rem;
+    --nav-title-font-weight: bold;
+    --nav-link-font-weight: 300; */
+    --color-book-subtitle: #f0f0f0;
+
+     /* Sidebar variables */
+     --color-sidebar-background: #333;
+     --color-sidebar-title: #f8f9fa;
+     --color-sidebar-link: #f8f9fa;
+     --color-sidebar-link-hover: #e5e2e249;   
+     --color-link-text: #2162a1;
+
+}
+
 a {
     text-decoration: none;
     color: inherit; /* Inherit color from parent element */
@@ -22,7 +37,7 @@ a {
 .book {
     flex: 1 1 calc(11.11% - 1rem); /* 7 books per row on desktop */
     max-width: calc(11.11% - 1rem); /* 7 books per row on desktop */
-    text-align: center;
+    text-align: left;
     margin-bottom: .5rem 0;
 
     @media (max-width: 1024px) {
@@ -45,9 +60,10 @@ a {
 }
 
 .coverImage {
-    width: 8rem;
-    height: 12rem;
+    width: 9rem;
+    height: 13rem;
     margin-bottom: .5rem;
+    border-radius: 3px;
 
     @media (max-width: 1024px) {
         width: 8rem;
@@ -72,4 +88,5 @@ a {
 
 .bookSubtitle {
     font-size: .85rem;
+    color: #808080;
 }

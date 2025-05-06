@@ -7,6 +7,7 @@ import { SearchInput } from '../components/FormOptions'
 import SortOptions from '../components/SortOptions'
 import {TableLayout} from '../components/PageLayouts'
 import { Loading } from '../components/Icons'
+import { TabMenu } from '../components/Headings'
 
 const Series = () => {
     const { data: series, error, isLoading } = GetData('series')
@@ -59,12 +60,13 @@ const Series = () => {
 
     return (
         <>
-            <div className={styles.indexHeader}>
+            {/* <div className={styles.indexHeader}>
                 <h1>Series</h1>
                 <Link to="/series/new">
                     <AddButton />               
                 </Link>   
-            </div>    
+            </div>     */}
+            <TabMenu /> 
             <div className={styles.filterContainer}>
                 <SearchInput
                     type="text"

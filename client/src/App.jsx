@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
+import Library from './pages/Library'
 import Books from './pages/Books'
 import Authors from './pages/Authors'
 import Series from './pages/Series'
@@ -15,6 +16,7 @@ import SeriesForm from './components/series/SeriesForm'
 import SeriesDetails from './components/series/SeriesDetails'
 import AddNew from './pages/AddNew.jsx'
 import BookObjects from './pages/BookObjects.jsx'
+import Settings from './pages/Settings.jsx'
 
 export default function App() {
     return (
@@ -24,6 +26,7 @@ export default function App() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
                     <Route path="home" element={<Home />} />
+                    <Route path="library" element={<Library />} />
                     <Route path="books" element={<Books />} />
                     <Route path="books/new" element={<BookForm />} /> 
                     <Route path="books/:id" element={<BookDetails />} /> 
@@ -41,6 +44,7 @@ export default function App() {
                     <Route path="format" element={<Formats />} />    
                     <Route path="format/:id" element={<BookObjects />} />
                     <Route path="books/new/search" element={<AddNew />} />  
+                    <Route path="settings" element={<Settings />} />
                 </Route>
             </Routes>
         </Router>

@@ -7,6 +7,7 @@ import { SearchInput } from '../components/FormOptions'
 import SortOptions from '../components/SortOptions'
 import ListLayout from '../components/PageLayouts'
 import { Loading } from '../components/Icons'
+import { TabMenu } from '../components/Headings'
 
 const Authors = () => {
     const { data: authors, error, isLoading } = GetData('authors')
@@ -43,12 +44,13 @@ const Authors = () => {
 
     return (
         <>
-            <div className={styles.indexHeader}>
+            {/* <div className={styles.indexHeader}>
                 <h1>Authors</h1>
                 <Link to="/authors/new">
                     <AddButton />               
                 </Link>  
-            </div>    
+            </div>     */}
+            <TabMenu />
             <div className={styles.filterContainer}>
                 <SearchInput
                     type="text"

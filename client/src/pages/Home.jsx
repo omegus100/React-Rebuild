@@ -59,7 +59,7 @@ export default function Home() {
                 <div className="book-grid">
                     <BookCover
                         books={recentBooks}
-                        subtitle={(book) => `Book ${book.author.firstName} ${book.author.lastName}`}
+                        subtitle={(book) => `${book.author.firstName} ${book.author.lastName}`}
                     />
                 </div>
             </section>
