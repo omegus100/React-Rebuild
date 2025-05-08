@@ -78,12 +78,13 @@ const Books = () => {
     return (
         <>
             <TabMenu />
+            {/* <AddButtonDropdown mainText="Add New" options={dropdownOptions} /> */}
             <div className={styles.filterContainer}>
                 <SearchInput      
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)} 
-                    placeholder="Search books, authors, or series..."
+                    placeholder="Search books..."
                     className={styles.searchInput}  
                 />   
                 <SortOptions sortBy={sortBy} setSortBy={setSortBy} object="book" className={styles.sortContainer}/> 

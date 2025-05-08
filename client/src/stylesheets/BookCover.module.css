@@ -40,6 +40,7 @@ a {
     text-align: left;
     margin-bottom: .5rem 0;
 
+
     @media (max-width: 1024px) {
         flex: 1 1 calc(20% - 1rem);     
         max-width: calc(20% - 1rem);
@@ -64,6 +65,7 @@ a {
     height: 13rem;
     margin-bottom: .5rem;
     border-radius: 3px;
+    box-shadow: 0 8px 4px rgba(0, 0, 0, 0.1);
 
     @media (max-width: 1024px) {
         width: 8rem;
@@ -79,7 +81,7 @@ a {
 }
 
 .bookTitle {
-    font-size: 1rem;
+    font-size: .9rem;
 
     @media (max-width: 1024px) {
         margin-top: .5rem;
