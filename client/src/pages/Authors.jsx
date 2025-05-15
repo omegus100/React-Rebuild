@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { GetData } from '../hooks/getData'
 import { AddButton } from '../components/Buttons'
 import styles from '../stylesheets/Index.module.css'
@@ -13,6 +13,7 @@ const Authors = () => {
     const { data: authors, error, isLoading } = GetData('authors')
     const [searchQuery, setSearchQuery] = useState('')
     const [sortBy, setSortBy] = useState('lastName')
+    const location = useLocation() // Get the current location
 
      // Filter authors based on the search query
      const filteredAuthors = authors?.filter((author) =>
@@ -46,11 +47,9 @@ const Authors = () => {
         <>
             {/* <div className={styles.indexHeader}>
                 <h1>Authors</h1>
-                <Link to="/authors/new">
-                    <AddButton />               
-                </Link>  
+                
             </div>     */}
-            <TabMenu />
+          
             <div className={styles.filterContainer}>
                 <SearchInput
                     type="text"
@@ -60,8 +59,12 @@ const Authors = () => {
                     className={styles.searchInput}
                 />  
                 <SortOptions sortBy={sortBy} setSortBy={setSortBy} object="author" className={styles.sortContainer}/> 
+                <Link to="/authors/new">
+                    <AddButton />               
+                </Link> 
             </div>
-             <ListLayout authors={sortedAuthors} sortBy={sortBy}/>  
+            <TabMenu />
+            <ListLayout authors={sortedAuthors} sortBy={sortBy}/>  
         </>
     )
 }

@@ -5,6 +5,7 @@ import { Loading } from "../components/Icons";
 import { GridLayout } from "../components/PageLayouts";
 import { Link } from "react-router-dom";
 import "../stylesheets/main.css";
+import styles from "../stylesheets/Home.module.css";
 
 export default function Home() {
   const [totalBooks, setTotalBooks] = useState(0);
@@ -50,7 +51,7 @@ export default function Home() {
       <div className="homepage">
         <div className="homepage-main-container">
 
-            <section className="homepage-section">
+          <section className="homepage-section">
             <div className="grid-card-container">
             <div className="grid-card">
                 <div></div>
@@ -79,9 +80,9 @@ export default function Home() {
             </div>
         </section>
 
-        <section className="homepage-section">
-        <h2>New Books</h2>
-        <div className="book-grid">
+      <section>     
+        <h2>New Books</h2> 
+        <div className="homepage-container">
           <BookCover
             books={recentBooks}
             subtitle={(book) =>
@@ -98,13 +99,15 @@ export default function Home() {
             {genres.map((genre, index) => {
               const genreName = genre.toLowerCase();
               return (
+                 <Link to={`/genres/${genreName}`}>
                 <div className="grid-card">
-                  <Link to={`/genres/${genreName}`}>
+                 
                     <div>
                       <span>{genre}</span>
                     </div>
-                  </Link>
+              
                 </div>
+                   </Link> 
               );
             })}
           </div>
@@ -117,13 +120,15 @@ export default function Home() {
             <div className="grid-card-container">
                 {formats.map((format, index) => {
                 return (
+                   <Link to={`/format/${format}`}>
                     <div className="grid-card">
-                    <Link to={`/format/${format}`}>
+                   
                         <div>
                         <span>{format}</span>
                         </div>
-                    </Link>
+                  
                     </div>
+                      </Link>
                 );
                 })}
             </div>
@@ -131,7 +136,7 @@ export default function Home() {
       </section>
 
         </div>
-        <div className="homepage-sidebar">
+      <div className="homepage-sidebar">
           
         Sidebar container
         </div>

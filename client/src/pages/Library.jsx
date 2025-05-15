@@ -77,7 +77,7 @@ const Books = () => {
 
     return (
         <>
-            <TabMenu />
+        
             {/* <AddButtonDropdown mainText="Add New" options={dropdownOptions} /> */}
             <div className={styles.filterContainer}>
                 <SearchInput      
@@ -90,6 +90,7 @@ const Books = () => {
                 <SortOptions sortBy={sortBy} setSortBy={setSortBy} object="book" className={styles.sortContainer}/> 
                 <AddButtonDropdown mainText="Add New" options={dropdownOptions} />
             </div>
+            <TabMenu />
             <BookCover 
                 books={sortedBooks} 
                 subtitle={(book) => {

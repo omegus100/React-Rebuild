@@ -62,11 +62,9 @@ const Series = () => {
         <>
             {/* <div className={styles.indexHeader}>
                 <h1>Series</h1>
-                <Link to="/series/new">
-                    <AddButton />               
-                </Link>   
+                
             </div>     */}
-            <TabMenu /> 
+         
             <div className={styles.filterContainer}>
                 <SearchInput
                     type="text"
@@ -76,7 +74,11 @@ const Series = () => {
                     className={styles.searchInput}
                 />
                  <SortOptions sortBy={sortBy} setSortBy={setSortBy} object="series" className={styles.sortContainer}/> 
-            </div>          
+                 <Link to="/series/new">
+                    <AddButton />               
+                </Link>
+            </div>     
+            <TabMenu />      
             <TableLayout series={sortedSeries} />
         </>
     )

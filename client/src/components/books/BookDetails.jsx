@@ -68,9 +68,10 @@ export default function BookDetails() {
                     </div>
                     {author && (
                         <p>
+                           {/* <span>by </span> */}
                             {/* Author:{' '} */}
                             <Link to={`/authors/${author._id}`}>
-                                {author.firstName} {author.lastName}
+                              {author.firstName} {author.lastName}
                             </Link>
                         </p>
                     )}
