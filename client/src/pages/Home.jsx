@@ -53,28 +53,25 @@ export default function Home() {
 
           <section className="homepage-section">
             <div className="grid-card-container">
-            <div className="grid-card">
+            <div className="grid-card card-purple-blue">
                 <div></div>
                 <div>
-                <span>{totalBooks}</span>
-                <br />
-                <span>Total Books</span>
+                  <div className="grid-card-title">{totalBooks}</div>
+                  <div className="grid-card-subtitle">Total Books</div>
                 </div>
             </div>
-            <div className="grid-card">
+            <div className="grid-card card-salmon-pink">
                 <div></div>
                 <div>
-                <span>{authors.length}</span>
-                <br />
-                <span>Total Authors</span>
+                  <div className="grid-card-title">{authors.length}</div>
+                  <div className="grid-card-subtitle">Total Authors</div>
                 </div>
             </div>
-            <div className="grid-card">
+            <div className="grid-card card-blue-green">
                 <div></div>
                 <div>
-                <span>{finishedBooksCount}</span>
-                <br />
-                <span>Books Read</span>
+                  <div className="grid-card-title">{finishedBooksCount}</div>
+                  <div className="grid-card-subtitle">Books Read</div>
                 </div>
             </div>
             </div>
@@ -100,7 +97,7 @@ export default function Home() {
               const genreName = genre.toLowerCase();
               return (
                  <Link to={`/genres/${genreName}`}>
-                <div className="grid-card">
+                <div className="grid-card" key={index}>
                  
                     <div>
                       <span>{genre}</span>

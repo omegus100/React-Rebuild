@@ -4,6 +4,7 @@ import { GetData, GetBookObjectData } from "../hooks/getData" // Custom hook to 
 import BookCover from "../components/books/BookCover" // Component to display book covers
 import SortOptions from "../components/SortOptions" // Component for sorting options
 import styles from "../stylesheets/Index.module.css" // CSS module for styling
+import { GoBackButton } from "../components/Buttons" // Component for the back button
 
 export default function BookObjects() {
     const { id } = useParams() // Get the id from the URL
@@ -104,6 +105,7 @@ export default function BookObjects() {
 
     return (
         <div>
+            <GoBackButton />
             <div className={styles.filterContainer}>
                 <h1>{title}</h1>
                 <SortOptions 

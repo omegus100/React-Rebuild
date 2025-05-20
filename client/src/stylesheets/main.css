@@ -10,11 +10,37 @@
 }
 
 .grid-card {
-  background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   transition: transform 0.2s;
+}
+
+.grid-card-title {
+  font-size: 1.2rem;
+}
+
+.grid-card-subtitle {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.card-purple-blue {
+  color: white;
+  background: linear-gradient(45deg, #6D80FE 0%, #23D2FD 100%) !important;
+  box-shadow: 0 5px 20px rgba(35,210,253,0.3);
+}
+
+.card-salmon-pink {
+  color: white;
+  background: linear-gradient(45deg, #FF998B 0%, #FF6D88 100%) !important;
+  box-shadow: 0 5px 20px hex(#FF998B,.3);
+}
+
+.card-blue-green {
+  color: white;
+  background: linear-gradient(45deg, #09AFE8 0%, #29F499 100%) !important;
+  box-shadow: 0 5px 20px hex(#29F499,.3);
 }
 
 .homepage {
