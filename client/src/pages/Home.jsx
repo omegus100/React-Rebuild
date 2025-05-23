@@ -133,10 +133,24 @@ export default function Home() {
       </section>
 
         </div>
-      <div className="homepage-sidebar">
-          
-        Sidebar container
-        </div>
+      <div className="homepage-sidebar">   
+        <div>
+          <h2>Currently Reading</h2>
+          {/* <div> {currentBooksCount}</div> */}
+          <div>
+            {books.filter((book) => book.readingStatus === "Currently Reading").map((book, index) => {
+              return (
+                <div key={index} className="book-card">
+                  <img src={book.coverImagePath} alt={book.title} />
+                  <div>{book.title}</div>
+                  <span>{book.author.firstName} {book.author.lastName}</span>
+                </div>
+              );
+            } )}
+          </div>
+        </div>  
+      </div>
+
       </div>
 
       

@@ -35,9 +35,9 @@
     flex: 1;
     width: 100%;
     max-width: 400px;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 999px;
     font-size: 1rem;
 
     @media (max-width: 1024px) {
