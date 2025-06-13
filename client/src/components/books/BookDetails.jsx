@@ -102,7 +102,7 @@ export default function BookDetails() {
             <br /><br />
              {booksByAuthor.length > 0 && book.author ? (
                 <div>
-                    <p><strong>Other Books by {book.author.lastName}:</strong></p>
+                    <p><strong>Other works by {book.author.lastName}:</strong></p>
                     <BookCover books={booksByAuthor} />
                 </div>
             ) : null}

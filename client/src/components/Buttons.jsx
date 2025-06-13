@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom'
 import  '../stylesheets/AddButtonDropdown.css'
 
 export function GoBackButton() {
-    return <div onClick={() => window.history.back()}>&#8592 Go Back</div>
+    return <div onClick={() => window.history.back()}>←  Go Back</div>
 }
 
 export function AddButton({  }) {
-    return <button>Add New</button>
+    return <button className="dropdown-button">Add New +</button>
 }
 
 export function EditButton({ onClick }) {
@@ -44,7 +44,7 @@ const AddButtonDropdown = ({ mainText = 'Add New', options = [] }) => {
   return (
       <div className="dropdown-container" onMouseLeave={() => setIsOpen(false)}>
           <button className="dropdown-button" onClick={toggleDropdown} >
-              {mainText} <span className="dropdown-arrow">&#9662</span>
+              {mainText} <span className="dropdown-arrow">+</span>
           </button>
           {isOpen && (
               <div className="dropdown-menu">

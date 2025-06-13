@@ -49,7 +49,7 @@ const Authors = () => {
                 <h1>Authors</h1>
                 
             </div>     */}
-          
+            <TabMenu />
             <div className={styles.filterContainer}>
                 <SearchInput
                     type="text"
@@ -63,7 +63,7 @@ const Authors = () => {
                     <AddButton />               
                 </Link> 
             </div>
-            <TabMenu />
+        
             <ListLayout authors={sortedAuthors} sortBy={sortBy}/>  
         </>
     )

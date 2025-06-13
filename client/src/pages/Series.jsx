@@ -64,7 +64,7 @@ const Series = () => {
                 <h1>Series</h1>
                 
             </div>     */}
-         
+                <TabMenu /> 
             <div className={styles.filterContainer}>
                 <SearchInput
                     type="text"
@@ -78,7 +78,7 @@ const Series = () => {
                     <AddButton />               
                 </Link>
             </div>     
-            <TabMenu />      
+          
             <TableLayout series={sortedSeries} />
         </>
     )
