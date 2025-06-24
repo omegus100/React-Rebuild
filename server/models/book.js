@@ -33,4 +33,5 @@ const bookSchema = new mongoose.Schema({
     readingStatus: String
 })
 
-module.exports = mongoose.model('Book', bookSchema)
+// module.exports = mongoose.model('Book', bookSchema)
+export default router;

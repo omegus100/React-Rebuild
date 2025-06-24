@@ -16,6 +16,7 @@
   "bugs": {
     "url": "https://github.com/omegus100/React-Rebuild/issues"
   },
+  "type": "module",
   "homepage": "https://github.com/omegus100/React-Rebuild#readme",
   "description": "",
   "dependencies": {
