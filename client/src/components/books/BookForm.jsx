@@ -45,7 +45,7 @@ export default function BookForm({ setBooks }) {
                 seriesTitle: book.series?.title || '',
                 seriesId: book.series?.id || '',
                 seriesVolume: book.series?.volume || '',
-                coverImagePath: book.coverImagePath || '/no_book_cover_available.svg',
+                coverImagePath: book.coverImagePath,
                 publisher: book.publisher || '',
                 isbn: book.isbn || '',
                 readingStatus: book.readingStatus || ''   
@@ -95,14 +95,15 @@ export default function BookForm({ setBooks }) {
                     coverImagePath: reader.result
                 }))
             }
-        } else {
-            console.warn('Invalid file or no file selected. Using default cover image.')
-            // Set the default cover image if no valid file is uploaded
-            setFormData((prevData) => ({
-                ...prevData,
-                coverImagePath: '/no_book_cover_available.svg'
-            }))
-        }
+        } 
+        // else {
+        //     console.warn('Invalid file or no file selected. Using default cover image.')
+        //     // Set the default cover image if no valid file is uploaded
+        //     setFormData((prevData) => ({
+        //         ...prevData,
+        //         coverImagePath: '/no_book_cover_available.svg'
+        //     }))
+        // }
     }
 
     const handleSubmit = (event) => {
@@ -110,7 +111,7 @@ export default function BookForm({ setBooks }) {
 
         const finalFormData = {
             ...formData,
-            coverImagePath: formData.coverImagePath || '/no_book_cover_available.svg' // Apply default value
+            coverImagePath: formData.coverImagePath 
         }
 
         handleFormSubmit({
