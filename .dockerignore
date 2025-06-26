@@ -1,0 +1,73 @@
+# Node.js dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build outputs and artifacts
+dist/
+build/
+out/
+
+# Test and debug files
+test/
+tests/
+debug/
+*.log
+
+# IDE/editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Version control
+.git/
+.gitignore
+.svn/
+.hg/
+
+# Environment and secrets
+.env*
+*.env
+*.pem
+*.key
+*.crt
+config.local.*
+*.local.yml
+
+# Documentation and markdown
+README*
+*.md
+docs/
+
+# Docker files
+Dockerfile*
+docker-compose*
+
+# Temporary and local files
+tmp/
+temp/
+*.tmp
+.local/
+local/
+
+# Python cache (in case of scripts)
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+
+# Go cache (in case of scripts)
+/vendor/
+*.test
+.go-cache/
+
+# Java build (in case of scripts)
+target/
+*.class
+.gradle/
+
+# Miscellaneous
+*.DS_Store
+Thumbs.db

@@ -1,0 +1,34 @@
+services:
+  js-client:
+    build:
+      context: ./client
+      dockerfile: ../clientDockerfile
+    image: js-client:latest
+    container_name: js-client
+    restart: unless-stopped
+    init: true
+    ports:
+      - "3000:3000"  # React app served on port 3000
+    networks:
+      - app-network
+    # env_file: ./.env  # Uncomment if .env file exists in ./client
+
+  js-server:
+    build:
+      context: ./server
+      dockerfile: ../serverDockerfile
+    image: js-server:latest
+    container_name: js-server
+    restart: unless-stopped
+    init: true
+    ports:
+      - "5000:5000"  # Express server exposed on port 5000
+    networks:
+      - app-network
+    # env_file: ./.env  # Uncomment if .env file exists in ./server
+    depends_on:
+      - js-client  # If the server depends on the client being up first; adjust as needed
+
+networks:
+  app-network:
+    driver: bridge
