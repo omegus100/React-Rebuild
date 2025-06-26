@@ -1,0 +1,79 @@
+# Node.js dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build outputs
+client/build/
+dist/
+out/
+
+# Version control
+.git/
+.gitignore
+.svn/
+.hg/
+
+# IDE/editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs and debug
+*.log
+debug/
+npm-debug.log
+yarn-debug.log
+
+# Test and coverage
+coverage/
+test/
+tests/
+.pytest_cache/
+
+# Python cache (for completeness)
+__pycache__/
+*.pyc
+*.pyo
+
+# Go cache (for completeness)
+.go-cache/
+
+# Java build (for completeness)
+target/
+*.class
+.gradle/
+
+# Environment and secrets
+.env*
+*.env
+*.pem
+*.key
+*.crt
+config.local.*
+*.local.yml
+
+# Documentation
+README*
+*.md
+docs/
+
+# Docker files
+Dockerfile*
+docker-compose*
+
+# Temporary files and folders
+tmp/
+temp/
+*.tmp
+.local/
+local/
+
+# Project-specific
+client/README.md
+client/.gitignore
+
+# Font files (if not needed in build context)
+# (Uncomment if you do NOT want to include fonts in the image)
+# client/src/assets/fonts/
